@@ -10,7 +10,7 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 /[Uu]serSetting/
-/[Aa]ssetStoreTools/
+/[Aa]sset/AssetStoreTools/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
