@@ -8,17 +8,17 @@ public class ItemWindow : EditorWindow
     [SerializeField] int items;
 
     [SerializeField]
-    GameObject _item1;
+    List<GameObject> _item1 = new List<GameObject>();
 
     [SerializeField]
-    GameObject _item2;
+    List<GameObject> _item2 = new List<GameObject>();
 
     [SerializeField]
-    GameObject _result;
+    List<GameObject> _result = new List<GameObject>();
 
     Vector2 size = new Vector2(300, 20);
 
-    bool folding = false;
+    //bool folding = false;
 
     [MenuItem("Window/ItemFusion")]
     static void Init()
@@ -36,26 +36,20 @@ public class ItemWindow : EditorWindow
         var so = new SerializedObject(this);
         so.Update();
 
-        for (int i = 0; i < items; i++)
+        using (new EditorGUILayout.HorizontalScope()) 
         {
-
-            EditorGUILayout.BeginVertical();
-            EditorGUILayout.BeginHorizontal(GUI.skin.box);
-
+            GUILayout.FlexibleSpace();
             EditorGUILayout.PropertyField(so.FindProperty("_item1"), true, GUILayout.Width(size.x), GUILayout.Height(size.y));
+            GUILayout.FlexibleSpace();
             EditorGUILayout.PropertyField(so.FindProperty("_item2"), true, GUILayout.Width(size.x), GUILayout.Height(size.y));
+            GUILayout.FlexibleSpace();
             EditorGUILayout.PropertyField(so.FindProperty("_result"), true, GUILayout.Width(size.x), GUILayout.Height(size.y));
-
-
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.EndVertical();
+          GUILayout.FlexibleSpace();
         }
+
 
         so.ApplyModifiedProperties();
 
-
-
     }
-
 
 }
