@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+//没スクリプト
 public class ItemWindow : EditorWindow
 {
     [SerializeField] int items;
