@@ -2,16 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemDataBase : MonoBehaviour
+[CreateAssetMenu(menuName ="SakamotoScriptable/ItemDataBase")]
+public class ItemDataBase : ScriptableObject
 {
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
+   public List<ItemData> data = new List<ItemData>();
 }
