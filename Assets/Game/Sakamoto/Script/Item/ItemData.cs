@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName ="SakamotoScriptable/ItemData")]
 public class ItemData : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
+    [Header("â¡çHÇ≈Ç´ÇÈÇ©Ç«Ç§Ç©")]
+    [SerializeField] public bool _processing;
 
-    void Update()
-    {
-        
-    }
+    [Header("êªë¢Ç≈Ç´ÇÈÇ©Ç«Ç§Ç©")]
+    [SerializeField] public bool _craft;
+
 }
