@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 
-public class ManufacturingMachines : MonoBehaviour
+public class ManufacturingMachines : MonoBehaviour, IAddItem
 {
     [Header("アイテムの合成データ")]
     [SerializeField]ItemSyntheticDataBase _syntheticData;
@@ -15,21 +15,52 @@ public class ManufacturingMachines : MonoBehaviour
     bool _manufactureBool;
     [Tooltip("製造中かどうか")]
     bool _manufactureing;
-    [Tooltip("アイテムを保存しておく変数")]   
-    string _item1;
-    string _item2;
-    string _item3;
+    [Tooltip("アイテムを保存しておく変数")]
+    List<ItemData> _itemList = new List<ItemData>();
+    [Tooltip("合成後のアイテム")]
     string _resultSynthetic;
+    [Tooltip("製造機が保存できるアイテムの数")]
+    readonly int _itemSaveNum = 3;
+
+    /// <summary>
+    /// Itemを受け取るメソッド
+    /// </summary>
+    /// <param name="item"></param>
+    public bool ReceiveItems(ItemData item)
+    {
+        //アイテムがマシンの許与量を超えていたらfalseを返す
+        if (_itemList.Count >= _itemSaveNum) 
+        {
+            return false;
+        }
+
+        //受け取ることができる状態ならListに格納してtrueを返す
+        _itemList.Add(item);
+        return true;
+    }
+
+
     /// <summary>
     /// 加工開始メソッド
     /// </summary>
     public void StartManufacture() 
     {
-        if (_manufactureBool && !_manufactureing) 
+        if (_manufactureBool && !_manufactureing)
         {
             //製造が終了したのでアイテムを渡す
-            ItemManufacture(_item1, _item2, _item3);
+
         }
+        else if (!_manufactureBool && !_manufactureing)
+        {
+            //製造開始
+            ItemManufacture(_itemList[0].name, _itemList[1].name, _itemList[2].name);
+        }
+        else if (!_manufactureBool && _manufactureing) 
+        {
+            //製造が終わっていなくて製造中な場合Returnを返す
+            return;
+        }
+
     }
 
 
