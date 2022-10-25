@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using Cysharp.Threading.Tasks;
 
 public class ManufacturingMachines : MonoBehaviour, IAddItem
 {
     [Header("アイテムの合成データ")]
     [SerializeField]ItemSyntheticDataBase _syntheticData;
-
     [Header("アイテムの加工時間")]
-    [SerializeField] WaitForSeconds _waitSeconds;
+    [SerializeField] float _waitSeconds;
 
     [Tooltip("製造が終了したかどうか")]
     bool _manufactureBool;
@@ -22,8 +22,14 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     [Tooltip("製造機が保存できるアイテムの数")]
     readonly int _itemSaveNum = 3;
 
+    async void Update()
+    {
+       await ManufactureDeley();
+    }
+
     /// <summary>
     /// Itemを受け取るメソッド
+    /// アイテムを渡せるかどうか戻り値で返すのでそれで今の持ち物を破棄するか判断してほしい
     /// </summary>
     /// <param name="item"></param>
     public bool ReceiveItems(ItemData item)
@@ -57,10 +63,10 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         }
         else if (!_manufactureBool && _manufactureing) 
         {
-            //製造が終わっていなくて製造中な場合Returnを返す
+            //製造が終わっていなくて製造中な場合Returnする
             return;
         }
-
+        
     }
 
 
@@ -79,7 +85,21 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
                 break;
             }
         }
+        _itemList.Clear();
+;        return _resultSynthetic; 
+    }
 
-        return _resultSynthetic; 
+
+    /// <summary>
+    /// 製造が開始されたら待機する
+    /// </summary>
+    /// <returns></returns>
+    async UniTask ManufactureDeley() 
+    {
+        if (_manufactureing)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(_waitSeconds));
+            _manufactureing = false;
+        }
     }
 }
