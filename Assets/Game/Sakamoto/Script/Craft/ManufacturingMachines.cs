@@ -72,10 +72,10 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         for (int i = 0; i < _syntheticData.SyntheticList.Count; i++) 
         {
             //アイテムの名前が一致したら
-            if (_syntheticData.SyntheticList[i]._item1 == item1 && _syntheticData.SyntheticList[i]._item2 == item2
-                && _syntheticData.SyntheticList[i]._item3 == item3) 
+            if (_syntheticData.SyntheticList[i].Item1 == item1 && _syntheticData.SyntheticList[i].Item2 == item2
+                && _syntheticData.SyntheticList[i].Item3 == item3) 
             {
-                _resultSynthetic = _syntheticData.SyntheticList[i]._resultItem;
+                _resultSynthetic = _syntheticData.SyntheticList[i].ResultItem;
                 break;
             }
         }

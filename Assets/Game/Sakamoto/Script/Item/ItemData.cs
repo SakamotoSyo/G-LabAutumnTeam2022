@@ -6,9 +6,12 @@ using UnityEngine;
 public class ItemData : MonoBehaviour
 {
     [Header("加工できるかどうか")]
-    [SerializeField] public bool _processing;
+    [SerializeField] public bool Processing;
 
     [Header("製造できるかどうか")]
-    [SerializeField] public bool _craft;
+    [SerializeField] public bool Craft;
+
+    [Header("アイテムデータのプレハブ")]
+    [SerializeField] public GameObject ItemPrefab;
 
 }
