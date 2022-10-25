@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SakamotoScriptable/ItemSynthetic")]
 public class ItemSynthetic : ScriptableObject
 {
-    public string _item1;
-    public string _item2;
-    public string _item3;
-    public string _resultItem;
+    public string Item1;
+    public string Item2;
+    public string Item3;
+    public string ResultItem;
 }

@@ -50,13 +50,13 @@ public class CsvImpoterEditor : Editor
             var itemData = CreateInstance<ItemSynthetic>();
 
             //合成アイテム1
-            itemData._item1 = split[0];
+            itemData.Item1 = split[0];
             //合成アイテム２
-            itemData._item2 = split[1];
+            itemData.Item2 = split[1];
             //合成アイテム3
-            itemData._item3 = split[2];
+            itemData.Item3 = split[2];
             //結果のアイテム
-            itemData._resultItem = split[2];
+            itemData.ResultItem = split[2];
 
             var asset = (ItemSynthetic)AssetDatabase.LoadAssetAtPath(path, typeof(ItemSynthetic));
 
