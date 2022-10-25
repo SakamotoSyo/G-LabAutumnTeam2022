@@ -7,6 +7,9 @@ public class PlayerInput : MonoBehaviour
 {
     [Header("自分自身のプレイヤー番号")]
     [SerializeField] int _playerNum;
+    [Header("アクションした後に動けなくなる時間")]
+    [SerializeField] float _actionWait = 0f;
+
     [Tooltip("動く方向")]
     Vector2 _movement;
     [Tooltip("現在Action中か")]
@@ -16,8 +19,6 @@ public class PlayerInput : MonoBehaviour
 
     WaitForSeconds _actionWaitForSeconds;
     Coroutine _actionCoroutine;
-
-    readonly float _actionWait = 0.03f;
 
     /// <summary>現在アクション中かどうか返す</summary>
     public bool Action
@@ -59,7 +60,7 @@ public class PlayerInput : MonoBehaviour
     IEnumerator ActionWait() 
     {
         _isAction = true;
-
+        //アニメーションにかかる時間を
         yield return _actionWaitForSeconds;
 
         _isAction = false;
