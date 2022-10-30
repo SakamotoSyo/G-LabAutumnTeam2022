@@ -13,6 +13,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     [SerializeField] ItemDataBase _itemDataBase;
     [Header("アイテムの加工時間")]
     [SerializeField] float _waitSeconds;
+    //[Header("爆発するまでの時間")]
 
     [Tooltip("製造が終了したかどうか")]
     bool _manufactureBool;
@@ -45,11 +46,18 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
 
         //受け取ることができる状態ならListに格納してtrueを返す
         //合成アイテムが入っているかつPlayerがアイテムを持っているときは通らない
-        if (_resultSynthetic != null &&　item != null) 
+        if (_resultSynthetic == null ||　item == null) 
         {
-            _itemList.Add(item);
-            StartManufacture();
-            return _resultSynthetic;
+            //製造中は入ってこない
+            if (_manufactureBool) 
+            {
+              _itemList.Add(item);
+            }
+            StartManufacture(item);
+            //一時的にローカル変数にアイテムの情報を渡す
+            var Item = _resultSynthetic;
+            _resultSynthetic = null;
+            return Item;
         }
 
         return item;
@@ -59,12 +67,12 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     /// <summary>
     /// 加工開始メソッド
     /// </summary>
-    public void StartManufacture()
+    void StartManufacture(ItemData item)
     {
         if (_manufactureBool && !_manufactureing)
         {
             //製造が終了しているのでアイテムを渡す
-            _resultSynthetic = null;
+            return;
 
         }
         else if (!_manufactureBool && !_manufactureing)
@@ -75,6 +83,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         else if (!_manufactureBool && _manufactureing)
         {
             //製造が終わっていなくて製造中な場合Returnする
+            _resultSynthetic = item;
             return;
         }
 
