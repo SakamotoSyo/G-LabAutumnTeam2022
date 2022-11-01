@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
 using System.Linq;
+using UniRx;
 
 public class ManufacturingMachines : MonoBehaviour, IAddItem
 {
@@ -13,22 +14,41 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     [SerializeField] ItemDataBase _itemDataBase;
     [Header("アイテムの加工時間")]
     [SerializeField] float _waitSeconds;
-    //[Header("爆発するまでの時間")]
+    [Header("何秒たったら熱暴走で爆発するか")]
+    [SerializeField] float _runawayTime = 5;
 
     [Tooltip("製造が終了したかどうか")]
     bool _manufactureBool;
     [Tooltip("製造中かどうか")]
     bool _manufactureing;
     [Tooltip("アイテムを保存しておく変数")]
-    List<ItemData> _itemList = new List<ItemData>();
+    ItemData[] _itemArray;
     [Tooltip("合成後のアイテム")]
     ItemData _resultSynthetic;
     [Tooltip("製造機が保存できるアイテムの数")]
     readonly int _itemSaveNum = 3;
 
+    float _runawayCount;
+
+    void Start()
+    {
+        _itemArray = new ItemData[_itemSaveNum];
+    }
+
+
     async void Update()
     {
         await ManufactureDeley();
+
+        if (_resultSynthetic != null)
+        {
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q)) 
+        {
+            StartManufacture();
+        }
     }
 
     /// <summary>
@@ -38,36 +58,47 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     /// <param name="item"></param>
     public ItemData ReceiveItems(ItemData item)
     {
-        //アイテムがマシンの許与量を超えていたらfalseを返す
-        if (_itemList.Count >= _itemSaveNum)
+        //合成後のアイテムがあるかつPlayerがアイテムを持っていないとき
+        if (_resultSynthetic != null && item == null)
+        {
+            return _resultSynthetic;
+        }
+        else if (_resultSynthetic != null) 
         {
             return item;
         }
 
-        //受け取ることができる状態ならListに格納してtrueを返す
-        //合成アイテムが入っているかつPlayerがアイテムを持っているときは通らない
-        if (_resultSynthetic == null ||　item == null) 
+
+        //アイテムがマシンの許与量を超えていたらアイテムを返す
+        if (_itemArray[2] != null) 
         {
-            //製造中は入ってこない
-            if (_manufactureBool) 
+            Debug.Log("アイテムを返すマス");
+            return item;
+        }
+        //製造中は入ってこない
+        if (!_manufactureBool && item != null)
+        {
+            Debug.Log("入ってきた");
+            for (int i = 0; i < _itemSaveNum; i++) 
             {
-              _itemList.Add(item);
+                if (_itemArray[i] == null) 
+                {
+                    _itemArray[i] = item;
+                    break;
+                }
             }
-            StartManufacture(item);
-            //一時的にローカル変数にアイテムの情報を渡す
-            var Item = _resultSynthetic;
-            _resultSynthetic = null;
-            return Item;
+            return null;
         }
 
         return item;
+
     }
 
 
     /// <summary>
     /// 加工開始メソッド
     /// </summary>
-    void StartManufacture(ItemData item)
+    void StartManufacture()
     {
         if (_manufactureBool && !_manufactureing)
         {
@@ -78,14 +109,9 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         else if (!_manufactureBool && !_manufactureing)
         {
             //製造開始
-            ItemManufacture(_itemList[0].name, _itemList[1].name, _itemList[2].name);
+            ItemManufacture();
         }
-        else if (!_manufactureBool && _manufactureing)
-        {
-            //製造が終わっていなくて製造中な場合Returnする
-            _resultSynthetic = item;
-            return;
-        }
+        
 
     }
 
@@ -93,21 +119,37 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     /// <summary>
     /// アイテムを作成するメソッド
     /// </summary>
-    void ItemManufacture(string item1 = "なし", string item2 = "なし", string item3 = "なし")
+    void ItemManufacture()
     {
+        //合成用の配列を作る
+        string[] itemArray = new string[_itemSaveNum];
+        for (int i = 0; i < _itemSaveNum; i++) 
+        {
+            if (_itemArray[i] != null)
+            {
+                itemArray[i] = _itemArray[i].ItemName;
+            }
+            else 
+            {
+                itemArray[i] = "なし";
+            }
+        }
+    
         for (int i = 0; i < _syntheticData.SyntheticList.Count; i++)
         {
             //アイテムの名前が一致したら
-            if (_syntheticData.SyntheticList[i].Item1 == item1 && _syntheticData.SyntheticList[i].Item2 == item2
-                && _syntheticData.SyntheticList[i].Item3 == item3)
+            if (_syntheticData.SyntheticList[i].Item1 == itemArray[0] && _syntheticData.SyntheticList[i].Item2 == itemArray[1]
+                && _syntheticData.SyntheticList[i].Item3 == itemArray[2])
             {
                 //合成データベースからStringのデータを取得する
                 var resultSynthetic = _syntheticData.SyntheticList[i].ResultItem;
                 _resultSynthetic = _itemDataBase.ItemDataList.Where(x => x.ItemName == resultSynthetic).ToArray()[0];
+                //Debug.Log($"結果は{_resultSynthetic}");
                 break;
             }
+            //Debug.Log($"結果判定中:アイテム１{itemArray[0]}、アイテム２:{itemArray[1]}、アイテム３:{itemArray[2]}");
         }
-        _itemList.Clear();
+        Array.Clear(_itemArray, 0, _itemArray.Length);
     }
 
 
@@ -125,3 +167,29 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         }
     }
 }
+
+
+////アイテムがマシンの許与量を超えていたらfalseを返す
+//if (_itemList.Count >= _itemSaveNum)
+//{
+//    return item;
+//}
+
+////受け取ることができる状態ならListに格納してtrueを返す
+////合成アイテムが入っているかつPlayerがアイテムを持っているときは通らない
+//if (_resultSynthetic == null || item == null)
+//{
+//    //製造中は入ってこない
+//    if (_manufactureBool && item == null)
+//    {
+//        _itemList.Add(item);
+//        return null;
+//    }
+//    //StartManufacture(item);
+//    //一時的にローカル変数にアイテムの情報を渡す
+//    var Item = _resultSynthetic;
+//    _resultSynthetic = null;
+//    return Item;
+//}
+
+//return item;
