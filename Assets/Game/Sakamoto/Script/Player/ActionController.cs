@@ -6,9 +6,10 @@ public class ActionController : MonoBehaviour
 {
     [Header("Rayの長さ")]
     [SerializeField] float _rayDistance;
+    [Header("プレイヤーのインベントリ")]
+    [SerializeField] Inventory _inventory;
     
     PlayerInput _playerInput;
-    Inventory _inventory;
 
     void Start()
     {
@@ -35,19 +36,25 @@ public class ActionController : MonoBehaviour
         var collider = hit.collider;
         if (collider != null) 
         {
-            if (collider.TryGetComponent(out IAddItem AddItem)) 
+            Debug.Log("Colliderが入ってきた");
+            if (collider.TryGetComponent(out IAddItem AddItem))
             {
-               /* if (AddItem.ReceiveItems(インベントリの中のアイテム)) 
+                //現在持っているアイテムを渡す
+                var item = AddItem.ReceiveItems(_inventory.ReceiveItems());
+                //帰ってきたデータをインベントリに渡す
+                if (item != null) 
                 {
-                   //インベントリの中のアイテムを渡して持っているアイテムは削除
+                    _inventory.SetItemData(item);
                 }
-                else
-                {
-                  
-                }
-                */
-
+              
             }
+            else if (collider.TryGetComponent(out IPickUp PickedUpItems)) 
+            {
+                Debug.Log("アイテム取得した");
+                _inventory.SetItemData(PickedUpItems.PickUpItem());
+            }
+
+            Debug.Log("当たった");
            //AddItemInterfaceが取れたらアイテムを渡す処理を実行する
             
            //ItemBaseが取れたらインベントリにアイテムの情報を渡す

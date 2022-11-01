@@ -39,7 +39,7 @@ public class PlayerInput : MonoBehaviour
     } 
     void Start()
     {
-        
+        GameManager.GameStart += InputBlock;
     }
 
     void Update()
