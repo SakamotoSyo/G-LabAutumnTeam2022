@@ -12,7 +12,7 @@ public class Inventory : MonoBehaviour
     /// <summary>
     /// "現在持っているアイテムのデータ
     /// </summary>
-    public ItemData _itemInventory { get; private set;}
+    public ItemData ItemInventory { get; private set;}
 
     void Awake()
     {
@@ -26,7 +26,7 @@ public class Inventory : MonoBehaviour
     public void SetItemData(ItemData item)
     {
         //受け取ったデータのSpriteをセットする
-        _itemInventory = item;
+        ItemInventory = item;
         _itemSprite.sprite = item._itemSprite;
         _itemSprite.enabled = true;
     }
@@ -35,10 +35,10 @@ public class Inventory : MonoBehaviour
     public ItemData ReceiveItems()
     {
         //持っているアイテムを見えなくして渡す
-        _itemObj.SetActive(false);
-        var returnItem = _itemInventory;
+        _itemSprite.enabled = false;
+        var returnItem = ItemInventory;
         Debug.Log("Nullにしました");
-        _itemInventory = null;
+        ItemInventory = null;
         return returnItem;
     }
 

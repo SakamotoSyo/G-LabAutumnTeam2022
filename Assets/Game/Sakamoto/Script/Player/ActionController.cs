@@ -36,7 +36,6 @@ public class ActionController : MonoBehaviour
         var collider = hit.collider;
         if (collider != null) 
         {
-            Debug.Log("Colliderが入ってきた");
             if (collider.TryGetComponent(out IAddItem AddItem))
             {
                 //現在持っているアイテムを渡す
@@ -51,13 +50,12 @@ public class ActionController : MonoBehaviour
             else if (collider.TryGetComponent(out IPickUp PickedUpItems)) 
             {
                 Debug.Log("アイテム取得した");
-                _inventory.SetItemData(PickedUpItems.PickUpItem());
+                if (_inventory.ItemInventory == null) 
+                {
+                    _inventory.SetItemData(PickedUpItems.PickUpItem());
+                }
+                
             }
-
-            Debug.Log("当たった");
-           //AddItemInterfaceが取れたらアイテムを渡す処理を実行する
-            
-           //ItemBaseが取れたらインベントリにアイテムの情報を渡す
         }
     }
 }
