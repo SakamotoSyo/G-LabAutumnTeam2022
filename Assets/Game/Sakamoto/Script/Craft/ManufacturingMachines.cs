@@ -28,8 +28,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     [Tooltip("製造機が保存できるアイテムの数")]
     readonly int _itemSaveNum = 3;
     Coroutine _startCoroutine;
-
-    float _runawayCount;
+    Coroutine _runawayCoroutine;
 
     void Start()
     {
@@ -59,7 +58,11 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         //合成アイテムを返す
         if (_resultSynthetic != null && item == null)
         {
-            return _resultSynthetic;
+            //アイテムがNullになった時アイテムを返す
+            StopCoroutine(_runawayCoroutine);
+            var returnItem = _resultSynthetic;
+            _resultSynthetic = null;
+            return returnItem;
         }
         else if (_resultSynthetic != null)
         {
@@ -124,7 +127,8 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         Debug.Log("クラフトスタート");
         //途中でCoroutineが中断されなかったらCraft開始
         ItemManufacture();
-        StartCoroutine(ManufactureDeley());
+        //熱暴走待機開始
+        _runawayCoroutine = StartCoroutine(ManufactureDeley());
         _manufactureing = true;
     }
     #endregion
@@ -142,27 +146,6 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         _manufactureing = false;
 
     }
-
-
-    ///// <summary>
-    ///// 加工開始メソッド
-    ///// </summary>
-    //void StartManufacture()
-    //{
-    //    if (_manufactureBool && !_manufactureing)
-    //    {
-    //        //製造が終了しているのでアイテムを渡す
-    //        return;
-
-    //    }
-    //    else if (!_manufactureBool && !_manufactureing)
-    //    {
-    //        //製造開始
-    //        ItemManufacture();
-    //    }
-
-
-    //}
 
 
     /// <summary>
@@ -193,6 +176,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
                 //合成データベースからStringのデータを取得する
                 var resultSynthetic = _syntheticData.SyntheticList[i].ResultItem;
                 _resultSynthetic = _itemDataBase.ItemDataList.Where(x => x.ItemName == resultSynthetic).ToArray()[0];
+                StartCoroutine(ThermalRunaway());
                 //Debug.Log($"結果は{_resultSynthetic}");
                 break;
             }
@@ -202,8 +186,15 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     }
 
 
+    IEnumerator ThermalRunaway() 
+    {
+        Debug.Log("暴走待機");
+        yield return new WaitForSeconds(_runawayTime);
+        Debug.Log("暴走");
+    }
 
-   
+
+
 }
 
 
