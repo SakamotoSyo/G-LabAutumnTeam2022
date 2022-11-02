@@ -7,8 +7,6 @@ public class PlayerInput : MonoBehaviour
 {
     [Header("自分自身のプレイヤー番号")]
     [SerializeField] int _playerNum;
-    [Header("アクションした後に動けなくなる時間")]
-    [SerializeField] float _actionWait = 0f;
 
     [Tooltip("動く方向")]
     Vector2 _movement;
@@ -16,9 +14,6 @@ public class PlayerInput : MonoBehaviour
     bool _isAction = false;
     [Tooltip("Inputをブロックするかどうか")]
     bool _inputBlock = false;
-
-    WaitForSeconds _actionWaitForSeconds;
-    Coroutine _actionCoroutine;
 
     /// <summary>現在アクション中かどうか返す</summary>
     public bool Action
@@ -46,25 +41,16 @@ public class PlayerInput : MonoBehaviour
     {
         _movement = new Vector2(Input.GetAxisRaw($"Horizontal{_playerNum}"), Input.GetAxisRaw($"Vertical{_playerNum}"));
 
-        if (Input.GetButtonDown($"Action{_playerNum}")) 
+        if (Input.GetButtonDown($"Action{_playerNum}"))
         {
-            if (_actionCoroutine != null) 
-            {
-                StopCoroutine(_actionCoroutine);
-            }
-
-            _actionCoroutine = StartCoroutine(ActionWait());
+            _isAction = true;
+        }
+        else 
+        {
+            _isAction = false;
         }
     }
 
-    IEnumerator ActionWait() 
-    {
-        _isAction = true;
-        //アニメーションにかかる時間を
-        yield return _actionWaitForSeconds;
-
-        _isAction = false;
-    }
 
     /// <summary>Inputに関する入力を受け付けるかどうか変更する</summary>
     public void InputBlock() 
