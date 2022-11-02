@@ -25,7 +25,6 @@ public class testPlayer : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-
             _doorHit.DoorHitChange();
             _doorSprite.DoorChangeSprite();
         }
