@@ -12,13 +12,13 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     [SerializeField] ItemSyntheticDataBase _syntheticData;
     [Header("アイテムのデータ")]
     [SerializeField] ItemDataBase _itemDataBase;
-    [Header("アイテムの加工時間")]
+    [Header("アイテムの製造時間")]
     [SerializeField] float _waitSeconds;
     [Header("何秒たったら熱暴走で爆発するか")]
     [SerializeField] float _runawayTime = 5;
+    [Header("製造が始まるまでの猶予時間")]
+    [SerializeField] float _craftStartTime = 10;
 
-    [Tooltip("製造が終了したかどうか")]
-    bool _manufactureBool;
     [Tooltip("製造中かどうか")]
     bool _manufactureing;
     [Tooltip("アイテムを保存しておく変数")]
@@ -27,6 +27,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     ItemData _resultSynthetic;
     [Tooltip("製造機が保存できるアイテムの数")]
     readonly int _itemSaveNum = 3;
+    Coroutine _startCoroutine;
 
     float _runawayCount;
 
@@ -36,19 +37,13 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     }
 
 
-    async void Update()
+    void Update()
     {
-        await ManufactureDeley();
-
-        if (_resultSynthetic != null)
-        {
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q)) 
-        {
-            StartManufacture();
-        }
+        ////テスト用後で消す
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    StartManufacture();
+        //}
     }
 
     /// <summary>
@@ -58,32 +53,38 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     /// <param name="item"></param>
     public ItemData ReceiveItems(ItemData item)
     {
+        if (_manufactureing) return item;
+
         //合成後のアイテムがあるかつPlayerがアイテムを持っていないとき
+        //合成アイテムを返す
         if (_resultSynthetic != null && item == null)
         {
             return _resultSynthetic;
         }
-        else if (_resultSynthetic != null) 
+        else if (_resultSynthetic != null)
         {
             return item;
         }
 
 
         //アイテムがマシンの許与量を超えていたらアイテムを返す
-        if (_itemArray[2] != null) 
+        if (_itemArray[2] != null)
         {
             Debug.Log("アイテムを返すマス");
             return item;
         }
-        //製造中は入ってこない
-        if (!_manufactureBool && item != null)
+        //アイテムがNullではないとき
+        if (item != null)
         {
             Debug.Log("入ってきた");
-            for (int i = 0; i < _itemSaveNum; i++) 
+            //アイテムが入ってないところに入れる
+            for (int i = 0; i < _itemSaveNum; i++)
             {
-                if (_itemArray[i] == null) 
+                if (_itemArray[i] == null)
                 {
                     _itemArray[i] = item;
+                    //アイテムが入ったことでクラフト待機スタート
+                    StandbyCraft();
                     break;
                 }
             }
@@ -95,46 +96,94 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     }
 
 
+    #region 製造待機コルーチン
     /// <summary>
-    /// 加工開始メソッド
+    /// アイテムが入ったことで呼ばれるコルーチン開始関数
     /// </summary>
-    void StartManufacture()
+    void StandbyCraft()
     {
-        if (_manufactureBool && !_manufactureing)
+        if (_startCoroutine != null)
         {
-            //製造が終了しているのでアイテムを渡す
-            return;
+            StopCoroutine(_startCoroutine);
+            Debug.Log("コルーチンとめた");
+            _startCoroutine = StartCoroutine(StandbyCraftCor());
+        }
+        else
+        {
+            _startCoroutine = StartCoroutine(StandbyCraftCor());
+        }
+    }
 
-        }
-        else if (!_manufactureBool && !_manufactureing)
-        {
-            //製造開始
-            ItemManufacture();
-        }
-        
+    /// <summary>
+    /// クラフトがスタートするために待機時間
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator StandbyCraftCor()
+    {
+        yield return new WaitForSeconds(_craftStartTime);
+        Debug.Log("クラフトスタート");
+        //途中でCoroutineが中断されなかったらCraft開始
+        ItemManufacture();
+        StartCoroutine(ManufactureDeley());
+        _manufactureing = true;
+    }
+    #endregion
+
+    /// <summary>
+    /// 製造が開始されたら製造完了まで待機する
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ManufactureDeley()
+    {
+
+        Debug.Log("製造中wait");
+        yield return new WaitForSeconds(_waitSeconds);
+        Debug.Log("製造中終わり");
+        _manufactureing = false;
 
     }
 
 
+    ///// <summary>
+    ///// 加工開始メソッド
+    ///// </summary>
+    //void StartManufacture()
+    //{
+    //    if (_manufactureBool && !_manufactureing)
+    //    {
+    //        //製造が終了しているのでアイテムを渡す
+    //        return;
+
+    //    }
+    //    else if (!_manufactureBool && !_manufactureing)
+    //    {
+    //        //製造開始
+    //        ItemManufacture();
+    //    }
+
+
+    //}
+
+
     /// <summary>
-    /// アイテムを作成するメソッド
+    /// アイテムを製造するメソッド
     /// </summary>
     void ItemManufacture()
     {
         //合成用の配列を作る
         string[] itemArray = new string[_itemSaveNum];
-        for (int i = 0; i < _itemSaveNum; i++) 
+        for (int i = 0; i < _itemSaveNum; i++)
         {
             if (_itemArray[i] != null)
             {
                 itemArray[i] = _itemArray[i].ItemName;
             }
-            else 
+            else
             {
                 itemArray[i] = "なし";
             }
         }
-    
+
         for (int i = 0; i < _syntheticData.SyntheticList.Count; i++)
         {
             //アイテムの名前が一致したら
@@ -153,19 +202,8 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     }
 
 
-    /// <summary>
-    /// 製造が開始されたら待機する
-    /// </summary>
-    /// <returns></returns>
-    async UniTask ManufactureDeley()
-    {
-        if (_manufactureing)
-        {
-            Debug.Log("製造中wait");
-            await UniTask.Delay(TimeSpan.FromSeconds(_waitSeconds));
-            _manufactureing = false;
-        }
-    }
+
+   
 }
 
 
