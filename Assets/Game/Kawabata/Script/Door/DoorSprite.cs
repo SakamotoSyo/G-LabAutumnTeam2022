@@ -31,7 +31,7 @@ public class DoorSprite : MonoBehaviour
     {
         var closed = gameObject.GetComponent<DoorHit>().IsDoorClose();
 
-        if (closed) _spriteRenderer.sprite = _spriteClose;
-        else _spriteRenderer.sprite = _spriteOpen;
-    }
+        if (closed) { _spriteRenderer.sprite = _spriteClose; }
+        else { _spriteRenderer.sprite = _spriteOpen; }
+    } 
 }
