@@ -170,8 +170,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         for (int i = 0; i < _syntheticData.SyntheticList.Count; i++)
         {
             //アイテムの名前が一致したら
-            if (_syntheticData.SyntheticList[i].Item1 == itemArray[0] && _syntheticData.SyntheticList[i].Item2 == itemArray[1]
-                && _syntheticData.SyntheticList[i].Item3 == itemArray[2])
+            if (_syntheticData.SyntheticList[i].Item1 == itemArray[0] && _syntheticData.SyntheticList[i].Item2 == itemArray[1])
             {
                 //合成データベースからStringのデータを取得する
                 var resultSynthetic = _syntheticData.SyntheticList[i].ResultItem;
