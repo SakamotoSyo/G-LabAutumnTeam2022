@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02342fef6f900ae4399605f115cf2973, type: 3}
   m_Name: SyntheticDataBase
   m_EditorClassIdentifier: 
-  SyntheticList: []
+  SyntheticList:
+  - {fileID: 11400000, guid: 65bd131da651e0c4a904f4b1adaaabce, type: 2}
+  - {fileID: 11400000, guid: 79a47c92898eaf84ab0c98bd591d36b4, type: 2}
+  - {fileID: 11400000, guid: 107231f1be7dd7f41853363805650fe8, type: 2}
+  - {fileID: 11400000, guid: e4f2ca95066ff334e8921e5abe12d892, type: 2}
+  - {fileID: 11400000, guid: 3564a69a724539443834040bd55d8eba, type: 2}
+  - {fileID: 11400000, guid: ba88daa9cf43f804399019c2e2060298, type: 2}
+  - {fileID: 11400000, guid: 1ee194ee72026ae45a2c9b2651e82c54, type: 2}
+  - {fileID: 11400000, guid: b627b714c8812e7458e0e715033e168c, type: 2}
+  - {fileID: 11400000, guid: bf9193e718aed6d4b87f6ce1fca175e9, type: 2}

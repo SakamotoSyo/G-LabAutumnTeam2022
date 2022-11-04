@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ebdda2175aa83c40bcf3f94f38294ff, type: 3}
-  m_Name: CsvImpoter
+  m_Script: {fileID: 11500000, guid: 1ff1bb61dea5ecb42b02024ba4020972, type: 3}
+  m_Name: "\u6728\u88FD\u30D0\u30C3\u30C8\u3068\u30DC\u30FC\u30EB"
   m_EditorClassIdentifier: 
-  csvFile: {fileID: 4900000, guid: d11d8c177d7418641917f81b2f95a8f7, type: 3}
+  Item1: "\u6728\u90E8\u54C1"
+  Item2: "\u5E03\u90E8\u54C1"
+  ResultItem: "\u6728\u88FD\u30D0\u30C3\u30C8\u3068\u30DC\u30FC\u30EB"
