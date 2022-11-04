@@ -5,7 +5,7 @@ using UnityEngine;
 public class DoorHit : MonoBehaviour
 {
     //ƒhƒA‚ª•Â‚¶‚Ä‚¢‚é‚©‚Ç‚¤‚©
-    bool _doorClosed = true;
+    static public bool _doorClosed = true;
 
 
     public void DoorHitChange()
