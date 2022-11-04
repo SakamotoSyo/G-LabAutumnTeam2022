@@ -29,6 +29,7 @@ public class FreezeMgr : MonoBehaviour
             _doorTimer = 5;
         }
     }
+
     private void StopGen()
     {
         if(_doorTimer < 0 )_genChecker = false;
