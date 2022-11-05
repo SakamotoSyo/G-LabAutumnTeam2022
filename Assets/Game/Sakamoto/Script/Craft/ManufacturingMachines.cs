@@ -52,7 +52,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     /// <param name="item"></param>
     public ItemData ReceiveItems(ItemData item)
     {
-        if (_manufactureing) return item;
+        if (_manufactureing && !item.Processing) return item;
 
         //合成後のアイテムがあるかつPlayerがアイテムを持っていないとき
         //合成アイテムを返す
@@ -71,7 +71,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
 
 
         //アイテムがマシンの許与量を超えていたらアイテムを返す
-        if (_itemArray[2] != null)
+        if (_itemArray[_itemSaveNum - 1] != null)
         {
             Debug.Log("アイテムを返すマス");
             return item;
