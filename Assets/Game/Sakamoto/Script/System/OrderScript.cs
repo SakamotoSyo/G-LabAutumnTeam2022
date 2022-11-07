@@ -111,6 +111,29 @@ public class OrderScript : MonoBehaviour
         _orderDatas[dataNum] = null;
         
     }
+
+    /// <summary>
+    /// オーダーが完了したときに受け付ける処理
+    /// 別関数から呼び出す
+    /// </summary>
+    public void OrderComplete(ItemData item) 
+    {
+        for (int i = 0; i < _orderDatas.Length; i++) 
+        {
+            if (_orderDatas[i] == null) 
+            {
+                continue;
+            }
+            else if (item.ItemName == _orderDatas[i].ResultItem) 
+            {
+                _orderDatas[i] = null;
+                //スコアを足す処理
+                return;
+            }
+        }
+
+        //もし何もなかったらの処理を書きたかったらここに追記
+    }
 }
 
 [System.Serializable]
