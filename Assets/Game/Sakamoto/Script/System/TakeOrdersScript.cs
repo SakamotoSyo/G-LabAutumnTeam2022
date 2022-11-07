@@ -13,6 +13,8 @@ public class TakeOrdersScript : MonoBehaviour
     [Header("表示するスプライト")]
     [SerializeField] SpriteRenderer _spriteRenderer;
 
+    DoorHit[] _doorHit;
+
     [Tooltip("現在オーダーを出しているデータ")]
     ItemSynthetic _nowSyntheticData;
     [Tooltip("このオーダーの設定")]
@@ -40,6 +42,7 @@ public class TakeOrdersScript : MonoBehaviour
         Debug.Log("TakeOrder");
         //オーダーの制限時間計測開始
         _orderCor = StartCoroutine(TakeOrdersStart());
+
     }
 
     /// <summary>
@@ -58,5 +61,7 @@ public class TakeOrdersScript : MonoBehaviour
         //スコアを減らす処理をここに書く
 
     }
+
+
 
 }
