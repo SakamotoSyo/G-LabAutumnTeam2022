@@ -13,7 +13,7 @@ public class PickUpItemScript : MonoBehaviour, IPickUp
     void Start()
     {
         _sprite = GetComponent<SpriteRenderer>();
-        _sprite.sprite = _data._itemSprite;
+        _sprite.sprite = _data.ItemSprite;
     }
 
     public ItemData PickUpItem()

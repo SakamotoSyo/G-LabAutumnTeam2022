@@ -27,7 +27,7 @@ public class Inventory : MonoBehaviour
     {
         //受け取ったデータのSpriteをセットする
         ItemInventory = item;
-        _itemSprite.sprite = item._itemSprite;
+        _itemSprite.sprite = item.ItemSprite;
         _itemSprite.enabled = true;
     }
 
