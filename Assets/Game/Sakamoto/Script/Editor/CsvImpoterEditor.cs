@@ -45,18 +45,40 @@ public class CsvImpoterEditor : Editor
             string[] split = line.Split(',');
             Debug.Log(split[0]);
             //ファイルを作成するためのパス
-            string path = "Assets/Game/Sakamoto/Item/SyntheticData/" + split[2] + ".asset";
+            string path = "Assets/Game/Sakamoto/Data/Item/ItemData/" + split[0] + ".asset";
             //アイテムのインスタンスをメモリ上に作成
-            var itemData = CreateInstance<ItemSynthetic>();
+            var itemData = CreateInstance<ItemData>();
 
             //合成アイテム1
-            itemData.Item1 = split[0];
-            //合成アイテム２
-            itemData.Item2 = split[1];
-            //合成アイテム3
-            itemData.Item3 = split[2];
-            //結果のアイテム
-            itemData.ResultItem = split[2];
+            itemData.ItemName = split[0];
+
+            //加工できるか
+            if (split[1] == "できる")
+            {
+                itemData.Processing = true;
+            }
+            else 
+            {
+                itemData.Processing = false;
+            } 
+            //製造できるか
+            if (split[2] == "できる")
+            {
+                itemData.Craft = true;
+            }
+            else 
+            {
+                itemData.Craft = false;
+            }
+            
+            if (split[3] == "できる")
+            {
+                itemData.Packing = true;
+            }
+            else 
+            {
+                itemData.Packing = false;
+            }
 
             var asset = (ItemSynthetic)AssetDatabase.LoadAssetAtPath(path, typeof(ItemSynthetic));
 

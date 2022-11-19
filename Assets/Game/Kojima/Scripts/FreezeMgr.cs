@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FreezeMgr : MonoBehaviour
 {
-    bool _doorChecker=false;
     bool _genChecker =false;
     [SerializeField]float _doorTimer = 5;
     void Start()
@@ -19,14 +18,20 @@ public class FreezeMgr : MonoBehaviour
     }
     private void DoorCheck()
     {
-        if(_doorChecker == false)
+        //ドアがfalseならカウントダウンを開始
+       if(DoorHit._doorClosed == false)
         {
             _doorTimer -= Time.deltaTime;
-            if(_doorTimer < 0)_doorChecker = true;
+        }
+       //ドアがtrueならタイマーをリセット
+       if (DoorHit._doorClosed == true)
+        {
+            _doorTimer = 5;
         }
     }
+
     private void StopGen()
     {
-        if(_doorChecker == true )_genChecker = false;
+        if(_doorTimer < 0 )_genChecker = false;
     }
 }

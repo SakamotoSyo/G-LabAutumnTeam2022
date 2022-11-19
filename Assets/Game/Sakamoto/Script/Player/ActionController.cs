@@ -22,6 +22,7 @@ public class ActionController : MonoBehaviour
     {
         if (_playerInput.Action) 
         {
+            Debug.Log("Ç¢ÇÒÇΩÅ[");
             Interact();
         }
     }

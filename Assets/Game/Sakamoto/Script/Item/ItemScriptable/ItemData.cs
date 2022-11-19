@@ -20,9 +20,6 @@ public class ItemData : ScriptableObject
     [Header("アイテムのスプライト")]
     [SerializeField] public Sprite _itemSprite;
 
-    [Header("アイテムデータのプレハブ")]
-    [SerializeField] public GameObject ItemPrefab;
-
     [Header("製造所に入れたときのこの素材が暴走を起こすまでの時間")]
     [SerializeField] public float RunawayTime;
 

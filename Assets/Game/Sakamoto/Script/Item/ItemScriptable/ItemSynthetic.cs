@@ -7,6 +7,5 @@ public class ItemSynthetic : ScriptableObject
 {
     public string Item1;
     public string Item2;
-    public string Item3;
     public string ResultItem;
 }
