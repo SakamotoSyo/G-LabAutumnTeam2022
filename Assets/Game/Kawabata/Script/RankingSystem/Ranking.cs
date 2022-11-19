@@ -56,7 +56,6 @@ public class Ranking : MonoBehaviour
         //}
 
         //•À‚Ñ‘Ö‚¦ˆ—
-        //ƒ^ƒC(“¯‡ˆÊ)‚Ìˆ—‚ª‚Å‚«‚Ä‚¢‚È‚¢
         var c = new System.Comparison<RankData>(Conpare);
         _data.Sort(c);
 
@@ -147,7 +146,7 @@ public class Ranking : MonoBehaviour
             string datastr = reader.ReadLine();
             var data = new RankData();
             data.score = 0;
-            data.name = "Num:" + i;
+            data.name = "-----";
             if(datastr != null)
             {
                 data = JsonUtility.FromJson<RankData>(datastr);
