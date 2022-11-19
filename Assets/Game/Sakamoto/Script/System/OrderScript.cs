@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class OrderScript : MonoBehaviour
 {
+    /// <summary>現在出されているオーダーを格納するList</summary>
+    public ItemSynthetic[] OrderDatas => _orderDatas;
+
     [Header("次のフェーズまでにかかる時間")]
     [SerializeField] float _phaseTime;
     [Header("フェーズごとの細かな設定をするList")]
