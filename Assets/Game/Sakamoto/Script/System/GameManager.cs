@@ -9,12 +9,14 @@ public class GameManager : MonoBehaviour
     [Header("始まるまでの秒数")]
     [SerializeField] float _startTime;
 
+    [Tooltip("スコアを保存しておく変数")]
+    private static int score;
 
-    /// <summary>Gameがスタートするときに呼ぶ</summary>
+    /// <summary>Gameがスタートするときに呼ぶAction</summary>
     public static event Action GameStart;
-    /// <summary>GameをPauseさせるときに呼ぶ</summary>
+    /// <summary>GameをPauseさせるときに呼ぶAction</summary>
     public static event Action GamePause;
-    /// <summary>Gameを終了するときに呼ぶ</summary>
+    /// <summary>Gameを終了するときに呼ぶAction</summary>
     public static event Action GameEnd;
 
     async void Start()
@@ -24,16 +26,21 @@ public class GameManager : MonoBehaviour
         OnBiginTurn();
     }
 
+    public void AddScore(int scoreNum) 
+    {
+        score += scoreNum;
+    }
+
     /// <summary>ゲームを開始するときに呼ぶ関数</summary>
     public static void OnBiginTurn()
     {
-        GameStart();
+        GameStart?.Invoke();
     }
 
     /// <summary>ゲームを終了するときに呼ぶ関数</summary>
     public static void OnEndTurn()
     {
-        GameEnd();
+        GameEnd?.Invoke();
     }
 
     async UniTask StartDeley() 
