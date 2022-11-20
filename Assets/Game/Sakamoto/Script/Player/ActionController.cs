@@ -8,7 +8,8 @@ public class ActionController : MonoBehaviour
     [SerializeField] float _rayDistance;
     [Header("プレイヤーのインベントリ")]
     [SerializeField] Inventory _inventory;
-    
+
+    Animator _anim;
     PlayerInput _playerInput;
 
     void Start()
