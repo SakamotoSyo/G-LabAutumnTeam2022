@@ -4,10 +4,10 @@ using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
 
-public class GameManager : MonoBehaviour
+public class GameManager
 {
     [Header("始まるまでの秒数")]
-    [SerializeField] float _startTime;
+    readonly float _startTime = 3;
 
     [Tooltip("スコアを保存しておく変数")]
     private static int score;
@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
         OnBiginTurn();
     }
 
-    public void AddScore(int scoreNum) 
+    public static void AddScore(int scoreNum) 
     {
         score += scoreNum;
     }
