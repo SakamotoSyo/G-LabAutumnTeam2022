@@ -11,111 +11,98 @@ public class RankData
     public int score;
 }
 
-[System.Serializable]
+
 public class Ranking : MonoBehaviour
 {
+    public const int EASY = 0;
+    public const int NOMAL = 1;
+    public const int HARD = 2;
 
-    private List<RankData> _data;
-    private List<GameObject> _obj;
+    [SerializeField, Header("ミナライファイルパス")]
+    private string _easyPath;
+    [SerializeField, Header("ショクニンファイルパス")]
+    private string _nomalPath;
+    [SerializeField, Header("オヤカタファイルパス")]
+    private string _hardPath;
+
+
+
 
     [SerializeField, Header("テスト：スコアテキストUIプレハブ")]
-    private GameObject scoreUI;
-
-    [SerializeField,Header("テスト：受け取るスコア")]
-    private int _p_score = 0;
-    private int _p_rank;
-
+    protected GameObject scoreUI;
     [SerializeField, Header("テスト：表示する数")]
     private int _num = 10;
+    [SerializeField, Header("テスト：難易度")]
+    public int _level = EASY;
 
-    [SerializeField, Header("入力画面のcanvas")]
-    private GameObject _canvas;
+
+    protected List<RankData> _data;
+    protected List<GameObject> _obj;
+
+    private string _dataPath;
+    private string _levelName;
 
 
-    private string dataPath;
-    private void Awake()
+    //ランキング生成
+    protected void CreateRanking(int level)
     {
-        dataPath = Application.dataPath + "/Game/Kawabata/JSON/TestJson.json";
-    }
+        if (level == EASY)
+        {
+            _dataPath = _easyPath;
+            _levelName = "ミナライ";
+
+        }
+        else if (level == NOMAL)
+        {
+            _dataPath = _nomalPath;
+            _levelName = "ショクニン";
+
+        }
+        if (level == HARD)
+        {
+            _dataPath = _hardPath;
+            _levelName = "オヤカタ";
+
+        }
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        _data = new List<RankData>();
+        _data = new List<RankData>(LoadFile());
         _obj = new List<GameObject>();
 
-        //データファイル読み込み
-        LoadFile();
-        //for (var i = 0; i < _num; i++)
-        //{
-        //    var d = new RankData();
-        //    d.name = "Num" + i.ToString();
-        //    d.score = Random.Range(10, 10000);
-        //    _data.Add(d);
-        //}
 
         //並び替え処理
-        //タイ(同順位)の処理ができていない
         var c = new System.Comparison<RankData>(Conpare);
         _data.Sort(c);
 
-        //今回のスコアの順位を決定
-        for (var i = _data.Count - 1; i >= 0; i--)
-        {
-            if (_data[i].score > _p_score)
-            {
-                _p_rank = i + 1;
-                break;
-            }
-        }
-
-        //１０位以内だったら入力画面表示
-        if (_p_rank < _data.Count-1)
-        {
-            Debug.Log($"ランクインおめでとう Score:{_p_score}, {_p_rank + 1}位");
-            _canvas.SetActive(true); 
-        }//ランクインしていなかったらそのままランキング表示
-        else { CriateRanking(); }
     }
 
-    //入力された名前を元にプレイヤーをランキングに追加する
-    public void AddPlayerScore(string n)
+
+
+    //ゲームオブジェクト生成、ランキング表示
+    protected void ViewRanking()
     {
-        //プレイヤーのデータを用意する
-        var p_data = new RankData();
-        p_data.name = n;
-        p_data.score = _p_score;
-
-
-        //挿入して、最下位を削除
-        _data.Insert(_p_rank, p_data);
-        _data.Remove(_data[_data.Count-1]);
-
-        //ランキング表示
-        CriateRanking();
-
-    }
-
-    //ゲームオブジェクト生成
-    private void CriateRanking()
-    {
-        _canvas.SetActive(false);
         for (var i = 0; i < _data.Count; i++)
         {
+            //順位　０番→１位 のように変換
             _data[i].rank = i + 1;
-            //順位タイ表示
-            if(i != 0)
+            //順位タイの処理
+            if (i != 0)
             {
                 if (_data[i].score == _data[i - 1].score) { _data[i].rank = _data[i - 1].rank; }
             }
+            //スコアを表示するオブジェクトをインスタンス化
+            //rank,name,score等を設定
             var obj = Instantiate(scoreUI);
             obj.name = i + _data[i].name;
             var text = obj.GetComponent<Text>();
             text.text = _data[i].rank + "  Name: " + _data[i].name + "  Score: " + _data[i].score;
+            //キャンバスの子オブジェクトに設定
             obj.transform.SetParent(transform);
+            //リストに追加
             _obj.Add(obj);
         }
+
+        Debug.Log($"難易度は{_levelName}でした");
 
         //ファイル書き出しして終了
         SaveFile();
@@ -123,11 +110,11 @@ public class Ranking : MonoBehaviour
     }
 
     //ファイル書き出し
-    void SaveFile()
+    protected void SaveFile()
     {
 
-        StreamWriter writer = new StreamWriter(dataPath,false);
-        for(var i = 0; i < _data.Count; i++)
+        StreamWriter writer = new StreamWriter(_dataPath, false);
+        for (var i = 0; i < _data.Count; i++)
         {
             string jsonstr = JsonUtility.ToJson(_data[i]);
             writer.WriteLine(jsonstr);
@@ -138,24 +125,24 @@ public class Ranking : MonoBehaviour
     }
 
     //ファイル読み込み
-    //Debug.Logの結果からみて何故か２回呼び出されている
-    void LoadFile()
+    protected List<RankData> LoadFile()
     {
-        var reader = new StreamReader(dataPath,false);
-        for(var i = 0; i < _num; i++)
+        var listdata = new List<RankData>();
+        var reader = new StreamReader(_dataPath, false);
+        for (var i = 0; i < _num; i++)
         {
             string datastr = reader.ReadLine();
             var data = new RankData();
             data.score = 0;
-            data.name = "Num:" + i;
-            if(datastr != null)
+            data.name = "-----";
+            if (datastr != null)
             {
                 data = JsonUtility.FromJson<RankData>(datastr);
             }
-            _data.Add(data);
+            listdata.Add(data);
         }
         reader.Close();
-        return;
+        return listdata;
     }
 
     //ソート用の関数、降順
