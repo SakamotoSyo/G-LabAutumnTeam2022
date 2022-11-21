@@ -17,6 +17,14 @@ public class TitleRanking : Ranking
     //作ったランキングのゲームオブジェクトをDestroyする
     private void ResetBord()
     {
-        foreach(var ob in _obj){ Destroy(ob); }
+        if(_obj != null)
+        {
+            foreach(var ob in _obj){ Destroy(ob); }
+        }
+    }
+
+    private void OnEnable()
+    {
+        Selected(EASY);
     }
 }
