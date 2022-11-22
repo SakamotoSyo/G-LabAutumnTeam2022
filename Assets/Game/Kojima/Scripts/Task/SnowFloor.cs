@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class SnowFloor : MonoBehaviour
 {
+    #region 定義
     GameObject _player;
     Vector2 _curPos;//現在の座標
     Vector2 _prevPos;//過去の座標
     Vector2 _dis;//現在と過去の座標のベクトルの長さの差
     int hpBase = 5;
+
+    #endregion
+
     void Start()
     {
         _player = GameObject.Find("Player");
@@ -19,7 +23,9 @@ public class SnowFloor : MonoBehaviour
     {
        
     }
-    //プレイヤーの移動距離の計算を行う
+
+
+    # region プレイヤーの移動距離の計算を行う
     //プレイヤーのHP回復を行う
     private void FixedUpdate()
     {
@@ -29,11 +35,14 @@ public class SnowFloor : MonoBehaviour
         _dis = _prevPos + _curPos;
         //移動距離に応じてHPを回復
         playerCon.playerHp += hpBase * _dis.magnitude;
-        Debug.Log("PlayerのHP:"+playerCon.playerHp);
-
+       
         _prevPos = _curPos;
 
     }
+    #endregion
+
+
+    #region 当たり判定
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //tagでプレイヤーとSnowFloorの接触を判定
@@ -45,4 +54,5 @@ public class SnowFloor : MonoBehaviour
         }
         
     }
+    #endregion
 }
