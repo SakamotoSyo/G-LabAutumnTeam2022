@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &137516130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -925,7 +925,6 @@ GameObject:
   - component: {fileID: 1718272243}
   - component: {fileID: 1718272242}
   - component: {fileID: 1718272247}
-  - component: {fileID: 1718272248}
   m_Layer: 5
   m_Name: Rank
   m_TagString: Untagged
@@ -946,7 +945,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreUI: {fileID: 8352599497600792036, guid: 9505825effe0405479412c2ddb177509, type: 3}
-  _p_score: 5000
+  _p_score: -1
   _num: 10
   _canvas: {fileID: 137516129}
 --- !u!114 &1718272243
@@ -1056,17 +1055,3 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1718272248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1718272241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 847ddacce0831e642838a0a6973a4724, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: 
-  _score: 0
