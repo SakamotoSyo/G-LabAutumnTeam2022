@@ -5,11 +5,14 @@ using System;
 
 public class PlayerInput : MonoBehaviour
 {
+    public Vector2 PlayerDir => _playerDir;
     [Header("自分自身のプレイヤー番号")]
     [SerializeField] int _playerNum;
 
     [Tooltip("動く方向")]
     Vector2 _movement;
+    [Tooltip("最後に動いた方向")]
+    Vector2 _playerDir;
     [Tooltip("現在Action中か")]
     bool _isAction = false;
     [Tooltip("Inputをブロックするかどうか")]
@@ -40,6 +43,11 @@ public class PlayerInput : MonoBehaviour
     void Update()
     {
         _movement = new Vector2(Input.GetAxisRaw($"Horizontal{_playerNum}"), Input.GetAxisRaw($"Vertical{_playerNum}"));
+
+        if (Vector2.zero != _movement)
+        {
+            _playerDir = _movement;
+        }
 
         if (Input.GetButtonDown($"Action{_playerNum}"))
         {
