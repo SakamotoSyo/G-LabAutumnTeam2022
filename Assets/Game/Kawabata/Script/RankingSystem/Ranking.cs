@@ -36,7 +36,24 @@ public class Ranking : MonoBehaviour
     public int _level = EASY;
 
 
-    protected List<RankData> _data;
+    [SerializeField, Header("１位のスプライト")]
+    private Sprite _rankSprite1;
+    [SerializeField, Header("２位のスプライト")]
+    private Sprite _rankSprite2;
+    [SerializeField, Header("３位のスプライト")]
+    private Sprite _rankSprite3;
+    [SerializeField, Header("４位以降のスプライト")]
+    private Sprite _rankSprite4;
+
+    [SerializeField, Header("ランキングボード")]
+    protected GameObject _boad;
+
+
+
+
+
+
+    public List<RankData> _data;
     protected List<GameObject> _obj;
 
     private string _dataPath;
@@ -44,7 +61,7 @@ public class Ranking : MonoBehaviour
 
 
     //ランキング生成
-    protected void CreateRanking(int level)
+    public void CreateRanking(int level)
     {
         if (level == EASY)
         {
@@ -81,6 +98,7 @@ public class Ranking : MonoBehaviour
     //ゲームオブジェクト生成、ランキング表示
     protected void ViewRanking()
     {
+        Debug.Log("ViewRanking");
         for (var i = 0; i < _data.Count; i++)
         {
             //順位　０番→１位 のように変換
@@ -93,11 +111,22 @@ public class Ranking : MonoBehaviour
             //スコアを表示するオブジェクトをインスタンス化
             //rank,name,score等を設定
             var obj = Instantiate(scoreUI);
-            obj.name = i + _data[i].name;
-            var text = obj.GetComponent<Text>();
-            text.text = _data[i].rank + "  Name: " + _data[i].name + "  Score: " + _data[i].score;
+            if(i == 0) { obj.name = "Top"; }
+            else if (i == _data.Count - 1) { obj.name = "Bottom"; }
+            else { obj.name = i.ToString(); }
+            var image = obj.GetComponent<Image>();
+            var text_name = obj.transform.Find("Name").GetComponent<Text>();
+            var text_score = obj.transform.Find("Score").GetComponent<Text>();
+            var text_rank = obj.transform.Find("Rank").GetComponent<Text>();
+            text_name.text = _data[i].name;
+            text_score.text = _data[i].score.ToString() + "P";
+            text_rank.text = "";
+            if (_data[i].rank == 1) { image.sprite = _rankSprite1; }
+            else if (_data[i].rank == 2) { image.sprite = _rankSprite2; }
+            else if (_data[i].rank == 3) { image.sprite = _rankSprite3; }
+            else { text_rank.text = _data[i].rank.ToString(); }
             //キャンバスの子オブジェクトに設定
-            obj.transform.SetParent(transform);
+            obj.transform.SetParent(_boad.transform);
             //リストに追加
             _obj.Add(obj);
         }
@@ -150,6 +179,17 @@ public class Ranking : MonoBehaviour
     {
         return b.score - a.score;
     }
+
+    public void InsertData(RankData d)
+    {
+        //挿入して、最下位を削除
+        _data.Insert(d.rank, d);
+        _data.Remove(_data[_data.Count - 1]);
+
+        SaveFile();
+
+    }
+
 
 
 }
