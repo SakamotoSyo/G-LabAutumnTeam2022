@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class ActionController : MonoBehaviour
 {
-    [Header("Ray‚Ì’·‚³")]
+    [Header("Rayã®é•·ã•")]
     [SerializeField] float _rayDistance;
-    [Header("ƒvƒŒƒCƒ„[‚ÌƒCƒ“ƒxƒ“ƒgƒŠ")]
+    [Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒª")]
     [SerializeField] Inventory _inventory;
+    [SerializeField]Animator _anim;
 
-    Animator _anim;
     PlayerInput _playerInput;
 
     void Start()
     {
-        //ƒCƒ“ƒxƒ“ƒgƒŠƒXƒNƒŠƒvƒg‚ğGetComponent‚·‚é
+        //ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’GetComponentã™ã‚‹
 
         _playerInput = gameObject.GetComponent<PlayerInput>();
     }
@@ -23,41 +23,65 @@ public class ActionController : MonoBehaviour
     {
         if (_playerInput.Action) 
         {
-            Debug.Log("‚¢‚ñ‚½[");
+            Debug.Log("ã„ã‚“ãŸãƒ¼");
             Interact();
         }
     }
 
     /// <summary>
-    /// ƒCƒ“ƒ^ƒ‰ƒNƒg‚ğ‚·‚éˆ—
+    /// ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ãƒˆã‚’ã™ã‚‹å‡¦ç†
     /// </summary>
     public void Interact() 
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, _playerInput.MoveInput, _rayDistance);
-        Debug.DrawRay(transform.position, _playerInput.MoveInput, Color.black, 5);
-        var collider = hit.collider;
-        if (collider != null) 
+        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, _playerInput.LastMoveDir, _rayDistance);
+        Debug.DrawRay(transform.position, _playerInput.LastMoveDir, Color.black, _rayDistance);
+        if (hit.Length != 0) 
         {
-            if (collider.TryGetComponent(out IAddItem AddItem))
+            for(int i = 0; i < hit.Length; i++) 
             {
-                //Œ»İ‚Á‚Ä‚¢‚éƒAƒCƒeƒ€‚ğ“n‚·
-                var item = AddItem.ReceiveItems(_inventory.ReceiveItems());
-                //‹A‚Á‚Ä‚«‚½ƒf[ƒ^‚ğƒCƒ“ƒxƒ“ƒgƒŠ‚É“n‚·
-                if (item != null) 
+                if (hit[i].collider.TryGetComponent(out IAddItem AddItem))
                 {
-                    _inventory.SetItemData(item);
+                    //ç¾åœ¨æŒã£ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¸¡ã™
+                    var item = AddItem.ReceiveItems(_inventory.ReceiveItems());
+                    //å¸°ã£ã¦ããŸãƒ‡ãƒ¼ã‚¿ã‚’ã‚¤ãƒ³ãƒ™ãƒ³ãƒˆãƒªã«æ¸¡ã™
+                    if (item != null)
+                    {
+                        _inventory.SetItemData(item);
+                    }
+
                 }
-              
-            }
-            else if (collider.TryGetComponent(out IPickUp PickedUpItems)) 
-            {
-                Debug.Log("ƒAƒCƒeƒ€æ“¾‚µ‚½");
-                if (_inventory.ItemInventory == null) 
+
+                if (hit[i].collider.TryGetComponent(out IPickUp PickedUpItems))
                 {
-                    _inventory.SetItemData(PickedUpItems.PickUpItem());
+                    if (_inventory.ItemInventory == null)
+                    {
+                        _inventory.SetItemData(PickedUpItems.PickUpItem());
+                    }
+
+                }
+
+                if (hit[i].collider.TryGetComponent(out ICraftItem CraftItem)) 
+                {
+                    StartCoroutine(CraftAction(CraftItem.Craft(), CraftItem));
                 }
                 
             }
+         
         }
+    }
+
+    IEnumerator CraftAction(float craftTime, ICraftItem craftItem) 
+    {
+        if (craftTime != 0) 
+        {
+            _anim.SetBool("Craft", true);
+            _playerInput.InputBlock();
+            yield return new WaitForSeconds(craftTime);
+            _anim.SetBool("Craft", false);
+            _playerInput.InputBlock();
+            craftItem.CraftEnd();
+        }
+
+        yield return null;
     }
 }

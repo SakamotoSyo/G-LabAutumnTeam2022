@@ -26,14 +26,4 @@ public class ShippingScript : MonoBehaviour, IAddItem
         }
         return null;
     }
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
 }

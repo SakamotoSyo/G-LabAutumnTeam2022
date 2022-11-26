@@ -6,6 +6,7 @@ using System;
 public class PlayerInput : MonoBehaviour
 {
     public Vector2 PlayerDir => _playerDir;
+    public Vector2 LastMoveDir => _playerDir;
     [Header("自分自身のプレイヤー番号")]
     [SerializeField] int _playerNum;
 

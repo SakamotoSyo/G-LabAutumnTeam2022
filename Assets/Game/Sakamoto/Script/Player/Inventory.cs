@@ -8,6 +8,9 @@ public class Inventory : MonoBehaviour
     [SerializeField] GameObject _itemObj;
     [Header("アイテムのSpriteを表示する場所")]
     [SerializeField] SpriteRenderer _itemSprite;
+    [Header("アイテムを表示する場所")]
+    [SerializeField] Transform[] _transformArray;
+    [SerializeField] PlayerInput _playerInput;
 
     /// <summary>
     /// "現在持っているアイテムのデータ
@@ -17,6 +20,11 @@ public class Inventory : MonoBehaviour
     void Awake()
     {
         _itemSprite = GetComponent<SpriteRenderer>();
+    }
+
+    void Update()
+    {
+        InventoryPosition();  
     }
 
     /// <summary>
@@ -37,9 +45,33 @@ public class Inventory : MonoBehaviour
         //持っているアイテムを見えなくして渡す
         _itemSprite.enabled = false;
         var returnItem = ItemInventory;
-        Debug.Log("Nullにしました");
         ItemInventory = null;
         return returnItem;
+    }
+
+    /// <summary>
+    /// インベントリの場所を設定する
+    /// </summary>
+    public void InventoryPosition() 
+    {
+        if (_playerInput.LastMoveDir.y == 1)
+        {
+            gameObject.transform.position = _transformArray[2].position;
+            _itemSprite.sortingOrder = 1;
+        }
+        else if (_playerInput.LastMoveDir.y == -1)
+        {
+            gameObject.transform.position = _transformArray[3].position;
+            _itemSprite.sortingOrder = 100;
+        }
+        else if (_playerInput.LastMoveDir.x == 1)
+        {
+            gameObject.transform.position = _transformArray[0].position;
+        }
+        else if (_playerInput.LastMoveDir.x == -1) 
+        {
+            gameObject.transform.position = _transformArray[1].position;
+        }
     }
 
 }

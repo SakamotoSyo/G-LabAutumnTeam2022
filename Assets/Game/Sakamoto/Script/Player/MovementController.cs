@@ -24,6 +24,6 @@ public class MovementController : MonoBehaviour
 
   Å@ void FixedUpdate()
     {
-        _rb.velocity = _playerInput.MoveInput.normalized * new Vector2(_speed, _speed);
+        _rb.velocity = _playerInput.MoveInput.normalized *_speed;
     }
 }
