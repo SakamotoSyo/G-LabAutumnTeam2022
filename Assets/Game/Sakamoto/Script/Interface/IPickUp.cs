@@ -8,5 +8,5 @@ public interface IPickUp
     /// 自分自身のアイテムデータを返す
     /// </summary>
     /// <returns></returns>
-    public ItemData PickUpItem();
+    public ItemInformation PickUpItem();
 }

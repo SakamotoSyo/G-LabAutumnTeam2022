@@ -16,19 +16,18 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] RuntimeAnimatorController _13Controller;
     [Header("PlayerHp")]
     [SerializeField] PlayerHp _playerHp;
-
     void Start()
     {
-       _playerHp.OnHealth += OnHealthChanged;
+        _playerHp.OnHealth += OnHealthChanged;
     }
 
     private void Update()
     {
         _anim.SetFloat("X", _playerInput.PlayerDir.x);
         _anim.SetFloat("Y", _playerInput.PlayerDir.y);
-       // _anim.SetBool("Walk", _playerInput.PlayerDir.x != 0 || _playerInput.PlayerDir.y != 0 ? true : false);
+        // _anim.SetBool("Walk", _playerInput.PlayerDir.x != 0 || _playerInput.PlayerDir.y != 0 ? true : false);
         //_anim.SetFloat("Walk", _playerInput.x)
-        if (Input.GetKeyDown(KeyCode.K)) 
+        if (Input.GetKeyDown(KeyCode.K))
         {
             _anim.runtimeAnimatorController = _23Controller;
         }
@@ -46,7 +45,7 @@ public class PlayerAnimation : MonoBehaviour
             _anim.runtimeAnimatorController = _23Controller;
         }
         //Player‚ÌHp‚ª3/1‚ÌŽž
-        else if (_playerHp.MaxHp / 3 * 1 > _playerHp.CurrentHp) 
+        else if (_playerHp.MaxHp / 3 * 1 > _playerHp.CurrentHp)
         {
             _anim.runtimeAnimatorController = _13Controller;
         }

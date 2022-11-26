@@ -5,7 +5,7 @@ using UnityEngine;
 public class PickUpItemScript : MonoBehaviour, IPickUp
 {
     [Header("アイテムデータ")]
-    [SerializeField] ItemData _data;
+    [SerializeField] ItemInformation _data;
 
     [Tooltip("Sprite")]
     SpriteRenderer _sprite;
@@ -13,10 +13,10 @@ public class PickUpItemScript : MonoBehaviour, IPickUp
     void Start()
     {
         _sprite = GetComponent<SpriteRenderer>();
-        _sprite.sprite = _data.ItemSprite;
+        _sprite.sprite = _data.Item.ItemSprite;
     }
 
-    public ItemData PickUpItem()
+    public ItemInformation PickUpItem()
     {
         gameObject.SetActive(false);
         Destroy(gameObject, 0.2f);

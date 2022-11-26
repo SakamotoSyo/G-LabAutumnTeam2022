@@ -9,18 +9,18 @@ public class ShippingScript : MonoBehaviour, IAddItem
     /// <summary>
     /// アイテム受け渡しの処理
     /// </summary>
-    /// <param name="item">アイテム</param>
+    /// <param name="itemInfo">アイテム</param>
     /// <returns></returns>
-    public ItemData ReceiveItems(ItemData item)
+    public ItemInformation ReceiveItems(ItemInformation itemInfo)
     {
         for (int i = 0; i < _orderScript.OrderDatas.Length; i++)
         {
-            if (_orderScript.OrderDatas[i].ResultItem == item.ItemName) 
+            if (_orderScript.OrderDatas[i].ResultItem == itemInfo.Item.ItemName) 
             {
                 //オーダーから該当のアイテムを削除
-                _orderScript.OrderComplete(item);
+                _orderScript.OrderComplete(itemInfo.Item);
                 //スコアの追加処理
-                GameManager.AddScore(item.ItemScore);
+                GameManager.AddScore(itemInfo.Item.ItemScore);
             }
 
         }

@@ -22,9 +22,9 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     [Tooltip("製造中かどうか")]
     bool _manufactureing;
     [Tooltip("アイテムを保存しておく変数")]
-    ItemData[] _itemArray;
+    ItemInformation[] _itemArray;
     [Tooltip("合成後のアイテム")]
-    ItemData _resultSynthetic;
+    ItemInformation _resultSynthetic;
     [Tooltip("製造機が保存できるアイテムの数")]
     readonly int _itemSaveNum = 3;
     Coroutine _startCoroutine;
@@ -32,7 +32,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
 
     void Start()
     {
-        _itemArray = new ItemData[_itemSaveNum];
+        _itemArray = new ItemInformation[_itemSaveNum];
     }
 
 
@@ -49,14 +49,14 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     /// Itemを受け取るメソッド
     /// アイテムを渡せるかどうか戻り値で返すのでそれで今の持ち物を破棄するか判断してほしい
     /// </summary>
-    /// <param name="item"></param>
-    public ItemData ReceiveItems(ItemData item)
+    /// <param name="itemInfo"></param>
+    public ItemInformation ReceiveItems(ItemInformation itemInfo)
     {
-        if (_manufactureing && !item.Processing) return item;
+        if (_manufactureing && !itemInfo.Item.Processing) return itemInfo;
 
         //合成後のアイテムがあるかつPlayerがアイテムを持っていないとき
         //合成アイテムを返す
-        if (_resultSynthetic != null && item == null)
+        if (_resultSynthetic != null && itemInfo == null)
         {
             //アイテムがNullになった時アイテムを返す
             StopCoroutine(_runawayCoroutine);
@@ -66,7 +66,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         }
         else if (_resultSynthetic != null)
         {
-            return item;
+            return itemInfo;
         }
 
 
@@ -74,10 +74,10 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         if (_itemArray[_itemSaveNum - 1] != null)
         {
             Debug.Log("アイテムを返すマス");
-            return item;
+            return itemInfo;
         }
         //アイテムがNullではないとき
-        if (item != null)
+        if (itemInfo != null)
         {
             Debug.Log("入ってきた");
             //アイテムが入ってないところに入れる
@@ -85,7 +85,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
             {
                 if (_itemArray[i] == null)
                 {
-                    _itemArray[i] = item;
+                    _itemArray[i] = itemInfo;
                     //アイテムが入ったことでクラフト待機スタート
                     StandbyCraft();
                     break;
@@ -94,7 +94,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
             return null;
         }
 
-        return item;
+        return itemInfo;
 
     }
 
@@ -159,7 +159,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         {
             if (_itemArray[i] != null)
             {
-                itemArray[i] = _itemArray[i].ItemName;
+                itemArray[i] = _itemArray[i].Item.ItemName;
             }
             else
             {
@@ -174,7 +174,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
             {
                 //合成データベースからStringのデータを取得する
                 var resultSynthetic = _syntheticData.SyntheticList[i].ResultItem;
-                _resultSynthetic = _itemDataBase.ItemDataList.Where(x => x.ItemName == resultSynthetic).ToArray()[0];
+                _resultSynthetic = new ItemInformation(_itemDataBase.ItemDataList.Where(x => x.ItemName == resultSynthetic).ToArray()[0], false);
                 StartCoroutine(ThermalRunaway());
                 //Debug.Log($"結果は{_resultSynthetic}");
                 break;
