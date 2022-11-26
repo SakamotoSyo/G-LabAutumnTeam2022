@@ -20,9 +20,9 @@ public class WorkBench : MonoBehaviour, IAddItem, ICraftItem
     [Tooltip("加工中かどうか")]
     bool _manufactureing;
     [Tooltip("アイテムを保存しておく変数")]
-    ItemData _itemData;
+    ItemInformation _itemData;
     [Tooltip("合成後のアイテム")]
-    ItemData _resultSynthetic;
+    ItemInformation _resultSynthetic;
     Coroutine _startCoroutine;
     Coroutine _runawayCoroutine;
 
@@ -30,14 +30,14 @@ public class WorkBench : MonoBehaviour, IAddItem, ICraftItem
     /// Itemを受け取るメソッド
     /// アイテムを渡せるかどうか戻り値で返すのでそれで今の持ち物を破棄するか判断してほしい
     /// </summary>
-    /// <param name="item"></param>
-    public ItemData ReceiveItems(ItemData item)
+    /// <param name="itemInfo"></param>
+    public ItemInformation ReceiveItems(ItemInformation itemInfo)
     {
-        if (_manufactureing) return item;
+        if (_manufactureing) return itemInfo;
 
         //合成後のアイテムがあるかつPlayerがアイテムを持っていないとき
         //合成アイテムを返す
-        if (_resultSynthetic != null && item == null)
+        if (_resultSynthetic != null && itemInfo == null)
         {
             //アイテムがNullになった時アイテムを返す
             var returnItem = _resultSynthetic;
@@ -47,27 +47,27 @@ public class WorkBench : MonoBehaviour, IAddItem, ICraftItem
         }
         else if (_resultSynthetic != null)
         {
-            return item;
+            return itemInfo;
         }
 
 
         //アイテムがマシンの許与量を超えていたらまたはアイテムが入っていなかったらアイテムを返す
-        if (_itemData != null || item == null)
+        if (_itemData != null || itemInfo == null)
         {
             Debug.Log("アイテムを返すマス");
-            return item;
+            return itemInfo;
         }
         //アイテムがNullではないときかつクラフトできるものだったら
-        if (_itemData == null && item.Processing)
+        if (_itemData == null && itemInfo.Item.Processing)
         {
             Debug.Log("入ってきた");
             //アイテムが入ったことでクラフト待機スタート
-            _itemData = item;
-            _sr.sprite = item.ItemSprite;
+            _itemData = itemInfo;
+            _sr.sprite = itemInfo.Item.ItemSprite;
             return null;
         }
 
-        return item;
+        return itemInfo;
 
     }
 
@@ -80,11 +80,11 @@ public class WorkBench : MonoBehaviour, IAddItem, ICraftItem
         for (int i = 0; i < _syntheticData.SyntheticList.Count; i++)
         {
             //アイテムの名前が一致したら
-            if (_syntheticData.SyntheticList[i].Item1 == _itemData.ItemName)
+            if (_syntheticData.SyntheticList[i].Item1 == _itemData.Item.ItemName)
             {
                 //合成データベースからStringのデータを取得する
                 var resultSynthetic = _syntheticData.SyntheticList[i].ResultItem;
-                _resultSynthetic = _itemDataBase.ItemDataList.Where(x => x.ItemName == resultSynthetic).ToArray()[0];
+                _resultSynthetic = new ItemInformation(_itemDataBase.ItemDataList.Where(x => x.ItemName == resultSynthetic).ToArray()[0], false);
                 //Debug.Log($"結果は{_resultSynthetic}");
                 break;
             }
@@ -104,7 +104,7 @@ public class WorkBench : MonoBehaviour, IAddItem, ICraftItem
         _manufactureing = true;
         //加工が始まったら煙を出す
         _sr.sprite = _smokeSprite;
-        return _craftTime;
+        return _itemData. Item.CraftTime;
 
     }
 
@@ -114,7 +114,7 @@ public class WorkBench : MonoBehaviour, IAddItem, ICraftItem
     public void CraftEnd()
     {
         ItemManufacture();
-        _sr.sprite = _resultSynthetic.ItemSprite;
+        _sr.sprite = _resultSynthetic.Item.ItemSprite;
         _manufactureing = false;
     }
 }

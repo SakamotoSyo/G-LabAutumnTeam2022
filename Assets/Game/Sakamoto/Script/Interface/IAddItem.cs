@@ -7,5 +7,5 @@ public interface IAddItem
     /// <param name="item1"></param>
     /// <param name="item2"></param>
     /// <param name="item3"></param>
-    public ItemData ReceiveItems(ItemData item);
+    public ItemInformation ReceiveItems(ItemInformation item);
 }

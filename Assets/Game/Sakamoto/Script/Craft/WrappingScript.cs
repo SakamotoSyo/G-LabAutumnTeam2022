@@ -2,72 +2,86 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WrappingScript : MonoBehaviour, IAddItem
+public class WrappingScript : MonoBehaviour, IAddItem, ICraftItem
 {
-    [Header("包装を包むのにかかる時間")]
-    [SerializeField] int _wrappingTime;
-    [Header("プレゼントの画像")]
-    [SerializeField] Sprite _presentSp;
+    [Header("包装が始まった時の煙")]
+    [SerializeField] Sprite _smokeSprite;
+    [SerializeField] SpriteRenderer _sr;
 
-    [Tooltip("受け取ったアイテムを保存しておく場所")]
-    ItemData _itemData;
-    [Tooltip("現在制作中かどうか")]
-    bool _manufactureing = false;
-    [Tooltip("制作が完了したかどうか")]
-    bool _compCraft;
-    Coroutine _wrappnigCor;
-    WaitForSeconds _wrappingWait;
-
-    void Start()
-    {
-       _wrappingWait = new WaitForSeconds(_wrappingTime);
-    }
+    [Tooltip("加工中かどうか")]
+    bool _manufactureing;
+    [Tooltip("アイテムを保存しておく変数")]
+    ItemInformation _itemData;
+    [Tooltip("合成後のアイテム")]
+    ItemInformation _resultSynthetic;
 
     /// <summary>
-    /// アイテムの受け渡し
+    /// Itemを受け取るメソッド
+    /// アイテムを渡せるかどうか戻り値で返すのでそれで今の持ち物を破棄するか判断してほしい
     /// </summary>
-    /// <param name="item">渡されたアイテム</param>
-    /// <returns>アイテム</returns>
-    public ItemData ReceiveItems(ItemData item)
+    /// <param name="itemInfo"></param>
+    public ItemInformation ReceiveItems(ItemInformation itemInfo)
     {
-        if (_manufactureing && !item.Packing) return item;
+        if (_manufactureing) return itemInfo;
 
         //合成後のアイテムがあるかつPlayerがアイテムを持っていないとき
         //合成アイテムを返す
-        if (_compCraft && item == null)
+        if (_resultSynthetic != null && itemInfo == null)
         {
             //アイテムがNullになった時アイテムを返す
-            StopCoroutine(_wrappnigCor);
-            _compCraft = false;
-            var saveItem = _itemData;
-            _itemData = null;
-            return saveItem;
+            var returnItem = _resultSynthetic;
+            _resultSynthetic = null;
+            _sr.sprite = null;
+            return returnItem;
         }
-
-        //既にアイテムが置かれていた場合渡されるアイテムをそのまま返す
-        if (_itemData != null) 
+        else if (_resultSynthetic != null)
         {
-            return item;
+            return itemInfo;
         }
 
-        //アイテムデータがないとき
-        if (_itemData == null) 
+
+        //アイテムがマシンの許与量を超えていたらまたはアイテムが入っていなかったらアイテムを返す
+        if (_itemData != null || itemInfo == null)
         {
-            _itemData = item;
-            _wrappnigCor = StartCoroutine(WrappingCraft());
+            Debug.Log("アイテムを返すマス");
+            return itemInfo;
+        }
+        //アイテムがNullではないときかつクラフトできるものだったら
+        if (_itemData == null && itemInfo.Item.Packing)
+        {
+            Debug.Log("入ってきた");
+            //アイテムが入ったことでクラフト待機スタート
+            _itemData = itemInfo;
+            _sr.sprite = itemInfo.Item.ItemSprite;
+            return null;
         }
 
-        return null;
+        return itemInfo;
+
+    }
+    /// <summary>
+    /// クラフトをスタートする
+    /// </summary>
+    public float Craft()
+    {
+        if (_itemData == null) return 0;
+        Debug.Log("クラフトスタート");
+        _manufactureing = true;
+        //加工が始まったら煙を出す
+        _sr.sprite = _smokeSprite;
+        return _itemData.Item.CraftTime;
+
     }
 
-    IEnumerator WrappingCraft() 
+    /// <summary>
+    /// クラフトが終った時に呼ぶ
+    /// </summary>
+    public void CraftEnd()
     {
-        yield return _wrappingWait;
-        //入っているアイテムデータに包装済みの命令を出す
-        _itemData.IsPacking = true;
-        _itemData.ItemSprite = _presentSp;
-        _compCraft = true;
-
+        _sr.sprite = _itemData.Item.PresentSprite;
+        _resultSynthetic = new ItemInformation( _itemData.Item, true);
+        _itemData = null;
+        _manufactureing = false;
     }
 
 }

@@ -6,14 +6,14 @@ public class MaterialPlace : MonoBehaviour, IAddItem
 {
     [Header("アイテムを表示するために使うSpriteRender")]
     [SerializeField] SpriteRenderer _sr;
-    ItemData _itemData;
+    ItemInformation _itemData;
 
-    public ItemData ReceiveItems(ItemData item)
+    public ItemInformation ReceiveItems(ItemInformation itemInfo)
     {
 
         //合成後のアイテムがあるかつPlayerがアイテムを持っていないとき
         //合成アイテムを返す
-        if (_itemData && item == null)
+        if (_itemData != null && itemInfo == null)
         {
             _sr.sprite = null;
             var ritem = _itemData;
@@ -22,15 +22,23 @@ public class MaterialPlace : MonoBehaviour, IAddItem
             return ritem;
         }
         //既にアイテムが置かれていた場合渡されるアイテムをそのまま返す
-        if (_itemData != null)
+        if (_itemData != null || itemInfo == null)
         {
-            return item;
+            return itemInfo;
         }
         //アイテムデータがないとき
         if (_itemData == null)
         {
-            _itemData = item;
-            _sr.sprite = item.ItemSprite;
+            _itemData = itemInfo;
+            if (itemInfo.Present)
+            {
+                _sr.sprite = itemInfo.Item.PresentSprite;
+            }
+            else 
+            {
+                _sr.sprite = itemInfo.Item.ItemSprite;
+            }
+            
         }
 
         return null;
