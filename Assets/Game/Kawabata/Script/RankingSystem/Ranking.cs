@@ -14,6 +14,11 @@ public class RankData
 
 public class Ranking : MonoBehaviour
 {
+    //ランキング表示する人数
+    //※※減らすと範囲外のデータが消滅します※※
+    public const int _num = 30;
+
+
     public const int EASY = 0;
     public const int NOMAL = 1;
     public const int HARD = 2;
@@ -30,8 +35,6 @@ public class Ranking : MonoBehaviour
 
     [SerializeField, Header("テスト：スコアテキストUIプレハブ")]
     protected GameObject scoreUI;
-    [SerializeField, Header("テスト：表示する数")]
-    private int _num = 10;
     [SerializeField, Header("テスト：難易度")]
     public int _level = EASY;
 

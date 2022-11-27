@@ -77,6 +77,7 @@ public class ResultManager : MonoBehaviour
 
     }
 
+    //リザルト画面
     public void GoResultCanvas()
     {
         _rankingCanvas.SetActive(false);
@@ -84,9 +85,15 @@ public class ResultManager : MonoBehaviour
         var scoreText = _resultCanvas.transform.Find("Score").GetComponent<Text>();
         var rankText = _resultCanvas.transform.Find("Rank").GetComponent<Text>();
         var titleText = _resultCanvas.transform.Find("Title").GetComponent<Text>();
+        //スコア表示
         scoreText.text = _p_score.ToString();
-        if(_p_rank == -1) { rankText.text = "-----"; }
-        else { rankText.text = _p_rank.ToString(); }
+        //順位表示 rankは0始まりで数えているので+1しながら処理
+        var rank = _p_rank + 1;
+        //ランキング範囲外だったら"-----"位とする
+        if(rank >= Ranking._num || rank <= 0) { rankText.text = "-----"; }
+        else { rankText.text = (rank).ToString(); }
+
+        //称号については詳細を聞いていないのでまだ書いていません
     }
 
     public void BackRankingBoad()

@@ -34,9 +34,12 @@ public class ChangeRanking : Ranking
             ResetBord();
             Selected(EASY);
         }
+    }
+
+    public void ScrollUpdate()
+    {
         float scPos = _sum * _scrollbar.value;
-        _rect.anchoredPosition = new Vector2(_rect.anchoredPosition.x,scPos);
- 
+        _rect.anchoredPosition = new Vector2(_rect.anchoredPosition.x, scPos);
     }
 
     //難易度変更ボタンクリックorタイトルからの遷移で呼び出し
@@ -66,5 +69,21 @@ public class ChangeRanking : Ranking
 
         }
     }
+
+    void OnGUI()
+    {
+        //マウスホイールでスクロール
+        float value = Input.GetAxis("Mouse ScrollWheel");
+        var scrollSpeed = 0.05f; 
+
+        if(Mathf.Abs(value) > 0.01f)
+        {
+            _scrollbar.value -= scrollSpeed * value;
+            if(_scrollbar.value < 0.0f) { _scrollbar.value = 0.0f; }
+            else if(_scrollbar.value > 1.0f) { _scrollbar.value = 1.0f; }
+        }
+
+    }
+
 
 }
