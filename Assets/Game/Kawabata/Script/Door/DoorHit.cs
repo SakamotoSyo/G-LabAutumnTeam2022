@@ -13,7 +13,7 @@ public class DoorHit : MonoBehaviour
     {
         _doorClosed = !_doorClosed;
         BoxCollider2D collider = gameObject.GetComponent<BoxCollider2D>();
-        DoorChange();
+        //DoorChange();
 
         if (_doorClosed)
         {
@@ -23,6 +23,11 @@ public class DoorHit : MonoBehaviour
         else
         {
             collider.enabled = false;
+        }
+
+        foreach (Transform child in transform)
+        {
+            child.GetComponent<DoorSprite>().DoorChangeSprite();
         }
 
     }
