@@ -7,7 +7,7 @@ public class DoorHit : MonoBehaviour
 {
     //ƒhƒA‚ª•Â‚¶‚Ä‚¢‚é‚©‚Ç‚¤‚©
     static public bool _doorClosed = true;
-     public Action DoorChange;
+    public Action DoorChange;
 
     public void DoorHitChange()
     {
