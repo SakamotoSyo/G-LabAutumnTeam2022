@@ -39,7 +39,7 @@ public class ItemMoveCon : MonoBehaviour
         _rb2d.velocity = new Vector2(_posX, -_posY);//velocityはあくまで、速度を加えているだけ
         _sum = _moveSpeedA * _moveSpeedB;
         _posY -= _sum;
-      
+        Debug.Log("動いている");
     }
     #endregion
     #region アイテムを止める
