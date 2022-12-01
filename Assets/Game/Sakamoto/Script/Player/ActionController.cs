@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using Cysharp.Threading.Tasks;
 
-public class ActionController : MonoBehaviour
+[Serializable]
+public class ActionController
 {
     [Header("Rayの長さ")]
     [SerializeField] float _rayDistance;
@@ -10,28 +13,12 @@ public class ActionController : MonoBehaviour
     [SerializeField] Inventory _inventory;
     [SerializeField]Animator _anim;
 
-    PlayerInput _playerInput;
-
-    void Start()
-    {
-        //インベントリスクリプトをGetComponentする
-
-        _playerInput = gameObject.GetComponent<PlayerInput>();
-    }
-
-    void Update()
-    {
-        if (_playerInput.Action) 
-        {
-            Debug.Log("いんたー");
-            Interact();
-        }
-    }
+    [SerializeField]PlayerInput _playerInput;
 
     /// <summary>
     /// インタラクトをする処理
     /// </summary>
-    public void Interact() 
+    public async void Interact(Transform transform) 
     {
         RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, _playerInput.LastMoveDir, _rayDistance);
         Debug.DrawRay(transform.position, _playerInput.LastMoveDir, Color.black, _rayDistance);
@@ -41,11 +28,16 @@ public class ActionController : MonoBehaviour
             {
                 if (hit[i].collider.TryGetComponent(out IAddItem AddItem))
                 {
+                    if (_inventory.ItemInventory != null) 
+                    {
+                        AudioManager.Instance.PlaySound(SoundPlayType.Put);
+                    }
                     //現在持っているアイテムを渡す
                     var item = AddItem.ReceiveItems(_inventory.ReceiveItems());
                     //帰ってきたデータをインベントリに渡す
                     if (item != null)
                     {
+                        AudioManager.Instance.PlaySound(SoundPlayType.PickUp);
                         _inventory.SetItemData(item);
                     }
 
@@ -55,6 +47,7 @@ public class ActionController : MonoBehaviour
                 {
                     if (_inventory.ItemInventory == null)
                     {
+                        AudioManager.Instance.PlaySound(SoundPlayType.PickUp);
                         _inventory.SetItemData(PickedUpItems.PickUpItem());
                     }
 
@@ -62,7 +55,12 @@ public class ActionController : MonoBehaviour
 
                 if (hit[i].collider.TryGetComponent(out ICraftItem CraftItem)) 
                 {
-                    StartCoroutine(CraftAction(CraftItem.Craft(), CraftItem));
+                   await CraftAction(CraftItem.Craft(), CraftItem);
+                }
+
+                if (hit[i].collider.TryGetComponent(out DoorHit door)) 
+                {
+                    door.DoorHitChange();
                 }
                 
             }
@@ -70,18 +68,16 @@ public class ActionController : MonoBehaviour
         }
     }
 
-    IEnumerator CraftAction(float craftTime, ICraftItem craftItem) 
+    private async UniTask CraftAction(float craftTime, ICraftItem craftItem) 
     {
         if (craftTime != 0) 
         {
             _anim.SetBool("Craft", true);
             _playerInput.InputBlock();
-            yield return new WaitForSeconds(craftTime);
+            await UniTask.Delay(TimeSpan.FromSeconds(craftTime));
             _anim.SetBool("Craft", false);
             _playerInput.InputBlock();
             craftItem.CraftEnd();
         }
-
-        yield return null;
     }
 }
