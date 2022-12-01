@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimation : MonoBehaviour
+[System.Serializable]
+public class PlayerAnimation
 {
     [Header("Player‚ÌAnimation")]
     [SerializeField] Animator _anim;
@@ -16,12 +17,12 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] RuntimeAnimatorController _13Controller;
     [Header("PlayerHp")]
     [SerializeField] PlayerHp _playerHp;
-    void Start()
+    public void Init()
     {
         _playerHp.OnHealth += OnHealthChanged;
     }
 
-    private void Update()
+    public void Update()
     {
         _anim.SetFloat("X", _playerInput.PlayerDir.x);
         _anim.SetFloat("Y", _playerInput.PlayerDir.y);

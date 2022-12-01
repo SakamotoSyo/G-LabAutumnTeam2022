@@ -5,25 +5,33 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class MovementController : MonoBehaviour
 {
-    [Header("Rigidbodyコンポーネント")]
-    [SerializeField]Rigidbody2D _rb;
-    [Header("Playerのスピード")]
-    [SerializeField] float _speed;
+    [Header("PlayerAction")]
+    [SerializeField] ActionController _action;
+    [Header("PlayerAnimation")]
+    [SerializeField] PlayerAnimation _playerAnimation;
+    [Header("PlayerMove")]
+    [SerializeField] PlayerMove _playerMove;
 
     PlayerInput _playerInput;
 
     void Start()
     {
-        _playerInput = gameObject.GetComponent<PlayerInput>();   
+        _playerInput = gameObject.GetComponent<PlayerInput>();
+        _playerAnimation.Init();
     }
 
     void Update()
     {
-        
+        if (_playerInput.Action) 
+        {
+            _action.Interact(gameObject.transform);
+        }
+        _playerAnimation.Update();
+
     }
 
   　 void FixedUpdate()
     {
-        _rb.velocity = _playerInput.MoveInput.normalized *_speed;
+       _playerMove.FixedUpdate();
     }
 }
