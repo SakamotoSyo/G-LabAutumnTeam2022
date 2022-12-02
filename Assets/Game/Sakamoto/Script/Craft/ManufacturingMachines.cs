@@ -12,6 +12,12 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     [SerializeField] ItemSyntheticDataBase _syntheticData;
     [Header("アイテムのデータ")]
     [SerializeField] ItemDataBase _itemDataBase;
+    [Header("時間経過によって変わる製造所のSprite")]
+    [SerializeField] Sprite[] _millSprite = new Sprite[4];
+    [Header("熱暴走時のSprite")]
+    [SerializeField] Sprite _thermalRunawaySprite;
+    [Header("製造所のSpriteRenderer")]
+    [SerializeField] SpriteRenderer _millRenderer;
     [Header("アイテムの製造時間")]
     [SerializeField] float _waitSeconds;
     [Header("何秒たったら熱暴走で爆発するか")]
@@ -21,18 +27,28 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
 
     [Tooltip("製造中かどうか")]
     bool _manufactureing;
+    [Tooltip("上質なものかどうか")]
+    bool _isFineQuality;
+    [Tooltip("上質なものが回収できる時間")]
+    readonly float _fineQualityTime = 5;
     [Tooltip("アイテムを保存しておく変数")]
     ItemInformation[] _itemArray;
     [Tooltip("合成後のアイテム")]
-    ItemInformation _resultSynthetic;
+    ItemInformation _resultSynthetic = new ItemInformation (null, false);
     [Tooltip("製造機が保存できるアイテムの数")]
     readonly int _itemSaveNum = 3;
     Coroutine _startCoroutine;
     Coroutine _runawayCoroutine;
+    Coroutine _fineQualityCor;
 
     void Start()
     {
         _itemArray = new ItemInformation[_itemSaveNum];
+
+        for (int i = 0; i < _itemSaveNum; i++) 
+        {
+            _itemArray[i] = new ItemInformation(null, false);
+        }
     }
 
 
@@ -52,26 +68,33 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     /// <param name="itemInfo"></param>
     public ItemInformation ReceiveItems(ItemInformation itemInfo)
     {
-        if (_manufactureing && !itemInfo.Item.Processing) return itemInfo;
+        if (_manufactureing) return itemInfo;
 
         //合成後のアイテムがあるかつPlayerがアイテムを持っていないとき
         //合成アイテムを返す
-        if (_resultSynthetic != null && itemInfo == null)
+        if (_resultSynthetic.Item != null && itemInfo == null)
         {
             //アイテムがNullになった時アイテムを返す
             StopCoroutine(_runawayCoroutine);
+            StopCoroutine(_fineQualityCor);
+            if (_isFineQuality) 
+            {
+                Debug.Log("上質です");
+                _resultSynthetic.SetFineQuality(true);
+            }
             var returnItem = _resultSynthetic;
             _resultSynthetic = null;
+            _millRenderer.sprite = _millSprite[0];
             return returnItem;
         }
-        else if (_resultSynthetic != null)
+        else if (_resultSynthetic.Item != null)
         {
             return itemInfo;
         }
 
 
         //アイテムがマシンの許与量を超えていたらアイテムを返す
-        if (_itemArray[_itemSaveNum - 1] != null)
+        if (_itemArray[_itemSaveNum - 1].Item != null)
         {
             Debug.Log("アイテムを返すマス");
             return itemInfo;
@@ -83,7 +106,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
             //アイテムが入ってないところに入れる
             for (int i = 0; i < _itemSaveNum; i++)
             {
-                if (_itemArray[i] == null)
+                if (_itemArray[i].Item == null)
                 {
                     _itemArray[i] = itemInfo;
                     //アイテムが入ったことでクラフト待機スタート
@@ -141,8 +164,17 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     {
 
         Debug.Log("製造中wait");
-        yield return new WaitForSeconds(_waitSeconds);
+        //時間経過によって製造所のSpriteを変える
+        for (int i = 0; i < _millSprite.Length; i++) 
+        {
+            yield return new WaitForSeconds(_waitSeconds/_millSprite.Length);
+            _millRenderer.sprite = _millSprite[i]; 
+        }
+        
         Debug.Log("製造中終わり");
+        //var cor = FineQualityTime();
+        _fineQualityCor = StartCoroutine(FineQualityTime());
+        StartCoroutine(ThermalRunaway());
         _manufactureing = false;
 
     }
@@ -157,7 +189,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         string[] itemArray = new string[_itemSaveNum];
         for (int i = 0; i < _itemSaveNum; i++)
         {
-            if (_itemArray[i] != null)
+            if (_itemArray[i].Item != null)
             {
                 itemArray[i] = _itemArray[i].Item.ItemName;
             }
@@ -170,12 +202,12 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         for (int i = 0; i < _syntheticData.SyntheticList.Count; i++)
         {
             //アイテムの名前が一致したら
-            if (_syntheticData.SyntheticList[i].Item1 == itemArray[0] && _syntheticData.SyntheticList[i].Item2 == itemArray[1])
+            if (_syntheticData.SyntheticList[i].Item1.Contains(itemArray[0][0]) && _syntheticData.SyntheticList[i].Item2.Contains(itemArray[1][0]))
             {
                 //合成データベースからStringのデータを取得する
                 var resultSynthetic = _syntheticData.SyntheticList[i].ResultItem;
                 _resultSynthetic = new ItemInformation(_itemDataBase.ItemDataList.Where(x => x.ItemName == resultSynthetic).ToArray()[0], false);
-                StartCoroutine(ThermalRunaway());
+                _resultSynthetic.SetParts(PartsCheck(itemArray));
                 //Debug.Log($"結果は{_resultSynthetic}");
                 break;
             }
@@ -185,14 +217,44 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     }
 
 
+    /// <summary>
+    /// 上質なものがゲットできる時間
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator FineQualityTime() 
+    {
+        _isFineQuality = true;
+        yield return new WaitForSeconds(_fineQualityTime);
+        _isFineQuality = false;
+    }
+
     IEnumerator ThermalRunaway() 
     {
         Debug.Log("暴走待機");
         yield return new WaitForSeconds(_runawayTime);
+        _millRenderer.sprite = _thermalRunawaySprite;
         Debug.Log("暴走");
     }
 
 
+    /// <summary>
+    /// 部品がいくつ含まれているか調べる
+    /// </summary>
+    /// <param name="itemNameArray"></param>
+    /// <returns></returns>
+    private int PartsCheck(string[] itemNameArray) 
+    {
+        int partsNum = 0;
+        for (int i = 0; i < 2; i++) 
+        {
+            if (itemNameArray[i].Contains("部品")) 
+            {
+                partsNum++;
+            }
+        }
+
+        return partsNum;
+    }
 
 }
 
