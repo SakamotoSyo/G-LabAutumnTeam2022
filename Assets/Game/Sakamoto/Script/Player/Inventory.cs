@@ -93,9 +93,26 @@ public class ItemInformation
     public bool Present => _isPresent;
     [SerializeField]bool _isPresent;
 
+    public int PartsNum => _partsNum;
+    [Tooltip("このアイテムを製造するために使った部品の数")]
+    int _partsNum;
+    public bool IsFineQuality => _isFineQuality;
+    [Tooltip("上質かどうか")]
+    bool _isFineQuality = false;
+
     public ItemInformation(ItemData item, bool b) 
     {
         _item = item;
         _isPresent = b;
+    }
+
+    public void SetParts(int add)
+    {
+        _partsNum += add;
+    }
+
+    public void SetFineQuality(bool set) 
+    {
+        _isFineQuality = set;
     }
 }
