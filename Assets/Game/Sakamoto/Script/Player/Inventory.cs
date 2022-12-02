@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    [Header("アイテムを生成する場所")]
-    [SerializeField] GameObject _itemObj;
     [Header("アイテムのSpriteを表示する場所")]
     [SerializeField] SpriteRenderer _itemSprite;
     [Header("アイテムを表示する場所")]

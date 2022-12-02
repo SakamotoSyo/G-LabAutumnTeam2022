@@ -16,6 +16,8 @@ public class PlayerInput : MonoBehaviour
     Vector2 _playerDir;
     [Tooltip("現在Action中か")]
     bool _isAction = false;
+    [Tooltip("現在ジャンプ中かどうか")]
+    bool _isJump = false;
     [Tooltip("Inputをブロックするかどうか")]
     bool _inputBlock = false;
 
@@ -23,6 +25,11 @@ public class PlayerInput : MonoBehaviour
     public bool Action
     {
         get { return _isAction && !_inputBlock; }
+    }
+
+    public bool Jump 
+    {
+        get { return _isJump && !_inputBlock; }
     }
     /// <summary>現在の方向入力を返す</summary>
     public Vector2 MoveInput 
@@ -43,7 +50,7 @@ public class PlayerInput : MonoBehaviour
 
     void Update()
     {
-        _movement = new Vector2(Input.GetAxisRaw($"Horizontal{_playerNum}"), Input.GetAxisRaw($"Vertical{_playerNum}"));
+        _movement = new Vector2(Input.GetAxisRaw($"Horizontal{_playerNum}"), 0);
 
         if (Vector2.zero != _movement)
         {
@@ -57,6 +64,15 @@ public class PlayerInput : MonoBehaviour
         else 
         {
             _isAction = false;
+        }
+
+        if (Input.GetButtonDown($"Jump{_playerNum}"))
+        {
+            _isJump = true;
+        }
+        else 
+        {
+            _isJump = false;
         }
     }
 
