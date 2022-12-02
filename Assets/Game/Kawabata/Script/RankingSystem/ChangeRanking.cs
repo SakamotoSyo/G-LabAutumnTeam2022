@@ -13,6 +13,8 @@ public class ChangeRanking : Ranking
     [SerializeField, Header("スクロールバー")]
     private GameObject _scroll;
     private Scrollbar _scrollbar;
+    [SerializeField]
+    private GameObject[] _buttons;
 
     private Vector2 _top;
     private Vector2 _bottom;
@@ -51,8 +53,14 @@ public class ChangeRanking : Ranking
         _top = _boad.transform.Find("Top").GetComponent<RectTransform>().anchoredPosition;
         _bottom = _boad.transform.Find("Bottom").GetComponent<RectTransform>().anchoredPosition;
         _sum = _top.y - _bottom.y;
-        //_scrollbar.value = 0;
         Debug.Log(_sum);
+
+        for(var i = 0; i < _buttons.Length; i++)
+        {
+            if(i == level) { _buttons[i].SetActive(true); }
+            else { _buttons[i].SetActive(false); }
+        }
+
     }
 
     //作ったランキングのゲームオブジェクトをDestroyする

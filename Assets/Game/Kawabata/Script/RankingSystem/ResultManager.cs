@@ -74,6 +74,7 @@ public class ResultManager : MonoBehaviour
         _inputCanvas.SetActive(false);
         _ranking.InsertData(p_data);
         _ranking.Selected(_r_level);
+        GoResultCanvas();
 
     }
 

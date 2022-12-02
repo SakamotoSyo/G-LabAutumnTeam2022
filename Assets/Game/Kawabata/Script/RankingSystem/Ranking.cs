@@ -51,7 +51,8 @@ public class Ranking : MonoBehaviour
     [SerializeField, Header("ランキングボード")]
     protected GameObject _boad;
 
-
+    [SerializeField, Header("ランキングのサイズ")]
+    protected float _size;
 
 
 
@@ -130,6 +131,7 @@ public class Ranking : MonoBehaviour
             else { text_rank.text = _data[i].rank.ToString(); }
             //キャンバスの子オブジェクトに設定
             obj.transform.SetParent(_boad.transform);
+            obj.transform.transform.localScale = new Vector3 (_size,_size);
             //リストに追加
             _obj.Add(obj);
         }
