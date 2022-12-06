@@ -1,19 +1,19 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class PlayerAnimation
 {
-    [Header("Player‚ÌAnimation")]
+    [Header("Playerã®Animation")]
     [SerializeField] Animator _anim;
     [Header("PlayerInput")]
     [SerializeField] PlayerInput _playerInput;
-    [Header("Player‚ÌHp‚ªMax‚Ì‚ÌAnimation")]
+    [Header("Playerã®HpãŒMaxã®æ™‚ã®Animation")]
     [SerializeField] RuntimeAnimatorController _maxController;
-    [Header("Player‚ÌHp‚ª2/3‚Ì‚ÌAnimation")]
+    [Header("Playerã®HpãŒ2/3ã®æ™‚ã®Animation")]
     [SerializeField] RuntimeAnimatorController _23Controller;
-    [Header("Player‚ÌHp‚ª1/3‚Ì‚ÌAnimation")]
+    [Header("Playerã®HpãŒ1/3ã®æ™‚ã®Animation")]
     [SerializeField] RuntimeAnimatorController _13Controller;
     [Header("PlayerHp")]
     [SerializeField] PlayerHp _playerHp;
@@ -26,27 +26,21 @@ public class PlayerAnimation
     {
         _anim.SetFloat("X", _playerInput.PlayerDir.x);
         _anim.SetFloat("Y", _playerInput.PlayerDir.y);
-        // _anim.SetBool("Walk", _playerInput.PlayerDir.x != 0 || _playerInput.PlayerDir.y != 0 ? true : false);
-        //_anim.SetFloat("Walk", _playerInput.x)
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            _anim.runtimeAnimatorController = _23Controller;
-        }
     }
 
     /// <summary>
-    /// Player‚ÌHp‚ª•Ï‚í‚Á‚½‚É’Ê’m‚³‚ê‚é
+    /// Playerã®HpãŒå¤‰ã‚ã£ãŸæ™‚ã«é€šçŸ¥ã•ã‚Œã‚‹
     /// </summary>
     /// <param name="amount"></param>
     void OnHealthChanged(float amount)
     {
-        //Player‚ÌHp‚ª3/2‚Ì
-        if (_playerHp.MaxHp / 3 * 2 > _playerHp.CurrentHp)
+        //Playerã®HpãŒ3/2ã®æ™‚
+        if (_playerHp.MaxHp / 3 * 2 > amount)
         {
             _anim.runtimeAnimatorController = _23Controller;
         }
-        //Player‚ÌHp‚ª3/1‚Ì
-        else if (_playerHp.MaxHp / 3 * 1 > _playerHp.CurrentHp)
+        //Playerã®HpãŒ3/1ã®æ™‚
+        else if (_playerHp.MaxHp / 3 * 1 > amount)
         {
             _anim.runtimeAnimatorController = _13Controller;
         }
