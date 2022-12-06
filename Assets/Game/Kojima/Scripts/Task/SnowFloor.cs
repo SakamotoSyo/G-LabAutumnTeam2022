@@ -43,16 +43,15 @@ public class SnowFloor : MonoBehaviour
 
 
     #region 当たり判定
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         //tagでプレイヤーとSnowFloorの接触を判定
-        if(collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
             //プレイヤーがSnowFloorに入った瞬間の座標を取得
             /*----プレイヤーの移動を管理しているクラスから取得----*/
-             _prevPos = new Vector2(_player.transform.position.x, 0);
+            _prevPos = new Vector2(_player.transform.position.x, 0);
         }
-        
     }
     #endregion
 }

@@ -45,9 +45,7 @@ public class ItemGenerator : MonoBehaviour
             _elapsed = 0;
 
             //Instanciate
-            
-                Debug.Log(_itemCnt);
-                GameObject res = Instantiate(_items_box[_itemCnt]);
+                GameObject res = Instantiate(_items_box[_itemCnt], transform.position, transform.rotation);
                 res.AddComponent<Rigidbody2D>();
                 _itemCnt++;
                 if (_itemCnt == 3) _itemCnt = 0;   
