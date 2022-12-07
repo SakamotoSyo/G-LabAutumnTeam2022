@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using UnityEngine.UI;
+using System;
 
 public class TakeOrdersScript : MonoBehaviour
 {
@@ -11,12 +14,15 @@ public class TakeOrdersScript : MonoBehaviour
     [Header("オーダーを出しているスクリプト")]
     [SerializeField] OrderScript _orderCs;
     [Header("表示するスプライト")]
-    [SerializeField] SpriteRenderer _spriteRenderer;
-
-    DoorHit[] _doorHit;
-
+    [SerializeField] Image _image;
+    public IObservable<ItemSynthetic> CurrentSynthetic => _nowSyntheticData;
     [Tooltip("現在オーダーを出しているデータ")]
-    ItemSynthetic _nowSyntheticData;
+    private readonly ReactiveProperty<ItemSynthetic> _nowSyntheticData = new();
+    public IObservable<float> MaxOrderTime => _maxOrderTime;
+    private readonly ReactiveProperty<float> _maxOrderTime = new();
+    public IObservable<float> CountOrderTime => _countOrderTime;
+    private readonly ReactiveProperty<float> _countOrderTime = new();
+
     [Tooltip("このオーダーの設定")]
     PhaseOrder _orderSetting;
     [Tooltip("オーダーの制限時間を管理する")]
@@ -24,12 +30,12 @@ public class TakeOrdersScript : MonoBehaviour
 
     void Start()
     {
-        _spriteRenderer.enabled = false;
+        _image.enabled = false;
     }
 
     void Update()
     {
-
+       
     }
 
     /// <summary>
@@ -37,9 +43,8 @@ public class TakeOrdersScript : MonoBehaviour
     /// </summary>
     public void TakeOrders(ItemSynthetic synthetic, PhaseOrder phase) 
     {
-        _nowSyntheticData = synthetic;
+        _nowSyntheticData.Value = synthetic;
         _orderSetting = phase;
-        Debug.Log("TakeOrder");
         //オーダーの制限時間計測開始
         _orderCor = StartCoroutine(TakeOrdersStart());
 
@@ -51,13 +56,20 @@ public class TakeOrdersScript : MonoBehaviour
     /// <returns></returns>
     IEnumerator TakeOrdersStart() 
     {
-        _spriteRenderer.enabled = true;
-        yield return new WaitForSeconds(_orderSetting.OrderTime);
-        //オーダー失敗
+        _image.enabled = true;
+        Debug.Log(_orderSetting.OrderTime);
+        _maxOrderTime.Value = _orderSetting.OrderTime;
+        _countOrderTime.Value = _orderSetting.OrderTime;
+
+        while (_countOrderTime.Value > 0) 
+        {
+            _countOrderTime.Value -= Time.deltaTime;
+            yield return null;
+        }
         Debug.Log("オーダー失敗");
         //まず自分の番号を渡してオーダーデータを削除
         _orderCs.OrderDataDelete(_orderNum);
-        _spriteRenderer.enabled = false;
+        _image.enabled = false;
         //スコアを減らす処理をここに書く
 
     }
