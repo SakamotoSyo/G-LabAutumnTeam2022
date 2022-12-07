@@ -17,8 +17,8 @@ public class OrderScript : MonoBehaviour
     [Tooltip("現在出されているオーダーを格納するList")]
     ItemSynthetic[] _orderDatas = new ItemSynthetic[4];
     [Header("オーダーをだすところ")]
-    [SerializeField]TakeOrdersScript[] _takeOrdersCs = new TakeOrdersScript[4];
-    
+    [SerializeField] TakeOrdersScript[] _takeOrdersCs = new TakeOrdersScript[4];
+
     [Tooltip("現在のフェーズ")]
     int _phaseNum = 0;
     bool _isStart;
@@ -32,22 +32,21 @@ public class OrderScript : MonoBehaviour
     void Update()
     {
         //テスト用
-        if (Input.GetKeyDown(KeyCode.Q)) 
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             StartOrder();
             _isStart = true;
             Debug.Log("オーダー開始");
         }
 
-        if (_isStart) 
+        if (_isStart)
         {
             var NowOrder = 0;
-            for (int i = 0; i < _orderDatas.Length; i++) 
+            for (int i = 0; i < _orderDatas.Length; i++)
             {
-                if (_orderDatas[i] != null) 
+                if (_orderDatas[i] != null)
                 {
                     NowOrder++;
-                    Debug.Log("うわ");
                 }
             }
 
@@ -55,7 +54,7 @@ public class OrderScript : MonoBehaviour
             if (NowOrder == 0)
             {
                 //合成データからランダムに合成データを取得
-                var odrItem = _itemSyntheticData.GetRandamSyntheticData();
+                var odrItem = _phaseSetting[_phaseNum].ItemDataList[Random.Range(0, _phaseSetting[_phaseNum].ItemDataList.Count)];
                 _orderDatas[0] = odrItem;
                 //注文を出す
                 _takeOrdersCs[0].TakeOrders(odrItem, _phaseSetting[_phaseNum]);
@@ -72,7 +71,7 @@ public class OrderScript : MonoBehaviour
     /// <summary>
     /// ゲーム開始時オーダーを開始する
     /// </summary>
-    void StartOrder() 
+    void StartOrder()
     {
         _orderCor = StartCoroutine(OrderCor());
     }
@@ -81,13 +80,13 @@ public class OrderScript : MonoBehaviour
     /// 一定時間後に注文を出すコルーチン
     /// </summary>
     /// <returns></returns>
-    IEnumerator OrderCor() 
+    IEnumerator OrderCor()
     {
         //現在のフェーズ分待機する
         yield return new WaitForSeconds(_phaseSetting[_phaseNum].OrderInterval);
-        for (int i = 0; i < _phaseSetting[_phaseNum].OrderNum; i++) 
+        for (int i = 0; i < _phaseSetting[_phaseNum].OrderNum; i++)
         {
-            if (_orderDatas[i] == null) 
+            if (_orderDatas[i] == null)
             {
                 //合成データからランダムに合成データを取得
                 var odrItem = _itemSyntheticData.GetRandamSyntheticData();
@@ -96,7 +95,7 @@ public class OrderScript : MonoBehaviour
                 _takeOrdersCs[i].TakeOrders(odrItem, _phaseSetting[_phaseNum]);
                 Debug.Log("注文ははいった");
                 //まだ注文を出せる空きがあった場合再帰的にこの処理を呼び出す
-                if (i == _phaseSetting[_phaseNum].OrderNum - 1) 
+                if (i == _phaseSetting[_phaseNum].OrderNum - 1)
                 {
                     _orderCor = StartCoroutine(OrderCor());
                 }
@@ -108,26 +107,26 @@ public class OrderScript : MonoBehaviour
     /// <summary>
     /// 現在のオーダーのデータを削除する
     /// </summary>
-    public void OrderDataDelete(int dataNum) 
+    public void OrderDataDelete(int dataNum)
     {
         Debug.Log("データを削除しました");
         _orderDatas[dataNum] = null;
-        
+
     }
 
     /// <summary>
     /// オーダーが完了したときに受け付ける処理
     /// 別関数から呼び出す
     /// </summary>
-    public void OrderComplete(ItemData item) 
+    public void OrderComplete(ItemData item)
     {
-        for (int i = 0; i < _orderDatas.Length; i++) 
+        for (int i = 0; i < _orderDatas.Length; i++)
         {
-            if (_orderDatas[i] == null) 
+            if (_orderDatas[i] == null)
             {
                 continue;
             }
-            else if (item.ItemName == _orderDatas[i].ResultItem) 
+            else if (item.ItemName == _orderDatas[i].ResultItem)
             {
                 _orderDatas[i] = null;
                 //スコアを足す処理
@@ -148,6 +147,6 @@ public class PhaseOrder
     public float OrderTime;
     [Tooltip("オーダーをいくつまで出すか")]
     public int OrderNum;
-    [Tooltip("このフェーズ出すアイテム")]
-    public List<ItemData> ItemDataList = new List<ItemData>();
-} 
+    [Tooltip("このフェーズ出すアイテム合成データ")]
+    public List<ItemSynthetic> ItemDataList = new List<ItemSynthetic>();
+}
