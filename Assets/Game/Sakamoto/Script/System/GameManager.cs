@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
+using UnityEngine.UI;
 
-public class GameManager
+public class GameManager : MonoBehaviour 
 {
-    [Header("始まるまでの秒数")]
-    readonly float _startTime = 3;
+    [Header("カウントに使うImage")]
+    [SerializeField] Image _timeImage;
+    [Header("TimerのSprite")]
+    [SerializeField] Sprite[] _sprites = new Sprite[2];
 
+    [Tooltip("始まるまでの秒数")]
+    readonly float _startTime = 3;
     [Tooltip("スコアを保存しておく変数")]
     private static int score;
 
@@ -45,6 +50,14 @@ public class GameManager
 
     async UniTask StartDeley() 
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(_startTime));
+        for (int i = 0; i < _sprites.Length; i++) 
+        {
+            _timeImage.sprite = _sprites[i];
+            await UniTask.Delay(TimeSpan.FromSeconds(1));
+        }
+
+        _timeImage.enabled = false;
+        //await UniTask.Delay(TimeSpan.FromSeconds(_startTime));
+        Debug.Log("Start");
     }
 }
