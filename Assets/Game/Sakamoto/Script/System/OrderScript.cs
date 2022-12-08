@@ -50,6 +50,7 @@ public class OrderScript : MonoBehaviour
                 }
             }
 
+
             //オーダーが何もなかった場合
             if (NowOrder == 0)
             {
@@ -89,11 +90,10 @@ public class OrderScript : MonoBehaviour
             if (_orderDatas[i] == null)
             {
                 //合成データからランダムに合成データを取得
-                var odrItem = _itemSyntheticData.GetRandamSyntheticData();
+                var odrItem = _phaseSetting[_phaseNum].ItemDataList[Random.Range(0, _phaseSetting[_phaseNum].ItemDataList.Count)];
                 _orderDatas[i] = odrItem;
                 //注文を出す
                 _takeOrdersCs[i].TakeOrders(odrItem, _phaseSetting[_phaseNum]);
-                Debug.Log("注文ははいった");
                 //まだ注文を出せる空きがあった場合再帰的にこの処理を呼び出す
                 if (i == _phaseSetting[_phaseNum].OrderNum - 1)
                 {
@@ -118,7 +118,7 @@ public class OrderScript : MonoBehaviour
     /// オーダーが完了したときに受け付ける処理
     /// 別関数から呼び出す
     /// </summary>
-    public void OrderComplete(ItemData item)
+    public void OrderComplete(ItemInformation item)
     {
         for (int i = 0; i < _orderDatas.Length; i++)
         {
@@ -126,7 +126,7 @@ public class OrderScript : MonoBehaviour
             {
                 continue;
             }
-            else if (item.ItemName == _orderDatas[i].ResultItem)
+            else if (item.Item.ItemName == _orderDatas[i].ResultItem)
             {
                 _orderDatas[i] = null;
                 //スコアを足す処理
