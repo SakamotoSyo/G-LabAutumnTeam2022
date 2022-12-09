@@ -57,7 +57,6 @@ public class TakeOrdersScript : MonoBehaviour
     IEnumerator TakeOrdersStart() 
     {
         _image.enabled = true;
-        Debug.Log(_orderSetting.OrderTime);
         _maxOrderTime.Value = _orderSetting.OrderTime;
         _countOrderTime.Value = _orderSetting.OrderTime;
 

@@ -24,7 +24,7 @@ public class TakeOrdarView : MonoBehaviour
 
     public void SetRenderer(ItemSynthetic syntheticData)
     {
-        if (syntheticData != null) 
+        if (syntheticData != null)
         {
             Debug.Log(syntheticData.ResultItem);
             _orderSpriteArray[0].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.ResultItem).ToArray()[0].ItemSprite;
@@ -33,12 +33,12 @@ public class TakeOrdarView : MonoBehaviour
             {
                 _orderSpriteArray[2].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.Item2).ToArray()[0].ItemSprite;
             }
+
         }
     }
 
     public void MaxTimeSet(float MaxTime)
     {
-        Debug.Log(MaxTime);
        _maxTime = MaxTime;
     }
 
@@ -46,12 +46,28 @@ public class TakeOrdarView : MonoBehaviour
     {
         //バーの長さを更新
         _rectCurrent.SetWidth(GetWidth(currentTime));
+        if (currentTime < 0)
+        {
+            ActiveBool(false);
+        }
+        else 
+        {
+            ActiveBool(true);
+        }
     }
 
-    float GetWidth(float value)
+    private float GetWidth(float value)
     {
         float width = Mathf.InverseLerp(0, _maxTime, value);
         return Mathf.Lerp(0, _maxHpWidth, width);
+    }
+
+    private void ActiveBool(bool active) 
+    {
+        for (int i = 0; i < _orderSpriteArray.Length; i++)
+        {
+            _orderSpriteArray[i].enabled = active;
+        }
     }
 
 }
