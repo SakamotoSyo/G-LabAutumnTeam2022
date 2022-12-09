@@ -13,8 +13,7 @@ public class WorkBench : MonoBehaviour, IAddItem, ICraftItem
     [SerializeField] float _craftTime;
     [Header("加工が始まるまでの猶予時間")]
     [SerializeField] float _craftStartTime = 10;
-    [Header("加工が始まった時の煙")]
-    [SerializeField] Sprite _smokeSprite;
+    [SerializeField] Animator _workAnim;
     [SerializeField] SpriteRenderer _sr;
 
     [Tooltip("加工中かどうか")]
@@ -100,10 +99,11 @@ public class WorkBench : MonoBehaviour, IAddItem, ICraftItem
     public float Craft()
     {
         if (_itemData == null) return 0;
+        Debug.Log(_itemData.Item);
         Debug.Log("クラフトスタート");
         _manufactureing = true;
         //加工が始まったら煙を出す
-        _sr.sprite = _smokeSprite;
+        _workAnim.SetBool("WorkCraft", true);
         return _itemData. Item.CraftTime;
 
     }
@@ -114,7 +114,9 @@ public class WorkBench : MonoBehaviour, IAddItem, ICraftItem
     public void CraftEnd()
     {
         ItemManufacture();
-        _sr.sprite = _resultSynthetic.Item.ItemSprite;
+        _workAnim.SetBool("WorkCraft", false);
         _manufactureing = false;
+        _sr.sprite = _resultSynthetic.Item.ItemSprite;
+        Debug.Log(_resultSynthetic.Item.ItemSprite);
     }
 }
