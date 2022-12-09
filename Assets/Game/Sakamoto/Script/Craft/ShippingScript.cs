@@ -15,10 +15,12 @@ public class ShippingScript : MonoBehaviour, IAddItem
     {
         for (int i = 0; i < _orderScript.OrderDatas.Length; i++)
         {
+            if (_orderScript.OrderDatas[i] == null) continue;
+
             if (_orderScript.OrderDatas[i].ResultItem == itemInfo.Item.ItemName) 
             {
                 //オーダーから該当のアイテムを削除
-                _orderScript.OrderComplete(itemInfo.Item);
+                _orderScript.OrderComplete(itemInfo);
                 //スコアの追加処理
                 GameManager.AddScore(itemInfo.Item.ItemScore);
             }
