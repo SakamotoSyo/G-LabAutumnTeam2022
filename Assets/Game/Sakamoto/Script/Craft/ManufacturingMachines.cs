@@ -24,6 +24,10 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     [SerializeField] float _runawayTime = 5;
     [Header("製造が始まるまでの猶予時間")]
     [SerializeField] float _craftStartTime = 10;
+    [Header("EffectのAnimator")]
+    [SerializeField] Animator _effectAnim;
+    [Header("EffectのSubAnimator")]
+    [SerializeField] Animator _subEffectAnim;
 
     [Tooltip("製造中かどうか")]
     bool _manufactureing;
@@ -148,6 +152,8 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     {
         yield return new WaitForSeconds(_craftStartTime);
         Debug.Log("クラフトスタート");
+        _effectAnim.SetBool("Craft", true);
+        _subEffectAnim.SetBool("Thunder", true);
         //途中でCoroutineが中断されなかったらCraft開始
         ItemManufacture();
         //熱暴走待機開始
@@ -172,6 +178,8 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         }
         
         Debug.Log("製造中終わり");
+        _effectAnim.SetBool("Craft", false);
+        _subEffectAnim.SetBool("Thunder", false);
         //var cor = FineQualityTime();
         _fineQualityCor = StartCoroutine(FineQualityTime());
         StartCoroutine(ThermalRunaway());
@@ -234,6 +242,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         yield return new WaitForSeconds(_runawayTime);
         _millRenderer.sprite = _thermalRunawaySprite;
         Debug.Log("暴走");
+        _effectAnim.SetBool("RunAway", true);
     }
 
 
