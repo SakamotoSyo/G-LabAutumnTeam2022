@@ -2,20 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Cysharp.Threading.Tasks;
-using UnityEngine.UI;
+using UniRx;
 
-public class GameManager : MonoBehaviour 
+public class GameManager
 {
-    [Header("カウントに使うImage")]
-    [SerializeField] Image _timeImage;
-    [Header("TimerのSprite")]
-    [SerializeField] Sprite[] _sprites = new Sprite[2];
-
-    [Tooltip("始まるまでの秒数")]
-    readonly float _startTime = 3;
+    public static IObservable<int> Score => score;
     [Tooltip("スコアを保存しておく変数")]
-    private static int score;
+    private static ReactiveProperty<int> score = new();
 
     /// <summary>Gameがスタートするときに呼ぶAction</summary>
     public static event Action GameStart;
@@ -24,16 +17,9 @@ public class GameManager : MonoBehaviour
     /// <summary>Gameを終了するときに呼ぶAction</summary>
     public static event Action GameEnd;
 
-    async void Start()
+    public static void AddScore(int scoreNum)
     {
-        //スタートまで待機
-        await StartDeley();
-        OnBiginTurn();
-    }
-
-    public static void AddScore(int scoreNum) 
-    {
-        score += scoreNum;
+        score.Value += scoreNum;
     }
 
     /// <summary>ゲームを開始するときに呼ぶ関数</summary>
@@ -48,16 +34,5 @@ public class GameManager : MonoBehaviour
         GameEnd?.Invoke();
     }
 
-    async UniTask StartDeley() 
-    {
-        for (int i = 0; i < _sprites.Length; i++) 
-        {
-            _timeImage.sprite = _sprites[i];
-            await UniTask.Delay(TimeSpan.FromSeconds(1));
-        }
 
-        _timeImage.enabled = false;
-        //await UniTask.Delay(TimeSpan.FromSeconds(_startTime));
-        Debug.Log("Start");
-    }
 }

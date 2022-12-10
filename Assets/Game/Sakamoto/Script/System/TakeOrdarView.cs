@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class TakeOrdarView : MonoBehaviour
 {
     [Header("オーダー表のSpriteRenderer")]
-    [SerializeField] Image[] _orderSpriteArray = new Image[4];
+    [SerializeField] Image[] _orderImageArray = new Image[4];
     [SerializeField] ItemDataBase _itemDataBase;
 
     [Header("TimeのRectTransform")]
@@ -24,14 +24,21 @@ public class TakeOrdarView : MonoBehaviour
 
     public void SetRenderer(ItemSynthetic syntheticData)
     {
+        ActiveBool(true);
         if (syntheticData != null)
         {
             Debug.Log(syntheticData.ResultItem);
-            _orderSpriteArray[0].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.ResultItem).ToArray()[0].ItemSprite;
-            _orderSpriteArray[1].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.Item1).ToArray()[0].ItemSprite;
-            if (syntheticData.Item2 != "なし")
+            _orderImageArray[0].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.ResultItem).ToArray()[0].ItemSprite;
+            _orderImageArray[1].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.Item1).ToArray()[0].ItemSprite;
+            if (syntheticData.Item2 == "なし")
             {
-                _orderSpriteArray[2].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.Item2).ToArray()[0].ItemSprite;
+                _orderImageArray[2].enabled = false;
+                _orderImageArray[2].sprite = null;
+            }
+            else 
+            {
+                //_orderImageArray[2].enabled = true;
+                _orderImageArray[2].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.Item2).ToArray()[0].ItemSprite;
             }
 
         }
@@ -50,10 +57,6 @@ public class TakeOrdarView : MonoBehaviour
         {
             ActiveBool(false);
         }
-        else 
-        {
-            ActiveBool(true);
-        }
     }
 
     private float GetWidth(float value)
@@ -64,9 +67,9 @@ public class TakeOrdarView : MonoBehaviour
 
     private void ActiveBool(bool active) 
     {
-        for (int i = 0; i < _orderSpriteArray.Length; i++)
+        for (int i = 0; i < _orderImageArray.Length; i++)
         {
-            _orderSpriteArray[i].enabled = active;
+            _orderImageArray[i].enabled = active;
         }
     }
 
