@@ -19,7 +19,7 @@ public class PlayerInput : MonoBehaviour
     [Tooltip("現在ジャンプ中かどうか")]
     bool _isJump = false;
     [Tooltip("Inputをブロックするかどうか")]
-    bool _inputBlock = false;
+    bool _inputBlock = true;
 
     /// <summary>現在アクション中かどうか返す</summary>
     public bool Action
@@ -43,14 +43,14 @@ public class PlayerInput : MonoBehaviour
             return _movement;
         }
     } 
-    void Start()
+    void Awake()
     {
         GameManager.GameStart += InputBlock;
     }
 
     void Update()
     {
-        _movement = new Vector2(Input.GetAxisRaw($"Horizontal{_playerNum}"), 0);
+        _movement = new Vector2(Input.GetAxisRaw($"Horizontal{_playerNum}"), Input.GetAxisRaw($"Vertical{_playerNum}"));
 
         if (Vector2.zero != _movement)
         {
@@ -64,15 +64,6 @@ public class PlayerInput : MonoBehaviour
         else 
         {
             _isAction = false;
-        }
-
-        if (Input.GetButtonDown($"Jump{_playerNum}"))
-        {
-            _isJump = true;
-        }
-        else 
-        {
-            _isJump = false;
         }
     }
 
