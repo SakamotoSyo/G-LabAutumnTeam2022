@@ -31,13 +31,6 @@ public class OrderScript : MonoBehaviour
 
     void Update()
     {
-        //テスト用
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            StartOrder();
-            _isStart = true;
-            Debug.Log("オーダー開始");
-        }
 
         if (_isStart)
         {
@@ -75,6 +68,7 @@ public class OrderScript : MonoBehaviour
     void StartOrder()
     {
         _orderCor = StartCoroutine(OrderCor());
+        _isStart = true;
     }
 
     /// <summary>
