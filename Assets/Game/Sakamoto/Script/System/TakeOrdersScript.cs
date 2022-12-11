@@ -67,6 +67,7 @@ public class TakeOrdersScript : MonoBehaviour
         }
         Debug.Log("オーダー失敗");
         //まず自分の番号を渡してオーダーデータを削除
+        _nowSyntheticData.Value = null;
         _orderCs.OrderDataDelete(_orderNum);
         _image.enabled = false;
         //スコアを減らす処理をここに書く

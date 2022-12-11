@@ -24,9 +24,9 @@ public class TakeOrdarView : MonoBehaviour
 
     public void SetRenderer(ItemSynthetic syntheticData)
     {
-        ActiveBool(true);
         if (syntheticData != null)
         {
+            ActiveBool(true);
             Debug.Log(syntheticData.ResultItem);
             _orderImageArray[0].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.ResultItem).ToArray()[0].ItemSprite;
             _orderImageArray[1].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.Item1).ToArray()[0].ItemSprite;
@@ -56,6 +56,7 @@ public class TakeOrdarView : MonoBehaviour
         if (currentTime < 0)
         {
             ActiveBool(false);
+            Debug.Log("ŽžŠÔØ‚ê");
         }
     }
 
