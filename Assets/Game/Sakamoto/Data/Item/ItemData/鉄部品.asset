@@ -16,7 +16,7 @@ MonoBehaviour:
   Processing: 0
   Craft: 1
   Packing: 0
-  ItemSprite: {fileID: 0}
+  ItemSprite: {fileID: 21300000, guid: c12f2c5176227404c859befaf6c80e8b, type: 3}
   PresentSprite: {fileID: 21300000, guid: d607bde0c00381f4986b0731fa97db53, type: 3}
   RunawayTime: 0
   ItemScore: 0
