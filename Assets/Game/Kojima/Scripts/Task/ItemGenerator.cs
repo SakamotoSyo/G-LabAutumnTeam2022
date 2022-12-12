@@ -9,13 +9,14 @@ public class ItemGenerator : MonoBehaviour
     private int _itemCnt = 0; //生成したプレファブ数
     static public bool _stopFrag = true;//ItemGeneratorの停止用フラグ(falseで停止)
     private float _elapsed;//経過時間
-    public GameObject _item_1;
-    public GameObject _item_2;
-    public GameObject _item_3;
+    [SerializeField]public GameObject _item_1;
+    [SerializeField]public GameObject _item_2;
+    [SerializeField]public GameObject _item_3;
     [Header("生成間隔"), SerializeField]float _interval = 1.0f;
     [Header("生成確立"), SerializeField]static float _probability = 1.0f;
     [Header("生成上限"), SerializeField]int _limitNum = 2;
-    [Header("生存時間"), SerializeField]float _liveTime = 0;
+    [Header("生存時間"), SerializeField]float _liveTime = 4.0f;
+   
     #endregion
     
     void Start()
@@ -24,7 +25,6 @@ public class ItemGenerator : MonoBehaviour
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         _elapsed += Time.deltaTime;
@@ -50,6 +50,7 @@ public class ItemGenerator : MonoBehaviour
                 _itemCnt++;
                 if (_itemCnt == 3) _itemCnt = 0;   
                 res.AddComponent<ItemMoveCon>();
+                Destroy(res, _liveTime);//一定時間で削除
             }
         }
     }
