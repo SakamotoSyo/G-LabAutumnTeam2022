@@ -21,12 +21,13 @@ public class ChangeRanking : Ranking
     private float _sum;
 
     public  RankData _p_data;
+    public int _initLevel = EASY;
 
     private void Start()
     {
         _rect = _rankPos.GetComponent<RectTransform>();
         _scrollbar = _scroll.GetComponent<Scrollbar>();
-        Selected(EASY);
+        Selected(_initLevel);
     }
 
     private void Update()
@@ -34,7 +35,7 @@ public class ChangeRanking : Ranking
         if(_sum == 0)
         {
             ResetBord();
-            Selected(EASY);
+            Selected(_initLevel);
         }
     }
 
@@ -47,6 +48,7 @@ public class ChangeRanking : Ranking
     //難易度変更ボタンクリックorタイトルからの遷移で呼び出し
     public void Selected(int level)
     {
+        _initLevel = level;
         ResetBord();
         CreateRanking(level);
         ViewRanking();

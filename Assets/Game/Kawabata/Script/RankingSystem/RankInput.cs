@@ -19,6 +19,7 @@ public class RankInput : MonoBehaviour
         var p_name = this.GetComponent<InputField>().text;
         //Debug.Log($"ƒ‰ƒ“ƒNƒCƒ“‚¨‚ß‚Å‚Æ‚¤@Score:{rank._p_score}, {rank._p_rank}ˆÊ")
         rank.AddPlayerScore(p_name);
+        rank._ranking.Selected(rank.Level);
         return;
     }
 }
