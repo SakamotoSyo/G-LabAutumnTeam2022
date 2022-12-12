@@ -31,5 +31,4 @@ public class ItemData : ScriptableObject
 
     [Header("‰ÁH‚É‚©‚©‚éŠÔ")]
     [SerializeField] public float CraftTime;
-
 }

@@ -115,6 +115,7 @@ public class WorkBench : MonoBehaviour, IAddItem, ICraftItem
     {
         ItemManufacture();
         _workAnim.SetBool("WorkCraft", false);
+        _workAnim.SetTrigger("Comp");
         _manufactureing = false;
         _sr.sprite = _resultSynthetic.Item.ItemSprite;
         Debug.Log(_resultSynthetic.Item.ItemSprite);
