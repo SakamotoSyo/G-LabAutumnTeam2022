@@ -12,6 +12,8 @@ public class TitleManager : MonoBehaviour
     private GameObject _help;
     [SerializeField, Header("ランキングCanvas")]
     private GameObject _ranking;
+    [SerializeField, Header("ストーリー画面Canvas")]
+    private GameObject _story;
 
     private GameObject _curCanvas;
 

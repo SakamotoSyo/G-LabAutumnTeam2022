@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class ResultManager : MonoBehaviour
 {
+    [SerializeField, Header("遷移先タイトルシーンの名前")]
+    string TitleScene;
 
     [SerializeField, Header("入力画面のcanvas")]
     private GameObject _inputCanvas;
@@ -24,9 +27,14 @@ public class ResultManager : MonoBehaviour
     [SerializeField, Header("テスト：受け取る難易度")]
     private int _r_level;
 
+    public int Level
+    {
+        get { return _r_level; }
+    } 
+
     [SerializeField, Header("ランキングスクリプト")]
     private GameObject _rankingManager;
-    private ChangeRanking _ranking;
+    public ChangeRanking _ranking;
 
 
     // Start is called before the first frame update
@@ -107,6 +115,7 @@ public class ResultManager : MonoBehaviour
     {
         //シーン遷移
         Debug.Log("タイトル画面に遷移します");
+        SceneManager.LoadScene(TitleScene);
     }
 
 
