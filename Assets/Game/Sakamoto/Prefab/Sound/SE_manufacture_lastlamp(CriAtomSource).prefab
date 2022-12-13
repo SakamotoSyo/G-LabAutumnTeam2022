@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1778681388105496266}
   - component: {fileID: 1828097487131509601}
+  - component: {fileID: 7612656095361929776}
   m_Layer: 0
   m_Name: SE_manufacture_lastlamp(CriAtomSource)
   m_TagString: Untagged
@@ -65,3 +66,16 @@ MonoBehaviour:
     - 0
   _cueName: SE_manufacture_lastlamp
   _cueSheet: XmasWorkerCueSheet1
+--- !u!114 &7612656095361929776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016882494553101974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b760d358e71348648a180d3200a512ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _criSource: {fileID: 1828097487131509601}

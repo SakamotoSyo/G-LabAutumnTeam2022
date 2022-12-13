@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3252668830009238830}
   - component: {fileID: 3342840179018522925}
+  - component: {fileID: 1369985432411152233}
   m_Layer: 0
   m_Name: SE_manufacture_alert_03(CriAtomSource)
   m_TagString: Untagged
@@ -65,3 +66,16 @@ MonoBehaviour:
     - 0
   _cueName: SE_manufacture_alert_03
   _cueSheet: XmasWorkerCueSheet1
+--- !u!114 &1369985432411152233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4024598434596689880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b760d358e71348648a180d3200a512ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _criSource: {fileID: 3342840179018522925}
