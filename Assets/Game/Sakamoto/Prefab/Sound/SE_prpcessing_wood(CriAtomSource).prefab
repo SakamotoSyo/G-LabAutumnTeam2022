@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8900716814789265141}
   - component: {fileID: 1202056852809233388}
+  - component: {fileID: -7445584765148675700}
   m_Layer: 0
   m_Name: SE_prpcessing_wood(CriAtomSource)
   m_TagString: Untagged
@@ -65,3 +66,16 @@ MonoBehaviour:
     - 0
   _cueName: SE_prpcessing_wood
   _cueSheet: XmasWorkerCueSheet1
+--- !u!114 &-7445584765148675700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881989768523938827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b760d358e71348648a180d3200a512ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _criSource: {fileID: 1202056852809233388}

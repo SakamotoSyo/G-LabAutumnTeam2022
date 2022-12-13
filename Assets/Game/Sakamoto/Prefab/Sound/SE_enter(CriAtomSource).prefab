@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4597057230771699063}
   - component: {fileID: 3446663687656518746}
+  - component: {fileID: 5870284003052688032}
   m_Layer: 0
   m_Name: SE_enter(CriAtomSource)
   m_TagString: Untagged
@@ -65,3 +66,16 @@ MonoBehaviour:
     - 0
   _cueName: SE_enter
   _cueSheet: XmasWorker1121
+--- !u!114 &5870284003052688032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5904578397031070591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b760d358e71348648a180d3200a512ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _criSource: {fileID: 3446663687656518746}

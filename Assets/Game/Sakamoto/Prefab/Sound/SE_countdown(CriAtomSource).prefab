@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 120517389291717212}
   - component: {fileID: 7259636440208794845}
+  - component: {fileID: 5318172461832189781}
   m_Layer: 0
   m_Name: SE_countdown(CriAtomSource)
   m_TagString: Untagged
@@ -65,3 +66,16 @@ MonoBehaviour:
     - 0
   _cueName: SE_countdown
   _cueSheet: XmasWorkerCueSheet1
+--- !u!114 &5318172461832189781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7497296651677922001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b760d358e71348648a180d3200a512ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _criSource: {fileID: 7259636440208794845}

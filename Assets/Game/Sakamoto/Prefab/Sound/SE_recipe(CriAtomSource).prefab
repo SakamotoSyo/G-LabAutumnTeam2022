@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8354371222291330872}
   - component: {fileID: 3789001291040172723}
+  - component: {fileID: 70080093032267822}
   m_Layer: 0
   m_Name: SE_recipe(CriAtomSource)
   m_TagString: Untagged
@@ -65,3 +66,16 @@ MonoBehaviour:
     - 0
   _cueName: SE_recipe
   _cueSheet: XmasWorkerCueSheet1
+--- !u!114 &70080093032267822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4292417734283019790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b760d358e71348648a180d3200a512ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _criSource: {fileID: 3789001291040172723}
