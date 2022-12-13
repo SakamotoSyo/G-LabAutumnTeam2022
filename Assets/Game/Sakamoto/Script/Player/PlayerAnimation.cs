@@ -38,11 +38,13 @@ public class PlayerAnimation
         if (_playerHp.MaxHp / 3 * 2 > amount)
         {
             _anim.runtimeAnimatorController = _23Controller;
+            AudioManager.Instance.PlaySound(SoundPlayType.SE_snowman_small);
         }
         //PlayerのHpが3/1の時
         else if (_playerHp.MaxHp / 3 * 1 > amount)
         {
             _anim.runtimeAnimatorController = _13Controller;
+            AudioManager.Instance.PlaySound(SoundPlayType.SE_snowman_small);
         }
     }
 
