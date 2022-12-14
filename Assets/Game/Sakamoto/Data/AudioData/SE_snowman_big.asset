@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b3301235796e04a8871584b05354f4, type: 3}
   m_Name: SE_snowman_big
   m_EditorClassIdentifier: 
-  Type: 0
-  SoundPrefab: {fileID: 0}
+  Type: 25
+  SoundPrefab: {fileID: 8068555515312347984, guid: 6565b766e0f62e043a2375c515d9252c, type: 3}
   MaxCount: 0

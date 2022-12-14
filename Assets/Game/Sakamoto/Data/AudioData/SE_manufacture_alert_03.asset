@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b3301235796e04a8871584b05354f4, type: 3}
   m_Name: SE_manufacture_alert_03
   m_EditorClassIdentifier: 
-  Type: 0
-  SoundPrefab: {fileID: 0}
+  Type: 37
+  SoundPrefab: {fileID: 4024598434596689880, guid: d1b5901e1e5e9a64f9b2bf6aedab96d5, type: 3}
   MaxCount: 0

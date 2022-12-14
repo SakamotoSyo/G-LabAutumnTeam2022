@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b3301235796e04a8871584b05354f4, type: 3}
   m_Name: SE_packing
   m_EditorClassIdentifier: 
-  Type: 0
-  SoundPrefab: {fileID: 0}
+  Type: 17
+  SoundPrefab: {fileID: 662369020776112516, guid: b3d51112cc9f53049953ee7f02eba37e, type: 3}
   MaxCount: 0

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b3301235796e04a8871584b05354f4, type: 3}
   m_Name: SE_present_give
   m_EditorClassIdentifier: 
-  Type: 0
-  SoundPrefab: {fileID: 0}
+  Type: 19
+  SoundPrefab: {fileID: 3388396045610974040, guid: 911240783e4cf184eb2dd652f2fcf797, type: 3}
   MaxCount: 0
