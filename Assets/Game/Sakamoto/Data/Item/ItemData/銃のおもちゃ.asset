@@ -19,5 +19,5 @@ MonoBehaviour:
   ItemSprite: {fileID: 21300000, guid: 0eee1976c828f57418762efa61d13687, type: 3}
   PresentSprite: {fileID: 21300000, guid: d607bde0c00381f4986b0731fa97db53, type: 3}
   RunawayTime: 0
-  ItemScore: 0
-  CraftTime: 0
+  CraftTime: 2
+  ItemParts: 0

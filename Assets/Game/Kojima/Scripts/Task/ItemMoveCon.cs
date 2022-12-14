@@ -12,6 +12,7 @@ public class ItemMoveCon : MonoBehaviour
     [Header("ˆÚ“®•ûŒüFX"), SerializeField] private float _posX = 0.0f;
     [Header("ˆÚ“®•ûŒüFY"), SerializeField] private float _posY = 1.0f;
 
+
     private float _sum;
 
     static public bool _ItemMoveConFlag = true;//FreezeMgr‚Å’â~‚³‚¹‚é‚æ‚¤‚ÌFlag

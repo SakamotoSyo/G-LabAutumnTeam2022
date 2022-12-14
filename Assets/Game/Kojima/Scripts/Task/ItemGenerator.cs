@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using CriWare;
 public class ItemGenerator : MonoBehaviour
 {
     #region íËã`
@@ -12,25 +13,35 @@ public class ItemGenerator : MonoBehaviour
     [SerializeField]public GameObject _item_1;
     [SerializeField]public GameObject _item_2;
     [SerializeField]public GameObject _item_3;
+    [SerializeField] string _beltStop;
+    [SerializeField] string _beltStart;
+    [SerializeField] string _beltRun;
+    [SerializeField]CriAtomSource _criSource;
     [Header("ê∂ê¨ä‘äu"), SerializeField]float _interval = 1.0f;
     [Header("ê∂ê¨ämóß"), SerializeField]static float _probability = 1.0f;
     [Header("ê∂ê¨è„å¿"), SerializeField]int _limitNum = 2;
     [Header("ê∂ë∂éûä‘"), SerializeField]float _liveTime = 4.0f;
-   
+
     #endregion
-    
+
     void Start()
     {
         _items_box = new GameObject[] {_item_1,_item_2,_item_3};
-        
+        _criSource.cueName = _beltRun;
+        _criSource.Play();
+
     }
 
     void Update()
     {
         _elapsed += Time.deltaTime;
-        if ( _stopFrag )Generato();
-        else if (!_stopFrag) 
+        if (_stopFrag)
         {
+            Generato();
+        }
+        else if (!_stopFrag)
+        {
+            _criSource.cueName = _beltStop;
             ;//âΩÇ‡ÇµÇ»Ç¢
         }
 
