@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b3301235796e04a8871584b05354f4, type: 3}
   m_Name: SE_fire_finish
   m_EditorClassIdentifier: 
-  Type: 0
-  SoundPrefab: {fileID: 0}
+  Type: 21
+  SoundPrefab: {fileID: 6825079137359241157, guid: 2819bbb13ba36e844b25c0f4544b2373, type: 3}
   MaxCount: 0

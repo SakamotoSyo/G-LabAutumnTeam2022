@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b3301235796e04a8871584b05354f4, type: 3}
   m_Name: SE_snowman_damage
   m_EditorClassIdentifier: 
-  Type: 0
-  SoundPrefab: {fileID: 0}
+  Type: 20
+  SoundPrefab: {fileID: 7915356910187549141, guid: 9547c6a6407b782498673e4806712c89, type: 3}
   MaxCount: 0

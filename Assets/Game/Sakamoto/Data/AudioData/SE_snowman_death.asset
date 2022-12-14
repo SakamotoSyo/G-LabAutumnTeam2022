@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SE_snowman_death
   m_EditorClassIdentifier: 
   Type: 26
-  SoundPrefab: {fileID: 0}
+  SoundPrefab: {fileID: 6365535489797625189, guid: 095ac603ee64f3c4f96009447df19655, type: 3}
   MaxCount: 0

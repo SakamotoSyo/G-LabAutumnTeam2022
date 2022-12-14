@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b3301235796e04a8871584b05354f4, type: 3}
   m_Name: SE_recipe
   m_EditorClassIdentifier: 
-  Type: 0
-  SoundPrefab: {fileID: 0}
+  Type: 23
+  SoundPrefab: {fileID: 4292417734283019790, guid: 00b2688108a273a4eb82c5a55ba377b3, type: 3}
   MaxCount: 0

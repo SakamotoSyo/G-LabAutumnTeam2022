@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b3301235796e04a8871584b05354f4, type: 3}
   m_Name: SE_conveyor_stop
   m_EditorClassIdentifier: 
-  Type: 0
-  SoundPrefab: {fileID: 0}
+  Type: 8
+  SoundPrefab: {fileID: 6006093858209694466, guid: 6f2aeb96793b0e04ebdff6bada8c830a, type: 3}
   MaxCount: 0

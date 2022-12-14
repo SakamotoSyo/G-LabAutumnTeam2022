@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b3301235796e04a8871584b05354f4, type: 3}
   m_Name: SE_countdown
   m_EditorClassIdentifier: 
-  Type: 0
-  SoundPrefab: {fileID: 0}
+  Type: 28
+  SoundPrefab: {fileID: 7497296651677922001, guid: 48d1432b2368aae42bed642aee3f3a29, type: 3}
   MaxCount: 0

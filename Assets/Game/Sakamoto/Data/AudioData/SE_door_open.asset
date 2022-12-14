@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b3301235796e04a8871584b05354f4, type: 3}
   m_Name: SE_door_open
   m_EditorClassIdentifier: 
-  Type: 0
-  SoundPrefab: {fileID: 0}
+  Type: 5
+  SoundPrefab: {fileID: 2779436086921970305, guid: 40fc9088a18eecf4e8774a24dcab1cae, type: 3}
   MaxCount: 0
