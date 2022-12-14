@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7359a4b8093a44489af5be16abf51f5, type: 3}
   m_Name: "\u3064\u307F\u304D"
   m_EditorClassIdentifier: 
-  ItemName: "\u3064\u307F\u304D"
+  ItemName: "\u7A4D\u307F\u6728"
   Processing: 0
   Craft: 0
   Packing: 1
   ItemSprite: {fileID: 21300000, guid: 1a56c16a026c48745a089bdc5a35d15b, type: 3}
   PresentSprite: {fileID: 21300000, guid: d607bde0c00381f4986b0731fa97db53, type: 3}
   RunawayTime: 0
-  ItemScore: 0
-  CraftTime: 0
+  CraftTime: 2
+  ItemParts: 0

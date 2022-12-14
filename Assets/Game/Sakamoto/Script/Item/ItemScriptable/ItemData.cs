@@ -26,9 +26,9 @@ public class ItemData : ScriptableObject
     [Header("製造所に入れたときのこの素材が暴走を起こすまでの時間")]
     [SerializeField] public float RunawayTime;
 
-    [Header("このアイテムを出荷したことによるスコア")]
-    [SerializeField] public int ItemScore;
-
     [Header("加工にかかる時間")]
     [SerializeField] public float CraftTime;
+
+    [Header("このアイテムに使う部品の数")]
+    [SerializeField] public float ItemParts;
 }

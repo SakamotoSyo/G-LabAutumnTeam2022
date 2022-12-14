@@ -16,8 +16,8 @@ MonoBehaviour:
   Processing: 0
   Craft: 1
   Packing: 0
-  ItemSprite: {fileID: 0}
+  ItemSprite: {fileID: -2413806693520163455, guid: d9b821e10b6d319418204ff9c67dbf4d, type: 3}
   PresentSprite: {fileID: 21300000, guid: d607bde0c00381f4986b0731fa97db53, type: 3}
-  RunawayTime: 0
-  ItemScore: 0
-  CraftTime: 0
+  RunawayTime: 4.5
+  CraftTime: 2
+  ItemParts: 1
