@@ -14,14 +14,14 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     [SerializeField] ItemDataBase _itemDataBase;
     [Header("時間経過によって変わる製造所のSprite")]
     [SerializeField] Sprite[] _millSprite = new Sprite[4];
+    [Header("通常時のSprite")]
+    [SerializeField] Sprite _standardSprite;
     [Header("熱暴走時のSprite")]
     [SerializeField] Sprite _thermalRunawaySprite;
     [Header("製造所のSpriteRenderer")]
     [SerializeField] SpriteRenderer _millRenderer;
     [Header("アイテムの製造時間")]
     [SerializeField] float _waitSeconds;
-    [Header("何秒たったら熱暴走で爆発するか")]
-    [SerializeField] float _runawayTime = 5;
     [Header("製造が始まるまでの猶予時間")]
     [SerializeField] float _craftStartTime = 10;
     [Header("EffectのAnimator")]
@@ -29,27 +29,41 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     [Header("EffectのSubAnimator")]
     [SerializeField] Animator _subEffectAnim;
 
-    [Tooltip("製造中かどうか")]
-    bool _manufactureing;
+    [Tooltip("熱暴走する時間")]
+    float _runawayTime = 5;
+    [Tooltip("アイテムを入れたりとったり出来るか")]
+    bool _isLook;
     [Tooltip("上質なものかどうか")]
     bool _isFineQuality;
     [Tooltip("上質なものが回収できる時間")]
     readonly float _fineQualityTime = 5;
+    [Tooltip("爆発するまでの時間")]
+    readonly int _explosionTime = 5;
+    [Tooltip("爆発にかける時間")]
+    readonly int _explosionEndTime = 3;
+    [Tooltip("修理が終わるまでの時間")]
+    readonly int _repairTime = 2;
     [Tooltip("アイテムを保存しておく変数")]
     ItemInformation[] _itemArray;
     [Tooltip("合成後のアイテム")]
-    ItemInformation _resultSynthetic = new ItemInformation (null, false);
+    ItemInformation _resultSynthetic = new ItemInformation(null, false);
     [Tooltip("製造機が保存できるアイテムの数")]
     readonly int _itemSaveNum = 3;
     Coroutine _startCoroutine;
-    Coroutine _runawayCoroutine;
+    Coroutine _craftStartCoroutine;
     Coroutine _fineQualityCor;
+    Coroutine _runawayCoroutine;
+    Coroutine _explosionCoroutine;
 
     void Start()
     {
         _itemArray = new ItemInformation[_itemSaveNum];
+        ArrayInit();
+    }
 
-        for (int i = 0; i < _itemSaveNum; i++) 
+    private void ArrayInit()
+    {
+        for (int i = 0; i < _itemSaveNum; i++)
         {
             _itemArray[i] = new ItemInformation(null, false);
         }
@@ -72,22 +86,23 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     /// <param name="itemInfo"></param>
     public ItemInformation ReceiveItems(ItemInformation itemInfo)
     {
-        if (_manufactureing) return itemInfo;
+        if (_isLook) return itemInfo;
 
         //合成後のアイテムがあるかつPlayerがアイテムを持っていないとき
         //合成アイテムを返す
         if (_resultSynthetic.Item != null && itemInfo == null)
         {
             //アイテムがNullになった時アイテムを返す
-            StopCoroutine(_runawayCoroutine);
-            StopCoroutine(_fineQualityCor);
-            if (_isFineQuality) 
+            //不必要なコルーチンを止める
+            CraftStopCor();
+
+            if (_isFineQuality)
             {
                 Debug.Log("上質です");
                 _resultSynthetic.SetFineQuality(true);
             }
             var returnItem = _resultSynthetic;
-            _resultSynthetic = null;
+            _resultSynthetic = new ItemInformation(null, false);
             _millRenderer.sprite = _millSprite[0];
             return returnItem;
         }
@@ -104,7 +119,11 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
             return itemInfo;
         }
         //アイテムがNullではないとき
-        if (itemInfo != null)
+        if (itemInfo == null)
+        {
+            return itemInfo;
+        }
+        if (itemInfo.Item.Craft) 
         {
             Debug.Log("入ってきた");
             //アイテムが入ってないところに入れる
@@ -112,6 +131,16 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
             {
                 if (_itemArray[i].Item == null)
                 {
+                    if (i == 0)
+                    {
+                        _runawayTime = itemInfo.Item.RunawayTime;
+                        Debug.Log(itemInfo.Item.RunawayTime);
+                    }
+                    else 
+                    {
+                        _runawayTime += itemInfo.Item.RunawayTime;
+                        Debug.Log(_runawayTime);
+                    }
                     _itemArray[i] = itemInfo;
                     //アイテムが入ったことでクラフト待機スタート
                     StandbyCraft();
@@ -154,11 +183,9 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         Debug.Log("クラフトスタート");
         _effectAnim.SetBool("Craft", true);
         _subEffectAnim.SetBool("Thunder", true);
-        //途中でCoroutineが中断されなかったらCraft開始
-        ItemManufacture();
-        //熱暴走待機開始
-        _runawayCoroutine = StartCoroutine(ManufactureDeley());
-        _manufactureing = true;
+        //クラフト開始
+        _craftStartCoroutine = StartCoroutine(ManufactureDeley());
+        _isLook = true;
     }
     #endregion
 
@@ -168,23 +195,31 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     /// <returns></returns>
     IEnumerator ManufactureDeley()
     {
-
-        Debug.Log("製造中wait");
         //時間経過によって製造所のSpriteを変える
-        for (int i = 0; i < _millSprite.Length; i++) 
+        for (int i = 0; i < _millSprite.Length; i++)
         {
-            yield return new WaitForSeconds(_waitSeconds/_millSprite.Length);
-            _millRenderer.sprite = _millSprite[i]; 
+            yield return new WaitForSeconds(_waitSeconds / _millSprite.Length);
+            //音を出す
+            if (i == _millSprite.Length - 1)
+            {
+                AudioManager.Instance.PlaySound(SoundPlayType.SE_manufacture_lastlamp);
+            }
+            else
+            {
+                AudioManager.Instance.PlaySound(SoundPlayType.SE_manufacture_lamp);
+            }
+
+            _millRenderer.sprite = _millSprite[i];
         }
-        
-        Debug.Log("製造中終わり");
+
         _effectAnim.SetBool("Craft", false);
         _subEffectAnim.SetBool("Thunder", false);
         //var cor = FineQualityTime();
-        _fineQualityCor = StartCoroutine(FineQualityTime());
-        StartCoroutine(ThermalRunaway());
-        _manufactureing = false;
-
+        //途中でCoroutineが中断されなかったらCraft開始
+        ItemManufacture();
+        _isLook = false;
+        _craftStartCoroutine = null;
+        _runawayCoroutine = StartCoroutine(ThermalRunaway());
     }
 
 
@@ -216,12 +251,16 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
                 var resultSynthetic = _syntheticData.SyntheticList[i].ResultItem;
                 _resultSynthetic = new ItemInformation(_itemDataBase.ItemDataList.Where(x => x.ItemName == resultSynthetic).ToArray()[0], false);
                 _resultSynthetic.SetParts(PartsCheck(itemArray));
+                if (_resultSynthetic.PartsNum == _resultSynthetic.Item.ItemParts) 
+                {
+                    _fineQualityCor = StartCoroutine(FineQualityTime());
+                }
                 //Debug.Log($"結果は{_resultSynthetic}");
                 break;
             }
             //Debug.Log($"結果判定中:アイテム１{itemArray[0]}、アイテム２:{itemArray[1]}、アイテム３:{itemArray[2]}");
         }
-        Array.Clear(_itemArray, 0, _itemArray.Length);
+        ArrayInit();
     }
 
 
@@ -229,34 +268,95 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     /// 上質なものがゲットできる時間
     /// </summary>
     /// <returns></returns>
-    private IEnumerator FineQualityTime() 
+    private IEnumerator FineQualityTime()
     {
+        Debug.Log("上質");
         _isFineQuality = true;
         yield return new WaitForSeconds(_fineQualityTime);
         _isFineQuality = false;
     }
 
-    IEnumerator ThermalRunaway() 
+    /// <summary>
+    /// 暴走するまでの時間
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ThermalRunaway()
     {
-        Debug.Log("暴走待機");
-        yield return new WaitForSeconds(_runawayTime);
+        yield return new WaitForSeconds(5);
         _millRenderer.sprite = _thermalRunawaySprite;
-        Debug.Log("暴走");
         _effectAnim.SetBool("RunAway", true);
+        yield return new WaitForSeconds(_runawayTime);
+        _explosionCoroutine = StartCoroutine(Explosion());
     }
 
+    /// <summary>
+    /// 爆発までの時間
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator Explosion()
+    {
+        _isLook = true;
+        Debug.Log("爆発");
+        _resultSynthetic = new ItemInformation(null, false);
+        AudioManager.Instance.PlaySound(SoundPlayType.SE_manufacture_explosion);
+        _effectAnim.SetBool("RunAway", false);
+        _effectAnim.SetBool("Explosion", true);
+        yield return new WaitForSeconds(_explosionTime);
+        StartCoroutine(RepairTime());
+    }
+
+    IEnumerator RepairTime()
+    {
+        _effectAnim.SetBool("Explosion", false);
+        _effectAnim.SetBool("Repair", true);
+        AudioManager.Instance.PlaySound(SoundPlayType.SE_manufacture_repair);
+        yield return new WaitForSeconds(_repairTime);
+        AudioManager.Instance.PlaySound(SoundPlayType.SE_manufacture_repair_end);
+        _isLook = false;
+        _effectAnim.SetBool("Repair", false);
+        _millRenderer.sprite = _standardSprite;
+    }
+
+
+    private void CraftStopCor()
+    {
+        if (_craftStartCoroutine != null)
+        {
+            StopCoroutine(_craftStartCoroutine);
+        }
+
+        if (_runawayCoroutine != null)
+        {
+            StopCoroutine(_runawayCoroutine);
+            Debug.Log("暴走止めた");
+            _millRenderer.sprite = _standardSprite;
+        }
+
+        if (_explosionCoroutine != null)
+        {
+            StopCoroutine(_explosionCoroutine);
+            _effectAnim.SetBool("RunAway", false);
+            _millRenderer.sprite = _standardSprite;
+        }
+
+        if (_fineQualityCor != null)
+        {
+            StopCoroutine(_fineQualityCor);
+        }
+
+    }
 
     /// <summary>
     /// 部品がいくつ含まれているか調べる
     /// </summary>
     /// <param name="itemNameArray"></param>
     /// <returns></returns>
-    private int PartsCheck(string[] itemNameArray) 
+    private int PartsCheck(string[] itemNameArray)
     {
         int partsNum = 0;
-        for (int i = 0; i < 2; i++) 
+        for (int i = 0; i < 2; i++)
         {
-            if (itemNameArray[i].Contains("部品")) 
+            if (itemNameArray[i].Contains("部品"))
             {
                 partsNum++;
             }
