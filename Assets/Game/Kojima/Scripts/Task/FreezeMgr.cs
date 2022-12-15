@@ -17,7 +17,9 @@ public class FreezeMgr : MonoBehaviour
     }
     void Update()
     {
-          
+        //Debug.Log($"Door1 = {_doorHits[0].IsDoorClose()}");
+        //Debug.Log($"Door2 = {_doorHits[1].IsDoorClose()}");
+          DoorCheck();
     }
     #region ２ヶ所のドアの真偽のチェックとその後の処理
     private void DoorCheck()
@@ -26,6 +28,7 @@ public class FreezeMgr : MonoBehaviour
         //どちらかのドアがfalseならカウントダウンを開始
         if (_doorHits[0].IsDoorClose() == false || _doorHits[1].IsDoorClose() == false)
         {
+           // Debug.Log("aaaaaaaaa");
             _doorRereaseTimer -= Time.deltaTime;
             _startTimer = 5;
         }
@@ -33,6 +36,7 @@ public class FreezeMgr : MonoBehaviour
         //ドアがtrueならタイマーをリセット
         if (_doorHits[0].IsDoorClose() == true && _doorHits[1].IsDoorClose() == true)
         {
+           // Debug.Log("reset");
             _doorRereaseTimer = 5;
         }
         StopGen();
