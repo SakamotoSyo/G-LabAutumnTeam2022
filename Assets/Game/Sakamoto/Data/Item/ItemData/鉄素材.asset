@@ -18,6 +18,6 @@ MonoBehaviour:
   Packing: 0
   ItemSprite: {fileID: 21300000, guid: 5855f22efa0be394f995c206be7a5a92, type: 3}
   PresentSprite: {fileID: 21300000, guid: d607bde0c00381f4986b0731fa97db53, type: 3}
-  RunawayTime: 3
-  CraftTime: 2
+  RunawayTime: 7
+  CraftTime: 5
   ItemParts: 0
