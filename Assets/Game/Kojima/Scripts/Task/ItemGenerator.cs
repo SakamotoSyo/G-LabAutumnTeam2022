@@ -16,7 +16,7 @@ public class ItemGenerator : MonoBehaviour
     [SerializeField] string _beltStop;
     [SerializeField] string _beltStart;
     [SerializeField] string _beltRun;
-    [SerializeField]CriAtomSource _criSource;
+    //[SerializeField]CriAtomSource _criSource;
     [Header("ê∂ê¨ä‘äu"), SerializeField]float _interval = 1.0f;
     [Header("ê∂ê¨ämóß"), SerializeField]static float _probability = 1.0f;
     [Header("ê∂ê¨è„å¿"), SerializeField]int _limitNum = 2;
@@ -37,6 +37,8 @@ public class ItemGenerator : MonoBehaviour
         _elapsed += Time.deltaTime;
         if (_stopFrag)
         {
+            
+            Debug.Log(_stopFrag);
             Generato();
         }
         else if (!_stopFrag)
@@ -54,7 +56,7 @@ public class ItemGenerator : MonoBehaviour
             if (_elapsed > _interval)
             {
             _elapsed = 0;
-
+               // Debug.Log("ê∂ê¨ê¨å˜");
             //Instanciate
                 GameObject res = Instantiate(_items_box[_itemCnt], transform.position, transform.rotation);
                 res.AddComponent<Rigidbody2D>();
