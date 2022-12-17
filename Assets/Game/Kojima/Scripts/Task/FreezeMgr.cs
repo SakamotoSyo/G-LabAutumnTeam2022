@@ -48,6 +48,7 @@ public class FreezeMgr : MonoBehaviour
     {
         if(_doorRereaseTimer < 0)
         {
+            AudioManager.Instance.PlaySound(SoundPlayType.SE_conveyor_stop);
             ItemGenerator._stopFrag = false;
             ItemMoveCon._ItemMoveConFlag = false;
            
@@ -66,6 +67,7 @@ public class FreezeMgr : MonoBehaviour
             _startTimer -= Time.deltaTime;//再始動のカウントダウン
             if (_startTimer < 0)
             {
+                AudioManager.Instance.PlaySound(SoundPlayType.SE_conveyor_start);
                 ItemGenerator._stopFrag = true;
                 ItemMoveCon._ItemMoveConFlag = true;
             }
