@@ -8,11 +8,13 @@ public class ItemGenerator : MonoBehaviour
     #region 定義
     GameObject[] _items_box;//素材のデータを保存する配列の作成
     private int _itemCnt = 0; //生成したプレファブ数
-    static public bool _stopFrag = true;//ItemGeneratorの停止用フラグ(falseで停止)
+    bool _stopFrag = true;//ItemGeneratorの停止用フラグ(falseで停止)
     private float _elapsed;//経過時間
     [SerializeField]public GameObject _item_1;
     [SerializeField]public GameObject _item_2;
     [SerializeField]public GameObject _item_3;
+    [SerializeField] private Animator _anim;
+    [SerializeField] CriAtomSource _criSource;
     [SerializeField] string _beltStop;
     [SerializeField] string _beltStart;
     [SerializeField] string _beltRun;
@@ -36,18 +38,32 @@ public class ItemGenerator : MonoBehaviour
     {
         _elapsed += Time.deltaTime;
         if (_stopFrag)
-        {
-            
-            Debug.Log(_stopFrag);
+        {   
             Generato();
-        }
-        else if (!_stopFrag)
-        {
-            _criSource.cueName = _beltStop;
-            ;//何もしない
         }
 
     }
+
+    public  void StopFrag(bool Stop)
+    {
+        if (Stop)
+        {
+            _stopFrag = true;
+            _criSource.Stop();
+            _criSource.cueName = _beltRun;
+            _criSource.Play();
+            _anim.SetBool("Freeze", false);
+        }
+        else 
+        {
+            _stopFrag = false;
+            _criSource.Stop();
+            _criSource.cueName = _beltStop;
+            _criSource.Play();
+            _anim.SetBool("Freeze", true);
+        }
+    }
+
     #region 生成
     void Generato()
     {
@@ -55,9 +71,9 @@ public class ItemGenerator : MonoBehaviour
         {
             if (_elapsed > _interval)
             {
-            _elapsed = 0;
-               // Debug.Log("生成成功");
-            //Instanciate
+                _elapsed = 0;
+                // Debug.Log("生成成功");
+                //Instanciate
                 GameObject res = Instantiate(_items_box[_itemCnt], transform.position, transform.rotation);
                 res.AddComponent<Rigidbody2D>();
                 _itemCnt++;

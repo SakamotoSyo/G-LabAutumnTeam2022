@@ -7,7 +7,12 @@ public class FreezeMgr : MonoBehaviour
     #region 定義
     [Header("ドア開放時間"),SerializeField]float _doorRereaseTimer = 5;
     [Header("再始動時間"), SerializeField] float _startTimer;
+    [Header("コンベアのGenerator")]　
+    [SerializeField]ItemGenerator _generator;
     [SerializeField] DoorHit [] _doorHits;
+
+    [Tooltip("ベルトコンベアがストップしているかどうか")]
+    bool _isStop = false;
     #endregion
     void Start()
     {
@@ -46,9 +51,10 @@ public class FreezeMgr : MonoBehaviour
     #region 一定時間経つとItemGeneratorとItemMoveConのStop関数を呼ぶ
   private void StopGen()
     {
-        if(_doorRereaseTimer < 0)
+        if(_doorRereaseTimer < 0 && !_isStop)
         {
-            ItemGenerator._stopFrag = false;
+            _generator.StopFrag(false);
+            _isStop = true;
             ItemMoveCon._ItemMoveConFlag = false;
            
         }
@@ -64,9 +70,11 @@ public class FreezeMgr : MonoBehaviour
         {
             _doorRereaseTimer = 5;//リセット
             _startTimer -= Time.deltaTime;//再始動のカウントダウン
-            if (_startTimer < 0)
+            if (_startTimer < 0 && _isStop)
             {
-                ItemGenerator._stopFrag = true;
+                _generator.StopFrag(true);
+                _isStop = false;
+                Debug.Log("Trueになったよ");
                 ItemMoveCon._ItemMoveConFlag = true;
             }
         }
