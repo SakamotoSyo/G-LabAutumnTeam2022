@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    [Header("PlayerHp")]
+    [SerializeField] PlayerHp _playerHp;
     [Header("アイテムのSpriteを表示する場所")]
     [SerializeField] SpriteRenderer _itemSprite;
     [Header("アイテムを表示する場所")]
@@ -11,6 +13,8 @@ public class Inventory : MonoBehaviour
     [Header("プレゼントの画像")]
     [SerializeField] Sprite _presentSprite;
     [SerializeField] PlayerInput _playerInput;
+
+    bool _isDead = false;
 
     bool _isPresent;
     /// <summary>
@@ -20,6 +24,7 @@ public class Inventory : MonoBehaviour
 
     void Awake()
     {
+        _playerHp.OnHealth += OnHelthChanged;
         _itemSprite = GetComponent<SpriteRenderer>();
     }
 
@@ -38,7 +43,11 @@ public class Inventory : MonoBehaviour
         ItemInventory = item;
         if (item.Present)
         {
-            _itemSprite.sprite = item.Item.PresentSprite;
+            _itemSprite.sprite = item.PresentSprite;
+        }
+        else if (item.IsFineQuality)
+        {
+            _itemSprite.sprite = item.Item.FineQualitySprite;
         }
         else 
         {
@@ -82,6 +91,17 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    private void OnHelthChanged(float amount) 
+    {
+        if (amount <= 0) 
+        {
+            _isDead = true;
+            _itemSprite.enabled = false;
+            ItemInventory = null;
+
+        }
+    }
+
 }
 
 
@@ -92,6 +112,9 @@ public class ItemInformation
     [SerializeField]ItemData _item;
     public bool Present => _isPresent;
     [SerializeField]bool _isPresent;
+    public Sprite PresentSprite => _presentSprite;
+    [Tooltip("プレゼントの画像")]
+    private Sprite _presentSprite;
 
     public int PartsNum => _partsNum;
     [Tooltip("このアイテムを製造するために使った部品の数")]
@@ -99,6 +122,9 @@ public class ItemInformation
     public bool IsFineQuality => _isFineQuality;
     [Tooltip("上質かどうか")]
     bool _isFineQuality = false;
+    public int ItemScore => _itemScore;
+    [Tooltip("このアイテムのスコア")]
+    int _itemScore;
 
     public ItemInformation(ItemData item, bool b) 
     {
@@ -114,5 +140,15 @@ public class ItemInformation
     public void SetFineQuality(bool set) 
     {
         _isFineQuality = set;
+    }
+
+    public void SetItemScore(int score) 
+    {
+        _itemScore = score;
+    }
+
+    public void PresentSet(Sprite sprite) 
+    {
+        _presentSprite = sprite;
     }
 }
