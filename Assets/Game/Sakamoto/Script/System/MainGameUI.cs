@@ -17,6 +17,8 @@ public class MainGameUI : MonoBehaviour
     [SerializeField] Text _scoreText;
     [Header("MainGameUIÇÃPresenter")]
     [SerializeField] GameUIPresenter _gameUIPresenter;
+    [Header("finishÇÃUI")]
+    [SerializeField] Image _finishImage;
 
     [Tooltip("énÇ‹ÇÈÇ‹Ç≈ÇÃïbêî")]
     readonly float _startTime = 3;
@@ -34,16 +36,22 @@ public class MainGameUI : MonoBehaviour
     async UniTask StartDeley()
     {
         _timeImage.enabled = true;
+        AudioManager.Instance.PlaySound(SoundPlayType.SE_countdown);
         for (int i = 0; i < _sprites.Length; i++)
         {
             _timeImage.sprite = _sprites[i];
-            await UniTask.Delay(TimeSpan.FromSeconds(1));
+            await UniTask.Delay(TimeSpan.FromSeconds(0.9));
         }
 
         _timeImage.enabled = false;
         GameManager.OnBiginTurn();
         await TimerCount();
-        GameManager.OnEndTurn();
+        //ÉQÅ[ÉÄÇ™èIÇÌÇ¡ÇΩ
+        GameManager.OnEndTurn(); 
+        AudioManager.Instance.PlaySound(SoundPlayType.SE_stage_finish);
+        _finishImage.enabled = true;
+        await UniTask.Delay(TimeSpan.FromSeconds(5));
+        GameManager.MainGameEnd();
     }
     public void SetScore(int score) 
     {
@@ -57,6 +65,10 @@ public class MainGameUI : MonoBehaviour
         while (TimeCurrent > 0) 
         {
             TimeCurrent--;
+            if (TimeCurrent == 60)
+            {
+                AudioManager.Instance.PlaySound(SoundPlayType.SE_1minute);
+            }
             _timerText.text = TimeCurrent.ToString();
             await UniTask.Delay(TimeSpan.FromSeconds(1));
         }
