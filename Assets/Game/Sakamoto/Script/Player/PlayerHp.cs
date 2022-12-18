@@ -12,6 +12,8 @@ public class PlayerHp : MonoBehaviour, IDamage
     [SerializeField] float _playerMaxHp;
     [Header("１秒ごとに何ダメージを受けるか")]
     [SerializeField] float _damage;
+    [Tooltip("プレイヤーのHpがなくなったかどうか")]
+    bool _isDead = false;
     [Tooltip("プレイヤーのHp")]
     float _playerHp;
 
@@ -31,12 +33,21 @@ public class PlayerHp : MonoBehaviour, IDamage
     /// <param name="amount">ダメージ数</param>
     public void ApplyDamage(float amount)
     {
-        _playerHp -= amount;
-        OnHealth(_playerHp);
+        if (_isDead)
+        {
+            _playerHp = 0;
+        }
+        else 
+        {
+            _playerHp -= amount;
+            OnHealth(_playerHp);
+        }
+
         //体力が０以下になった時通知する
-        if (_playerHp <= 0)
+        if (_playerHp <= 0 && !_isDead)
         {
             OnDead?.Invoke();
+            _isDead = true;
         }
     }
 
@@ -45,8 +56,13 @@ public class PlayerHp : MonoBehaviour, IDamage
     /// </summary>
     /// <param name="amount">回復する量</param>
     public void ApplyHeal(float amount)
-    {
+    {   
         _playerHp += amount;
+        if (_playerMaxHp < _playerHp) 
+        {
+            _playerHp = _playerMaxHp;
+        }
+        _isDead = false;
     }
 
     private async UniTask RegularlyDamage()
@@ -55,7 +71,6 @@ public class PlayerHp : MonoBehaviour, IDamage
         {
             await UniTask.Delay(TimeSpan.FromSeconds(1));
             ApplyDamage(_damage);
-            Debug.Log($"{_damage}を受けた");
         }
     }
 }
