@@ -7,6 +7,11 @@ public class CriPlayer : MonoBehaviour
 {
     [SerializeField]CriAtomSource _criSource;
 
+    private void Start()
+    {
+        GameManager.GameEnd += AudioStop; 
+    }
+
     void OnEnable()
     {
         _criSource.Play();
@@ -17,5 +22,10 @@ public class CriPlayer : MonoBehaviour
     {        
         yield return new WaitForSeconds(_criSource.time);
         gameObject.SetActive(false);
+    }
+
+    public void AudioStop() 
+    {
+        _criSource.Stop();
     }
 }

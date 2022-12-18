@@ -46,6 +46,7 @@ public class PlayerInput : MonoBehaviour
     void Awake()
     {
         GameManager.GameStart += InputBlock;
+        GameManager.GameEnd += InputBlock;
     }
 
     void Update()

@@ -94,6 +94,11 @@ public class AudioManager
         pool.Add(new Pool { Obj = obj, Type = type });
     }
 
+    public void Reset()
+    {
+        pool.Clear();
+    }
+
     /// <summary>¶¬‚µ‚½‰¹‚ğ•Û‘¶‚µ‚Ä‚¨‚­‚½‚ß‚ÌƒNƒ‰ƒX</summary>
     private struct Pool
     {
