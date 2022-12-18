@@ -65,7 +65,7 @@ MonoBehaviour:
     - 0
     - 0
   _cueName: SE_manufacture_alert_03
-  _cueSheet: XmasWorkerCueSheet1
+  _cueSheet: XmasWorkerCueSheet (1)
 --- !u!114 &1369985432411152233
 MonoBehaviour:
   m_ObjectHideFlags: 0

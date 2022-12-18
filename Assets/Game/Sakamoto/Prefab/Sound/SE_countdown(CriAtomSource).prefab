@@ -65,7 +65,7 @@ MonoBehaviour:
     - 0
     - 0
   _cueName: SE_countdown
-  _cueSheet: XmasWorkerCueSheet1
+  _cueSheet: XmasWorkerCueSheet (1)
 --- !u!114 &5318172461832189781
 MonoBehaviour:
   m_ObjectHideFlags: 0
