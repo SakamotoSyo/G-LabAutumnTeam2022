@@ -81,6 +81,7 @@ public class OrderScript : MonoBehaviour
         yield return new WaitForSeconds(_phaseSetting[_phaseNum].OrderInterval);
         for (int i = 0; i < _phaseSetting[_phaseNum].OrderNum; i++)
         {
+            Debug.Log(_phaseSetting[_phaseNum].OrderNum);
             if (_orderDatas[i] == null)
             {
                 //合成データからランダムに合成データを取得
@@ -88,11 +89,9 @@ public class OrderScript : MonoBehaviour
                 _orderDatas[i] = odrItem;
                 //注文を出す
                 _takeOrdersCs[i].TakeOrders(odrItem, _phaseSetting[_phaseNum]);
-                //まだ注文を出せる空きがあった場合再帰的にこの処理を呼び出す
-                if (i == _phaseSetting[_phaseNum].OrderNum - 1)
-                {
-                    _orderCor = StartCoroutine(OrderCor());
-                }
+
+                 _orderCor = StartCoroutine(OrderCor());
+               
                 break;
             }
         }
@@ -123,8 +122,10 @@ public class OrderScript : MonoBehaviour
             else if (item.Item.ItemName == _orderDatas[i].ResultItem)
             {
                 _orderDatas[i] = null;
+                _takeOrdersCs[i].TakeOrderFalse();
+                Debug.Log(item.Item.ItemName);
                 //スコアを足す処理
-                return;
+                break;
             }
         }
 

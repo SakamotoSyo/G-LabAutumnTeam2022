@@ -74,6 +74,13 @@ public class TakeOrdersScript : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// 受けたオーダーを終了する
+    /// </summary>
+    public void TakeOrderFalse() 
+    {
+        _nowSyntheticData.Value = null;
+        _image.enabled = false;
+    }
 
 }
