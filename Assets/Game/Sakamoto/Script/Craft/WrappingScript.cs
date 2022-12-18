@@ -7,6 +7,7 @@ public class WrappingScript : MonoBehaviour, IAddItem, ICraftItem
     [Header("包装が始まった時の煙")]
     [SerializeField] Sprite _smokeSprite;
     [SerializeField] SpriteRenderer _sr;
+    [SerializeField] Sprite[] _presentSprites = new Sprite[4];
 
     [Tooltip("加工中かどうか")]
     bool _manufactureing;
@@ -47,7 +48,7 @@ public class WrappingScript : MonoBehaviour, IAddItem, ICraftItem
             return itemInfo;
         }
         //アイテムがNullではないときかつクラフトできるものだったら
-        if (_itemData == null && itemInfo.Item.Packing)
+        if (_itemData == null && itemInfo.Item.Packing && !itemInfo.Present)
         {
             Debug.Log("入ってきた");
             //アイテムが入ったことでクラフト待機スタート
@@ -66,6 +67,7 @@ public class WrappingScript : MonoBehaviour, IAddItem, ICraftItem
     {
         if (_itemData == null) return 0;
         Debug.Log("クラフトスタート");
+        AudioManager.Instance.PlaySound(SoundPlayType.SE_packing);
         _manufactureing = true;
         //加工が始まったら煙を出す
         _sr.sprite = _smokeSprite;
@@ -78,10 +80,57 @@ public class WrappingScript : MonoBehaviour, IAddItem, ICraftItem
     /// </summary>
     public void CraftEnd()
     {
-        _sr.sprite = _itemData.Item.PresentSprite;
         _resultSynthetic = new ItemInformation( _itemData.Item, true);
+        _sr.sprite = PresentJudge();
+        _resultSynthetic.PresentSet(PresentJudge());
         _itemData = null;
         _manufactureing = false;
     }
 
+
+    Sprite PresentJudge() 
+    {
+        if (_itemData.Item.ItemParts == 0) 
+        {
+            _resultSynthetic.SetItemScore(0);
+            return _presentSprites[0];
+        }
+        else if (_itemData.Item.ItemParts == 1 && !_itemData.IsFineQuality && _itemData.PartsNum == 0)
+        {
+            _resultSynthetic.SetItemScore(10);
+            return _presentSprites[0];
+        }
+        else if (_itemData.Item.ItemParts == 1 && !_itemData.IsFineQuality && _itemData.PartsNum == 1)
+        {
+            _resultSynthetic.SetItemScore(30);
+            return _presentSprites[0];
+        }
+        else if (_itemData.Item.ItemParts == 1 && _itemData.IsFineQuality && _itemData.PartsNum == 1)
+        {
+            _resultSynthetic.SetItemScore(50);
+            return _presentSprites[1];
+        }
+        else if (_itemData.Item.ItemParts == 2 && _itemData.Item.ItemParts == 0)
+        {
+            _resultSynthetic.SetItemScore(50);
+            return _presentSprites[1];
+        }
+        else if (_itemData.Item.ItemParts == 2 && _itemData.Item.ItemParts == 1)
+        {
+            _resultSynthetic.SetItemScore(100);
+            return _presentSprites[2];
+        }
+        else if (_itemData.Item.ItemParts == 2 && _itemData.PartsNum == 2 && _itemData.IsFineQuality)
+        {
+            _resultSynthetic.SetItemScore(200);
+            return _presentSprites[3];
+        }
+        else if (_itemData.Item.ItemParts == 2 && _itemData.PartsNum == 2 && !_itemData.IsFineQuality)
+        {
+            _resultSynthetic.SetItemScore(150);
+            return _presentSprites[2];
+        }
+
+        return _presentSprites[0];
+    }
 }
