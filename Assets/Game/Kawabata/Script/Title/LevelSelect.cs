@@ -38,6 +38,7 @@ public class LevelSelect : MonoBehaviour
     {
         //シーン遷移
         Debug.Log($"ゲームスタート　難易度：{_level}");
+        AudioManager.Instance.Reset();
         SceneManager.LoadScene(GameScene);
     }
 

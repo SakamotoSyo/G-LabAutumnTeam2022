@@ -83,7 +83,7 @@ public class ChangeRanking : Ranking
     void OnGUI()
     {
         //マウスホイールでスクロール
-        float value = Input.GetAxis("Mouse ScrollWheel");
+        float value = Input.mouseScrollDelta.y;
         var scrollSpeed = 0.05f; 
 
         if(Mathf.Abs(value) > 0.01f)

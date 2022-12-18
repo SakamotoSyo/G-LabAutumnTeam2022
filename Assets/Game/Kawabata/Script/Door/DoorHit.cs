@@ -5,6 +5,8 @@ using System;
 
 public class DoorHit : MonoBehaviour
 {
+    [Header("Door‚ÌCoolider")]
+    [SerializeField] BoxCollider2D _boxCollider2D;
     //ƒhƒA‚ª•Â‚¶‚Ä‚¢‚é‚©‚Ç‚¤‚©
     public bool _doorClosed = true;
     public Action DoorChange;
@@ -12,17 +14,17 @@ public class DoorHit : MonoBehaviour
     public void DoorHitChange()
     {
         _doorClosed = !_doorClosed;
-        BoxCollider2D collider = gameObject.GetComponent<BoxCollider2D>();
         //DoorChange();
 
         if (_doorClosed)
         {
-            collider.enabled = true;
-            
+            _boxCollider2D.enabled = true;
+            AudioManager.Instance.PlaySound(SoundPlayType.SE_door_open);
         }
         else
         {
-            collider.enabled = false;
+            _boxCollider2D.enabled = false;
+            AudioManager.Instance.PlaySound(SoundPlayType.SE_door_close);
         }
 
         foreach (Transform child in transform)
