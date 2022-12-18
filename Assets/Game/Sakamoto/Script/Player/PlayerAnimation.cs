@@ -7,6 +7,8 @@ public class PlayerAnimation
 {
     [Header("PlayerのAnimation")]
     [SerializeField] Animator _anim;
+    [Header("EffectのAnimation")]
+    [SerializeField] Animator _effectAnim;
     [Header("PlayerInput")]
     [SerializeField] PlayerInput _playerInput;
     [Header("PlayerのHpがMaxの時のAnimation")]
@@ -15,8 +17,12 @@ public class PlayerAnimation
     [SerializeField] RuntimeAnimatorController _23Controller;
     [Header("PlayerのHpが1/3の時のAnimation")]
     [SerializeField] RuntimeAnimatorController _13Controller;
+    [Header("PlayerのHpが0の時")]
+    [SerializeField] RuntimeAnimatorController _nonController;
     [Header("PlayerHp")]
     [SerializeField] PlayerHp _playerHp;
+    [Tooltip("過去のHpを保存")]
+    float _hp;
     public void Init()
     {
         _playerHp.OnHealth += OnHealthChanged;
@@ -34,18 +40,52 @@ public class PlayerAnimation
     /// <param name="amount"></param>
     void OnHealthChanged(float amount)
     {
+        if (_anim == null) return;
         //PlayerのHpが3/2の時
-        if (_playerHp.MaxHp / 3 * 2 > amount)
+        if (_playerHp.MaxHp / 3 * 2 < amount && _anim.runtimeAnimatorController != _maxController) 
+        {
+            _anim.runtimeAnimatorController = _maxController;
+            AudioManager.Instance.PlaySound(SoundPlayType.SE_snowman_recover);
+            _effectAnim.SetTrigger("Recovery");
+        }
+        else if (_playerHp.MaxHp / 3 * 2 > amount && _playerHp.MaxHp / 3 * 1 < amount && _anim.runtimeAnimatorController != _23Controller)
         {
             _anim.runtimeAnimatorController = _23Controller;
-            AudioManager.Instance.PlaySound(SoundPlayType.SE_snowman_small);
+            if (_playerHp.CurrentHp - _hp < 0)
+            {
+                AudioManager.Instance.PlaySound(SoundPlayType.SE_snowman_small);
+                _effectAnim.SetTrigger("Melt");
+            }
+            else
+            {
+                AudioManager.Instance.PlaySound(SoundPlayType.SE_snowman_recover);
+                _effectAnim.SetTrigger("Recovery");
+            }
+
         }
         //PlayerのHpが3/1の時
-        else if (_playerHp.MaxHp / 3 * 1 > amount)
+        else if (0 < _playerHp.MaxHp / 3 * 1 && _playerHp.MaxHp / 3 * 1 > amount && _anim.runtimeAnimatorController != _13Controller)
         {
             _anim.runtimeAnimatorController = _13Controller;
-            AudioManager.Instance.PlaySound(SoundPlayType.SE_snowman_small);
+            if (_playerHp.CurrentHp - _hp < 0)
+            {
+                AudioManager.Instance.PlaySound(SoundPlayType.SE_snowman_small);
+                _effectAnim.SetTrigger("Melt");
+            }
+            else
+            {
+                AudioManager.Instance.PlaySound(SoundPlayType.SE_snowman_recover);
+                _effectAnim.SetTrigger("Recovery");
+            }
         }
+        else if (0 >= amount && _anim.runtimeAnimatorController != _nonController) 
+        {
+            _anim.runtimeAnimatorController = _nonController;
+            AudioManager.Instance.PlaySound(SoundPlayType.SE_snowman_small);
+            _effectAnim.SetTrigger("Melt");
+        }
+
+        _hp = amount;
     }
 
 
