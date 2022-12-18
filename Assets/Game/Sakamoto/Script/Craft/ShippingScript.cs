@@ -22,7 +22,8 @@ public class ShippingScript : MonoBehaviour, IAddItem
                 //オーダーから該当のアイテムを削除
                 _orderScript.OrderComplete(itemInfo);
                 //スコアの追加処理
-                GameManager.AddScore(itemInfo.Item.ItemScore);
+                GameManager.AddScore(itemInfo.ItemScore);
+                break;
             }
 
         }
