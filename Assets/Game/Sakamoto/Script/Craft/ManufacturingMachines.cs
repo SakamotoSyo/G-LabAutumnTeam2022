@@ -12,6 +12,10 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     [SerializeField] ItemSyntheticDataBase _syntheticData;
     [Header("アイテムのデータ")]
     [SerializeField] ItemDataBase _itemDataBase;
+    [Header("火の粉のPrefab")]
+    [SerializeField] GameObject _firePrefab;
+    [Header("火の粉が飛び散る範囲")]
+    [SerializeField] Transform[] _fireTransform = new Transform[1];
     [Header("時間経過によって変わる製造所のSprite")]
     [SerializeField] Sprite[] _millSprite = new Sprite[4];
     [Header("通常時のSprite")]
@@ -42,13 +46,13 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     [Tooltip("爆発にかける時間")]
     readonly int _explosionEndTime = 3;
     [Tooltip("修理が終わるまでの時間")]
-    readonly int _repairTime = 2;
+    readonly int _repairTime = 30;
     [Tooltip("アイテムを保存しておく変数")]
     ItemInformation[] _itemArray;
     [Tooltip("合成後のアイテム")]
     ItemInformation _resultSynthetic = new ItemInformation(null, false);
     [Tooltip("製造機が保存できるアイテムの数")]
-    readonly int _itemSaveNum = 3;
+    readonly int _itemSaveNum = 2;
     Coroutine _startCoroutine;
     Coroutine _craftStartCoroutine;
     Coroutine _fineQualityCor;
@@ -245,10 +249,11 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         for (int i = 0; i < _syntheticData.SyntheticList.Count; i++)
         {
             //アイテムの名前が一致したら
-            if (_syntheticData.SyntheticList[i].Item1.Contains(itemArray[0][0]) && _syntheticData.SyntheticList[i].Item2.Contains(itemArray[1][0]))
+            if (_syntheticData.SyntheticList[i].Item1.Contains(itemArray[0][0]) && _syntheticData.SyntheticList[i].Item2.Contains(itemArray[1][0]) || _syntheticData.SyntheticList[i].Item1.Contains(itemArray[1][0]) && _syntheticData.SyntheticList[i].Item2.Contains(itemArray[0][0]))
             {
                 //合成データベースからStringのデータを取得する
                 var resultSynthetic = _syntheticData.SyntheticList[i].ResultItem;
+                Debug.Log(_syntheticData.SyntheticList[i].ResultItem);
                 _resultSynthetic = new ItemInformation(_itemDataBase.ItemDataList.Where(x => x.ItemName == resultSynthetic).ToArray()[0], false);
                 _resultSynthetic.SetParts(PartsCheck(itemArray));
                 if (_resultSynthetic.PartsNum == _resultSynthetic.Item.ItemParts) 
@@ -297,6 +302,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
     {
         _isLook = true;
         Debug.Log("爆発");
+        FireGeneration();
         _resultSynthetic = new ItemInformation(null, false);
         AudioManager.Instance.PlaySound(SoundPlayType.SE_manufacture_explosion);
         _effectAnim.SetBool("RunAway", false);
@@ -317,6 +323,19 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         _millRenderer.sprite = _standardSprite;
     }
 
+    /// <summary>
+    /// 火の粉を生成する
+    /// </summary>
+    private void FireGeneration() 
+    {
+        for (int i = 0; i < 2; i++) 
+        {
+            var x = UnityEngine.Random.Range(_fireTransform[0].position.x, _fireTransform[1].position.x);
+            var y = UnityEngine.Random.Range(_fireTransform[0].position.y, _fireTransform[1].position.y);
+            Instantiate(_firePrefab, new Vector2(x, y), gameObject.transform.rotation);
+        }
+       
+    }
 
     private void CraftStopCor()
     {
@@ -329,6 +348,7 @@ public class ManufacturingMachines : MonoBehaviour, IAddItem
         {
             StopCoroutine(_runawayCoroutine);
             Debug.Log("暴走止めた");
+            _effectAnim.SetBool("RunAway", false);
             _millRenderer.sprite = _standardSprite;
         }
 
