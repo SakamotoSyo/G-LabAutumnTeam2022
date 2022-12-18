@@ -20,10 +20,13 @@ public class ItemData : ScriptableObject
     [Header("アイテムのスプライト")]
     [SerializeField] public Sprite ItemSprite;
 
+    [Header("上質なアイテムのSprite")]
+    [SerializeField] public Sprite FineQualitySprite;
+
     [Header("プレゼントの画像")]
     [SerializeField] public Sprite PresentSprite;
 
-    [Header("製造所に入れたときのこの素材が暴走を起こすまでの時間")]
+    [Header("製造所に入れたときのこの素材が爆発を起こすまでの時間")]
     [SerializeField] public float RunawayTime;
 
     [Header("加工にかかる時間")]
