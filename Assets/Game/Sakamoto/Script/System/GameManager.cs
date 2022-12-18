@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 using UniRx;
 
 public class GameManager
@@ -32,5 +33,9 @@ public class GameManager
         GameEnd?.Invoke();
     }
 
+    public static void MainGameEnd() 
+    {
+        SceneManager.LoadScene("ResultScene");
+    }
 
 }
