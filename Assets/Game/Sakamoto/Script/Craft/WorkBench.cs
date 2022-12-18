@@ -99,11 +99,10 @@ public class WorkBench : MonoBehaviour, IAddItem, ICraftItem
     public float Craft()
     {
         if (_itemData == null) return 0;
-        Debug.Log(_itemData.Item);
-        Debug.Log("クラフトスタート");
         _manufactureing = true;
         //加工が始まったら煙を出す
         _workAnim.SetBool("WorkCraft", true);
+        ChooseSe(_itemData.Item.ItemName);
         return _itemData. Item.CraftTime;
 
     }
@@ -119,5 +118,22 @@ public class WorkBench : MonoBehaviour, IAddItem, ICraftItem
         _manufactureing = false;
         _sr.sprite = _resultSynthetic.Item.ItemSprite;
         Debug.Log(_resultSynthetic.Item.ItemSprite);
+    }
+
+    void ChooseSe(string name) 
+    {
+        if (name[0] == '木')
+        {
+            AudioManager.Instance.PlaySound(SoundPlayType.SE_processing_wood);
+
+        }
+        else if (name[0] == '鉄')
+        {
+            AudioManager.Instance.PlaySound(SoundPlayType.SE_processing_iron);
+        }
+        else if (name[0] == '布') 
+        {
+            AudioManager.Instance.PlaySound(SoundPlayType.SE_processing_cloth);
+        }
     }
 }
