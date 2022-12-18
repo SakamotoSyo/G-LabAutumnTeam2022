@@ -35,13 +35,18 @@ public class TakeOrdarView : MonoBehaviour
                 _orderImageArray[2].enabled = false;
                 _orderImageArray[2].sprite = null;
             }
-            else 
+            else
             {
                 //_orderImageArray[2].enabled = true;
                 _orderImageArray[2].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.Item2).ToArray()[0].ItemSprite;
             }
 
         }
+        else 
+        {
+            ActiveBool(false);
+        }
+
     }
 
     public void MaxTimeSet(float MaxTime)
