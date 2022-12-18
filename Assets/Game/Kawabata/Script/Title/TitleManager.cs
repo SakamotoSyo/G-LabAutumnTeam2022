@@ -24,6 +24,7 @@ public class TitleManager : MonoBehaviour
 
     public void ChangeCanvas(GameObject canvas)
     {
+        AudioManager.Instance.PlaySound(SoundPlayType.SE_select);
         _curCanvas.SetActive(false);
         canvas.SetActive(true);
         _curCanvas = canvas;
