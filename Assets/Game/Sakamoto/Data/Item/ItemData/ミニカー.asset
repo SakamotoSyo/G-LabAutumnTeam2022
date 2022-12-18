@@ -16,7 +16,8 @@ MonoBehaviour:
   Processing: 0
   Craft: 0
   Packing: 1
-  ItemSprite: {fileID: 0}
+  ItemSprite: {fileID: 21300000, guid: 1829a3b4f194fe8499eb3b65f7319e2a, type: 3}
+  FineQualitySprite: {fileID: 21300000, guid: cdd2287a33d061140a327a4b42f2d43a, type: 3}
   PresentSprite: {fileID: 21300000, guid: d607bde0c00381f4986b0731fa97db53, type: 3}
   RunawayTime: 0
   CraftTime: 2
