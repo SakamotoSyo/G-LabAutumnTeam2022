@@ -11,9 +11,19 @@ public class ActionController
     [SerializeField] float _rayDistance;
     [Header("プレイヤーのインベントリ")]
     [SerializeField] Inventory _inventory;
-    [SerializeField]Animator _anim;
-
+    [SerializeField] Animator _anim;
+    [SerializeField] PlayerHp _playerHp;
     [SerializeField]PlayerInput _playerInput;
+
+    bool _isDead = false;
+    Vector2 _wrappingDir = new Vector2(0, 1);
+
+
+    public void Start() 
+    {
+        _playerHp.OnHealth += OnHelthChanged;
+    }
+
 
     /// <summary>
     /// インタラクトをする処理
@@ -26,36 +36,38 @@ public class ActionController
         {
             for(int i = 0; i < hit.Length; i++) 
             {
-                if (hit[i].collider.TryGetComponent(out IAddItem AddItem))
+                if (!_isDead)
                 {
-                    if (_inventory.ItemInventory != null) 
+                    if (hit[i].collider.TryGetComponent(out IAddItem AddItem))
                     {
-                        AudioManager.Instance.PlaySound(SoundPlayType.Put);
-                    }
-                    //現在持っているアイテムを渡す
-                    var item = AddItem.ReceiveItems(_inventory.ReceiveItems());
-                    //帰ってきたデータをインベントリに渡す
-                    if (item != null)
-                    {
-                        AudioManager.Instance.PlaySound(SoundPlayType.PickUp);
-                        _inventory.SetItemData(item);
-                    }
-
-                }
-
-                if (hit[i].collider.TryGetComponent(out IPickUp PickedUpItems))
-                {
-                    if (_inventory.ItemInventory == null)
-                    {
-                        AudioManager.Instance.PlaySound(SoundPlayType.PickUp);
-                        _inventory.SetItemData(PickedUpItems.PickUpItem());
+                        if (_inventory.ItemInventory != null)
+                        {
+                            AudioManager.Instance.PlaySound(SoundPlayType.Put);
+                        }
+                        //現在持っているアイテムを渡す
+                        var item = AddItem.ReceiveItems(_inventory.ReceiveItems());
+                        //帰ってきたデータをインベントリに渡す
+                        if (item != null)
+                        {
+                            AudioManager.Instance.PlaySound(SoundPlayType.PickUp);
+                            _inventory.SetItemData(item);
+                        }
                     }
 
-                }
+                    if (hit[i].collider.TryGetComponent(out IPickUp PickedUpItems))
+                    {
+                        if (_inventory.ItemInventory == null)
+                        {
+                            AudioManager.Instance.PlaySound(SoundPlayType.PickUp);
+                            _inventory.SetItemData(PickedUpItems.PickUpItem());
+                        }
+                    }
 
-                if (hit[i].collider.TryGetComponent(out ICraftItem CraftItem)) 
-                {
-                   await CraftAction(CraftItem.Craft(), CraftItem);
+                    if (hit[i].collider.TryGetComponent(out ICraftItem CraftItem))
+                    {
+                        await CraftAction(CraftItem.Craft(), CraftItem);
+                    }
+
                 }
 
                 if (hit[i].collider.TryGetComponent(out DoorHit door)) 
@@ -72,12 +84,40 @@ public class ActionController
     {
         if (craftTime != 0) 
         {
-            _anim.SetBool("Craft", true);
+            var dir = _playerInput.PlayerDir;
+            if (dir == _wrappingDir)
+            {
+                _anim.SetBool("Wrapping", true);
+            }
+            else 
+            {
+                _anim.SetBool("Craft", true);
+            }
             _playerInput.InputBlock();
             await UniTask.Delay(TimeSpan.FromSeconds(craftTime));
-            _anim.SetBool("Craft", false);
+            if (dir == _wrappingDir)
+            {
+                _anim.SetBool("Wrapping", false);
+            }
+            else
+            {
+                _anim.SetBool("Craft", false);
+            }
             _playerInput.InputBlock();
             craftItem.CraftEnd();
+        }
+    }
+
+    private void OnHelthChanged(float amount)
+    {
+        if (amount <= 0)
+        {
+            _isDead = true;
+            Debug.Log("si");
+        }
+        else 
+        {
+            _isDead = false;
         }
     }
 }
