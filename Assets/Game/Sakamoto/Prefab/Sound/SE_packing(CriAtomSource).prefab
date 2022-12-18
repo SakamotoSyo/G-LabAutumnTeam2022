@@ -65,7 +65,7 @@ MonoBehaviour:
     - 0
     - 0
   _cueName: SE_packing
-  _cueSheet: XmasWorkerCueSheet1
+  _cueSheet: XmasWorkerCueSheet (1)
 --- !u!114 &5917741215973035118
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -65,7 +65,7 @@ MonoBehaviour:
     - 0
     - 0
   _cueName: SE_recipe_delete
-  _cueSheet: XmasWorkerCueSheet1
+  _cueSheet: XmasWorkerCueSheet (1)
 --- !u!114 &-9007894777536308060
 MonoBehaviour:
   m_ObjectHideFlags: 0

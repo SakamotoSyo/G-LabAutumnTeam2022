@@ -65,7 +65,7 @@ MonoBehaviour:
     - 0
     - 0
   _cueName: SE_snowman_big
-  _cueSheet: XmasWorkerCueSheet1
+  _cueSheet: XmasWorkerCueSheet (1)
 --- !u!114 &-8538836828024016229
 MonoBehaviour:
   m_ObjectHideFlags: 0
