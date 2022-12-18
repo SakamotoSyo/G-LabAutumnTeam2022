@@ -18,6 +18,7 @@ public class MovementController : MonoBehaviour
     {
         _playerInput = gameObject.GetComponent<PlayerInput>();
         _playerAnimation.Init();
+        _action.Start();
     }
 
     void Update()
