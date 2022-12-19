@@ -8696,7 +8696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _storyImages:
-  - {fileID: 21300000, guid: 530ef83bc110ace4f80fa8834e2e0112, type: 3}
+  - {fileID: 21300000, guid: 84d79d873f949c64987cb39cfe36ddd6, type: 3}
   - {fileID: 21300000, guid: c12dda48fa8a63c4a840b734ac596086, type: 3}
   _image: {fileID: 1596426069}
 --- !u!114 &1580554585
@@ -8798,7 +8798,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 530ef83bc110ace4f80fa8834e2e0112, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 84d79d873f949c64987cb39cfe36ddd6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
