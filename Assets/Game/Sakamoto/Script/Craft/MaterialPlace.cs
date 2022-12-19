@@ -32,11 +32,11 @@ public class MaterialPlace : MonoBehaviour, IAddItem
             _itemData = itemInfo;
             if (itemInfo.Present)
             {
-                _sr.sprite = itemInfo.Item.PresentSprite;
+                _sr.sprite = itemInfo.PresentSprite;
             }
             else 
             {
-                _sr.sprite = itemInfo.Item.ItemSprite;
+                _sr.sprite = itemInfo.PresentSprite;
             }
             
         }
