@@ -24751,14 +24751,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ce6dc73e2dbfd4eb779e62f4f5077d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _phaseTime: 50
+  _phaseTime: 30
   _phaseSetting:
   - OrderInterval: 5
-    OrderTime: 50
+    OrderTime: 75
     OrderNum: 3
     ItemDataList:
     - {fileID: 11400000, guid: 79a47c92898eaf84ab0c98bd591d36b4, type: 2}
+    - {fileID: 11400000, guid: 1ee194ee72026ae45a2c9b2651e82c54, type: 2}
+    - {fileID: 11400000, guid: 107231f1be7dd7f41853363805650fe8, type: 2}
+  - OrderInterval: 5
+    OrderTime: 75
+    OrderNum: 4
+    ItemDataList:
+    - {fileID: 11400000, guid: 79a47c92898eaf84ab0c98bd591d36b4, type: 2}
+    - {fileID: 11400000, guid: 1ee194ee72026ae45a2c9b2651e82c54, type: 2}
+    - {fileID: 11400000, guid: 107231f1be7dd7f41853363805650fe8, type: 2}
     - {fileID: 11400000, guid: 65bd131da651e0c4a904f4b1adaaabce, type: 2}
+    - {fileID: 11400000, guid: ba88daa9cf43f804399019c2e2060298, type: 2}
+    - {fileID: 11400000, guid: 7121d7ff8a16fa74c8033eb7cf314d7a, type: 2}
+  - OrderInterval: 5
+    OrderTime: 75
+    OrderNum: 5
+    ItemDataList:
+    - {fileID: 11400000, guid: 79a47c92898eaf84ab0c98bd591d36b4, type: 2}
+    - {fileID: 11400000, guid: 1ee194ee72026ae45a2c9b2651e82c54, type: 2}
+    - {fileID: 11400000, guid: 107231f1be7dd7f41853363805650fe8, type: 2}
+    - {fileID: 11400000, guid: 65bd131da651e0c4a904f4b1adaaabce, type: 2}
+    - {fileID: 11400000, guid: ba88daa9cf43f804399019c2e2060298, type: 2}
+    - {fileID: 11400000, guid: 7121d7ff8a16fa74c8033eb7cf314d7a, type: 2}
+    - {fileID: 11400000, guid: bf9193e718aed6d4b87f6ce1fca175e9, type: 2}
+    - {fileID: 11400000, guid: 947171404515c41439e50af304d937e1, type: 2}
+    - {fileID: 11400000, guid: b627b714c8812e7458e0e715033e168c, type: 2}
   _itemSyntheticData: {fileID: 11400000, guid: 098148fe04683594797911264623babb, type: 2}
   _takeOrdersCs:
   - {fileID: 938525298}
