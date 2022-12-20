@@ -34,9 +34,13 @@ public class MaterialPlace : MonoBehaviour, IAddItem
             {
                 _sr.sprite = itemInfo.PresentSprite;
             }
-            else 
+            else if (itemInfo.IsFineQuality) 
             {
-                _sr.sprite = itemInfo.PresentSprite;
+                _sr.sprite = itemInfo.Item.FineQualitySprite;
+            }
+            else
+            {
+                _sr.sprite = itemInfo.Item.ItemSprite;
             }
             
         }
