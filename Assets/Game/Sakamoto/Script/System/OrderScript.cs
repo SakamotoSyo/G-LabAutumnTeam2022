@@ -15,7 +15,7 @@ public class OrderScript : MonoBehaviour
     [SerializeField] ItemSyntheticDataBase _itemSyntheticData;
 
     [Tooltip("現在出されているオーダーを格納するList")]
-    ItemSynthetic[] _orderDatas = new ItemSynthetic[4];
+    ItemSynthetic[] _orderDatas = new ItemSynthetic[5];
     [Header("オーダーをだすところ")]
     [SerializeField] TakeOrdersScript[] _takeOrdersCs = new TakeOrdersScript[4];
 
