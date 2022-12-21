@@ -27732,7 +27732,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: bd44afc419e5c964e9a28089249272e1, type: 3}
   - {fileID: 21300000, guid: 59aef1f16d8068e438cf428e07c1baaf, type: 3}
   - {fileID: 21300000, guid: 770378404c9530c42be88368e6cd74bc, type: 3}
-  _gameTime: 90
+  _gameTime: 180
   _timerText: {fileID: 1261682876}
   _scoreText: {fileID: 1895682463}
   _gameUIPresenter:

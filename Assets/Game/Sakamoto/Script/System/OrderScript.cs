@@ -90,8 +90,8 @@ public class OrderScript : MonoBehaviour
                 //注文を出す
                 _takeOrdersCs[i].TakeOrders(odrItem, _phaseSetting[_phaseNum]);
 
-                 _orderCor = StartCoroutine(OrderCor());
-               
+                _orderCor = StartCoroutine(OrderCor());
+                AudioManager.Instance.PlaySound(SoundPlayType.SE_recipe);
                 break;
             }
         }
@@ -123,8 +123,7 @@ public class OrderScript : MonoBehaviour
             {
                 _orderDatas[i] = null;
                 _takeOrdersCs[i].TakeOrderFalse();
-                Debug.Log(item.Item.ItemName);
-                //スコアを足す処理
+                AudioManager.Instance.PlaySound(SoundPlayType.SE_recipe_delete);
                 break;
             }
         }
