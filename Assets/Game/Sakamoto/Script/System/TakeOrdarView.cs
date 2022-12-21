@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class TakeOrdarView : MonoBehaviour
 {
     [Header("オーダー表のSpriteRenderer")]
-    [SerializeField] Image[] _orderImageArray = new Image[4];
+    [SerializeField] Image[] _orderImageArray = new Image[10];
     [SerializeField] ItemDataBase _itemDataBase;
 
     [Header("TimeのRectTransform")]
@@ -30,15 +30,19 @@ public class TakeOrdarView : MonoBehaviour
             Debug.Log(syntheticData.ResultItem);
             _orderImageArray[0].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.ResultItem).ToArray()[0].ItemSprite;
             _orderImageArray[1].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.Item1).ToArray()[0].ItemSprite;
+            _orderImageArray[2].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.Item1[0] + "素材").ToArray()[0].ItemSprite;
             if (syntheticData.Item2 == "なし")
             {
-                _orderImageArray[2].enabled = false;
-                _orderImageArray[2].sprite = null;
+                _orderImageArray[3].enabled = false;
+                _orderImageArray[4].enabled = false;
+                _orderImageArray[3].sprite = null;
+                _orderImageArray[4].sprite = null;
             }
             else
             {
                 //_orderImageArray[2].enabled = true;
-                _orderImageArray[2].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.Item2).ToArray()[0].ItemSprite;
+                _orderImageArray[3].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.Item2).ToArray()[0].ItemSprite;
+                _orderImageArray[4].sprite = _itemDataBase.ItemDataList.Where(x => x.ItemName == syntheticData.Item1[0] + "素材").ToArray()[0].ItemSprite;
             }
 
         }
