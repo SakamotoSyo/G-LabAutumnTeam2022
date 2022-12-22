@@ -48,6 +48,7 @@ public class ChangeRanking : Ranking
     //難易度変更ボタンクリックorタイトルからの遷移で呼び出し
     public void Selected(int level)
     {
+        AudioManager.Instance.PlaySound(SoundPlayType.SE_select);
         _initLevel = level;
         ResetBord();
         CreateRanking(level);

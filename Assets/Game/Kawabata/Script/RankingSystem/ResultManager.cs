@@ -8,6 +8,9 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class ResultManager : MonoBehaviour
 {
+
+    static public int _p_score = 0;
+    
     [SerializeField, Header("遷移先タイトルシーンの名前")]
     string TitleScene;
 
@@ -20,11 +23,8 @@ public class ResultManager : MonoBehaviour
     [SerializeField, Header("リザルト画面のcanvas")]
     private GameObject _resultCanvas;
 
-    [SerializeField, Header("テスト：受け取るスコア")]
-    private int _p_score = 0;
     private int _p_rank = -1;
 
-    [SerializeField, Header("テスト：受け取る難易度")]
     private int _r_level;
 
     public int Level
@@ -35,11 +35,12 @@ public class ResultManager : MonoBehaviour
     [SerializeField, Header("ランキングスクリプト")]
     private GameObject _rankingManager;
     public ChangeRanking _ranking;
-
+    private bool _resultinit = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        _r_level = LevelSelect._level;
         _ranking = _rankingManager.GetComponent<ChangeRanking>();
         _ranking.CreateRanking(_r_level);
 
@@ -89,6 +90,15 @@ public class ResultManager : MonoBehaviour
     //リザルト画面
     public void GoResultCanvas()
     {
+        if (!_resultinit)
+        {
+            AudioManager.Instance.PlaySound(SoundPlayType.SE_result_rank);
+            _resultinit = true;
+        }
+        else
+        {
+            AudioManager.Instance.PlaySound(SoundPlayType.SE_select);
+        }
         _rankingCanvas.SetActive(false);
         _resultCanvas.SetActive(true);
         var scoreText = _resultCanvas.transform.Find("Score").GetComponent<Text>();
@@ -107,14 +117,16 @@ public class ResultManager : MonoBehaviour
 
     public void BackRankingBoad()
     {
+        AudioManager.Instance.PlaySound(SoundPlayType.SE_select);
         _resultCanvas.SetActive(false);
         _rankingCanvas.SetActive(true);
     }
 
     public void GoTitle()
     {
+        AudioManager.Instance.PlaySound(SoundPlayType.SE_enter);
         //シーン遷移
-        Debug.Log("タイトル画面に遷移します");
+        //Debug.Log("タイトル画面に遷移します");
         SceneManager.LoadScene(TitleScene);
     }
 
