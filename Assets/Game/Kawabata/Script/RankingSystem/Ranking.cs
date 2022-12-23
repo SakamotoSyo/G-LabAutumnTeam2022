@@ -23,11 +23,14 @@ public class Ranking : MonoBehaviour
     public const int NOMAL = 1;
     public const int HARD = 2;
 
-    [SerializeField, Header("ミナライファイルパス")]
+    [SerializeField, Header("難易度のフォルダのパス")]
+    private string _levelDataPath
+
+    [SerializeField, Header("ミナライデータ名前")]
     private string _easyPath;
-    [SerializeField, Header("ショクニンファイルパス")]
+    [SerializeField, Header("ショクニンデータ名前)]
     private string _nomalPath;
-    [SerializeField, Header("オヤカタファイルパス")]
+    [SerializeField, Header("オヤカタデータ名前")]
     private string _hardPath;
 
 
@@ -69,19 +72,19 @@ public class Ranking : MonoBehaviour
     {
         if (level == EASY)
         {
-            _dataPath = _easyPath;
+            _dataPath = _levelDataPath + _easyPath;
             _levelName = "ミナライ";
 
         }
         else if (level == NOMAL)
         {
-            _dataPath = _nomalPath;
+            _dataPath = _levelDataPath + _nomalPath;
             _levelName = "ショクニン";
 
         }
         if (level == HARD)
         {
-            _dataPath = _hardPath;
+            _dataPath = _level + _hardPath;
             _levelName = "オヤカタ";
 
         }
@@ -161,8 +164,18 @@ public class Ranking : MonoBehaviour
     //ファイル読み込み
     protected List<RankData> LoadFile()
     {
+        if(System.IO.Directory.Exists(_levelDataPath) == false)
+        {
+            System.IO.Directory.CreateDirectory(_levelDataPath);
+        }
+        if(System.IO.File.Exists(_dataPath) == false)
+        {
+            System.IO.File.Create(_dataPath);
+            //CreateEmptyRankData();
+        }
         var listdata = new List<RankData>();
         var reader = new StreamReader(_dataPath, false);
+        if(reader)
         for (var i = 0; i < _num; i++)
         {
             string datastr = reader.ReadLine();
@@ -194,6 +207,25 @@ public class Ranking : MonoBehaviour
         SaveFile();
 
     }
+
+    //public void CreateEmptyRankData()
+    //{
+
+    //    StreamWriter writer = new StreamWriter(_dataPath, false);
+    //    for (var i = 0; i < _num; i++)
+    //    {
+    //        RankData d;
+    //        d.name = "-------";
+    //        d.rank = 1;
+    //        d.score = 0;
+    //        string jsonstr = JsonUtility.ToJson(d);
+    //        writer.WriteLine(jsonstr);
+    //        writer.Flush();
+
+    //    }
+    //    writer.Close();
+
+    //}
 
 
 
