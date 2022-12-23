@@ -20,6 +20,7 @@ public class Story : MonoBehaviour
     public void NextImage()
     {
         if (_currentNum >= _storyImages.Length - 1) { return; }
+        AudioManager.Instance.PlaySound(SoundPlayType.SE_select);
 
         _currentNum++;
         _image.sprite = _storyImages[_currentNum];
