@@ -27,12 +27,14 @@ public class AudioManager
     /// <summary>Prefabの生成をする</summary>
     AudioManager()
     {
-        string data = "Assets/Game/sakamoto/Data/AudioDataBase/AudioDataBase.asset";
-
-        //var path = AssetDatabase.GUIDToAssetPath(data[0]);
+        // string data = "Assets/InGame/Sakamoto/Data/AudioDataBase/AudioDataBase.asset";
+        // var path = AssetDatabase.GUIDToAssetPath(data);
 #if UNITY_EDITOR
-        _params = AssetDatabase.LoadAssetAtPath<AudioDataBase>(data);
+        // _params = AssetDatabase.LoadAssetAtPath<AudioDataBase>(data);
 #endif
+        //resourcesフォルダから読み込む処理をここに記述する。
+        _params = Resources.Load<AudioDataBase>("AudioDataBase");
+
         if (_params == null)
         {
             Debug.LogError("AudioDataBaseが見つかりません");
