@@ -24,11 +24,11 @@ public class Ranking : MonoBehaviour
     public const int HARD = 2;
 
     [SerializeField, Header("難易度のフォルダのパス")]
-    private string _levelDataPath
+    private string _levelDataPath;
 
     [SerializeField, Header("ミナライデータ名前")]
     private string _easyPath;
-    [SerializeField, Header("ショクニンデータ名前)]
+    [SerializeField, Header("ショクニンデータ名前")]
     private string _nomalPath;
     [SerializeField, Header("オヤカタデータ名前")]
     private string _hardPath;
@@ -84,7 +84,7 @@ public class Ranking : MonoBehaviour
         }
         if (level == HARD)
         {
-            _dataPath = _level + _hardPath;
+            _dataPath = _levelDataPath + _hardPath;
             _levelName = "オヤカタ";
 
         }
@@ -175,7 +175,6 @@ public class Ranking : MonoBehaviour
         }
         var listdata = new List<RankData>();
         var reader = new StreamReader(_dataPath, false);
-        if(reader)
         for (var i = 0; i < _num; i++)
         {
             string datastr = reader.ReadLine();

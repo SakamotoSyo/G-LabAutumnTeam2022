@@ -125,6 +125,7 @@ public class ResultManager : MonoBehaviour
     public void GoTitle()
     {
         AudioManager.Instance.PlaySound(SoundPlayType.SE_enter);
+        AudioManager.Instance.Reset();
         //シーン遷移
         //Debug.Log("タイトル画面に遷移します");
         SceneManager.LoadScene(TitleScene);
