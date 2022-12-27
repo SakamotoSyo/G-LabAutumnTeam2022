@@ -948,7 +948,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 561ab61c453fd9345abd78cfbebf5912, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dd2ff5e24cfbf1449ae99148834103c4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1706,9 +1706,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81f1b19e102f00b47bc844056321609d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _easyPath: Assets/Game/Kawabata/JSON/EasyData.json
-  _nomalPath: Assets/Game/Kawabata/JSON/NomalData.json
-  _hardPath: Assets/Game/Kawabata/JSON/HardData.json
+  _levelDataPath: Assets/Game/Ranking
+  _easyPath: /EasyData.json
+  _nomalPath: /NomalData.json
+  _hardPath: /HardData.json
   scoreUI: {fileID: 8352599497600792036, guid: 9505825effe0405479412c2ddb177509, type: 3}
   _level: 0
   _rankSprite1: {fileID: 21300000, guid: 658d0b51515b7e34e91671c0f7be7ab4, type: 3}
@@ -10608,9 +10609,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b43ca2933cd6b4cb8af5a09f63665c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _easyName: 
-  _nomalName: 
-  _hardName: 
+  _easyName: Level0
+  _nomalName: Level1
+  _hardName: Level2
   _selected:
   - {fileID: 1395692618}
   - {fileID: 1144377345}
