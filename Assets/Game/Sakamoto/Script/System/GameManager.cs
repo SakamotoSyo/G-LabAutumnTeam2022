@@ -5,6 +5,7 @@ using UniRx;
 
 public class GameManager
 {
+    public static int ScoreNum => score.Value;
     public static IObservable<int> Score => score;
     [Tooltip("スコアを保存しておく変数")]
     private static ReactiveProperty<int> score = new();
@@ -21,6 +22,11 @@ public class GameManager
         score.Value += scoreNum;
     }
 
+    public static void ResetScore() 
+    {
+        score.Value = 0;
+    }
+
     /// <summary>ゲームを開始するときに呼ぶ関数</summary>
     public static void OnBiginTurn()
     {
@@ -35,6 +41,9 @@ public class GameManager
 
     public static void MainGameEnd() 
     {
+        GameStart = null;
+        GameEnd = null; 
+        AudioManager.Instance.Reset();
         SceneManager.LoadScene("ResultScene");
     }
 
