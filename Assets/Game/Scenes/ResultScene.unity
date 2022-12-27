@@ -1436,18 +1436,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81f1b19e102f00b47bc844056321609d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _easyPath: Assets/Game/Kawabata/JSON/EasyData.json
-  _nomalPath: Assets/Game/Kawabata/JSON/NomalData.json
-  _hardPath: Assets/Game/Kawabata/JSON/HardData.json
+  _levelDataPath: Assets/Game/Ranking
+  _easyPath: /EasyData.json
+  _nomalPath: /NomalData.json
+  _hardPath: /HardData.json
   scoreUI: {fileID: 8352599497600792036, guid: 9505825effe0405479412c2ddb177509, type: 3}
   _level: 0
-  _rankSprite1: {fileID: 21300000, guid: 602a53ae13b957c4bbbcb20e241ce00f, type: 3}
-  _rankSprite2: {fileID: 21300000, guid: 4dc2634f6e85e544c985a9b0b65f0adf, type: 3}
-  _rankSprite3: {fileID: 21300000, guid: 050b263e08610bd4eaa82093c74661d7, type: 3}
-  _rankSprite4: {fileID: 21300000, guid: 804d14a5d83108f46a2abf8b67c30cf9, type: 3}
+  _rankSprite1: {fileID: 21300000, guid: 658d0b51515b7e34e91671c0f7be7ab4, type: 3}
+  _rankSprite2: {fileID: 21300000, guid: 05b85fed59d6b72478a140362c31c3ce, type: 3}
+  _rankSprite3: {fileID: 21300000, guid: 0a8857e248843e94ba491fe5390b74b9, type: 3}
+  _rankSprite4: {fileID: 21300000, guid: b494b5677cfd968428e7285b03515683, type: 3}
   _boad: {fileID: 1294514031}
   _size: 0.4
-  _rankPos: {fileID: 1589051156}
+  _rankPos: {fileID: 929777372}
   _scroll: {fileID: 1986667421}
   _buttons:
   - {fileID: 1951431355}
@@ -3398,14 +3399,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01e8a4fdf599fa9408454073adc6b640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TitleScene: 
+  TitleScene: TitleScene
   _inputCanvas: {fileID: 1215332861}
   _rankingCanvas: {fileID: 1093408013}
   _resultCanvas: {fileID: 1554414814}
-  _p_score: 27
-  _r_level: 2
   _rankingManager: {fileID: 1093408013}
-  _ranking: {fileID: 0}
+  _ranking: {fileID: 1093408014}
 --- !u!4 &1904443450
 Transform:
   m_ObjectHideFlags: 0
