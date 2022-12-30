@@ -64,6 +64,7 @@ public class LevelSelect : MonoBehaviour
         }
 
         AudioManager.Instance.Reset();
+        GameManager.ResetScore();
         SceneManager.LoadScene(_gameSceneName);
     }
 
