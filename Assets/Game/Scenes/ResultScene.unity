@@ -1448,7 +1448,7 @@ MonoBehaviour:
   _rankSprite4: {fileID: 21300000, guid: b494b5677cfd968428e7285b03515683, type: 3}
   _boad: {fileID: 1294514031}
   _size: 0.4
-  _rankPos: {fileID: 929777372}
+  _rankPos: {fileID: 1589051156}
   _scroll: {fileID: 1986667421}
   _buttons:
   - {fileID: 1951431355}

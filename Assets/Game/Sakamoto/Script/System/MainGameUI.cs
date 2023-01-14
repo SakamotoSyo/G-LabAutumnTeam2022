@@ -74,15 +74,26 @@ public class MainGameUI : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        _gameUIPresenter.StopSub();
+    }
+
 }
 
 [Serializable]
 public class GameUIPresenter 
 {
     [SerializeField] MainGameUI _gameUI;
+    IDisposable _test;
 
     public void Start() 
     {
-        GameManager.Score.Subscribe(Value => _gameUI.SetScore(Value));
+      _test = GameManager.Score.Subscribe(Value => _gameUI.SetScore(Value));
+    }
+
+    public void StopSub() 
+    {
+        _test.Dispose();
     }
 }

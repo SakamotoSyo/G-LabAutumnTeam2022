@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UniRx;
 
 [System.Serializable]
 public class ResultManager : MonoBehaviour
@@ -43,6 +44,7 @@ public class ResultManager : MonoBehaviour
         _r_level = LevelSelect._level;
         _ranking = _rankingManager.GetComponent<ChangeRanking>();
         _ranking.CreateRanking(_r_level);
+        _p_score = GameManager.ScoreNum;
 
         var data = new List<RankData>(_ranking._data);
 
@@ -73,7 +75,8 @@ public class ResultManager : MonoBehaviour
         var p_data = new RankData();
         p_data.name = n;
         p_data.score = _p_score;
-        p_data.rank = _p_rank;
+        Debug.Log($"{p_data.score}‚Å‚·");
+        p_data.rank = 1;
 
         _ranking._p_data = p_data;
 

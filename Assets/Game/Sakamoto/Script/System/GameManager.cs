@@ -8,7 +8,7 @@ public class GameManager
     public static int ScoreNum => score.Value;
     public static IObservable<int> Score => score;
     [Tooltip("スコアを保存しておく変数")]
-    private static ReactiveProperty<int> score = new();
+    private static ReactiveProperty<int> score = new ReactiveProperty<int>();
 
     /// <summary>Gameがスタートするときに呼ぶAction</summary>
     public static event Action GameStart;
